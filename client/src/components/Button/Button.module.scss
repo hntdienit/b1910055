@@ -1,0 +1,32 @@
+.wrapper{
+    display: inline-flex;
+    align-items: center;
+    text-align: center;
+    // background-color: aqua;
+
+    + .wrapper{
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+}
+
+.icon + .title, .title + .icon{
+    margin-left: 8px;
+}
+
+span{
+    height: 100%;
+}
+
+.icon{
+    display: block;
+    width: 24px;
+    text-align: center;
+}
+
+.primary{
+    color: red;
+}
+.noprimary{
+    color: blue;
+}
