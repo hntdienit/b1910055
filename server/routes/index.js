@@ -1,4 +1,6 @@
 import posts from "./posts.js";
+import comments from "./comments.js";
+import users from './users.js'
 
 const router = (app) => {
   app.get("/", (req, res, next) => {
@@ -9,6 +11,8 @@ const router = (app) => {
 
   /* router */
   app.use("/posts", posts);
+  app.use("/comments", comments);
+  app.use("/auth", users);
 
   /* 404 */
   app.use("/:error", (req, res, next) => {

@@ -1,8 +1,14 @@
 import Posts from "../models/Posts.js";
 
 const getPosts = async (req, res, next) => {
-    const listOfPosts = await Posts.findAll()
+  const listOfPosts = await Posts.findAll();
   return res.status(200).json(listOfPosts);
+};
+
+const getPost = async (req, res, next) => {
+  const id = req.params.id
+  const post = await Posts.findByPk(id)
+  return res.status(200).json(post);
 };
 
 const postPosts = async (req, res, next) => {
@@ -13,5 +19,6 @@ const postPosts = async (req, res, next) => {
 
 export default {
   getPosts,
+  getPost,
   postPosts,
 };

@@ -2,11 +2,14 @@
 // import { HeaderOnly } from './Layouts';
 
 // Pages
+import Register from "../pages/Register"
+import Login from "../pages/Login"
 import Following from '../pages/Following';
 import Home from '../pages/Home';
 import Profile from '../pages/Profile';
 import Posts from '../pages/Profile/Posts.js';
-import Search from '../pages/Search';
+import Post from '../pages/Profile/Post.js';
+// import Search from '../pages/Search';
 import P404 from '../pages/P404';
 
 //khong login
@@ -14,6 +17,16 @@ const publicRoutes = [
   {
     path: '/',
     component: Home,
+  },
+  {
+    path: '/login',
+    component: Login,
+    // layout: null,
+  },
+  {
+    path: '/register',
+    component: Register,
+    // layout: null,
   },
   {
     path: '/following',
@@ -26,6 +39,11 @@ const publicRoutes = [
   {
     path: '/search',
     component: Posts,
+    // layout: null,
+  },
+  {
+    path: '/post/:id',
+    component: Post,
     // layout: null,
   },
   {

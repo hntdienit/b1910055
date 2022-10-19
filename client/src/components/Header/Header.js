@@ -130,7 +130,12 @@ function Header() {
     <>
       <header>
         <div className={cl("header__area")}>
-          <div className={cl("header__middle", ["header__border", "d-none d-md-block"])}>
+          <div
+            className={cl("header__middle", [
+              "header__border",
+              "d-none d-md-block",
+            ])}
+          >
             <div className={"container"}>
               <div className={"row align-items-center"}>
                 <div className={"col-xxl-6 col-xl-6 col-lg-8 col-md-8"}>
@@ -138,7 +143,10 @@ function Header() {
                     <ul>
                       <li>
                         <Link to={"/"}>
-                          <FontAwesomeIcon icon={faGraduationCap} className={"me-2"} />
+                          <FontAwesomeIcon
+                            icon={faGraduationCap}
+                            className={"me-2"}
+                          />
                           B1910055
                         </Link>
                       </li>
@@ -152,25 +160,45 @@ function Header() {
                   </div>
                 </div>
                 <div className={"col-xxl-6 col-xl-6 col-lg-4 col-md-4"}>
-                  <div className={cl("header__middle-right", "d-flex align-items-center justify-content-end")}>
-                    <div className={cl("main-menu", "main-menu-border", "main-menu-4")}>
+                  <div
+                    className={cl(
+                      "header__middle-right",
+                      "d-flex align-items-center justify-content-end"
+                    )}
+                  >
+                    <div
+                      className={cl(
+                        "main-menu",
+                        "main-menu-border",
+                        "main-menu-4"
+                      )}
+                    >
                       <nav id="mobile-menu">
                         <ul>
                           <li className={cl("has-dropdown")}>
                             <Link to={"/"} className={"d-inline me-5"}>
-                              <FontAwesomeIcon icon={faHome} className={"me-2"} />
+                              <FontAwesomeIcon
+                                icon={faHome}
+                                className={"me-2"}
+                              />
                               Trang chủ
                             </Link>
                           </li>
                           <li className={cl("has-dropdown")}>
                             {currentUser ? (
                               <Link to={"/"} className={"d-inline"}>
-                                <FontAwesomeIcon icon={faUser} className={"me-2"} />
+                                <FontAwesomeIcon
+                                  icon={faUser}
+                                  className={"me-2"}
+                                />
                                 Tài khoản
                               </Link>
                             ) : (
                               <Link to={"/"} className={"d-inline"}>
-                                <FontAwesomeIcon icon={faUser} className={"me-2"} />
+                                <FontAwesomeIcon
+                                  icon={faUser}
+                                  className={"me-2"}
+                                />
                                 Đăng nhập
                               </Link>
                             )}
@@ -178,8 +206,19 @@ function Header() {
                         </ul>
                       </nav>
                     </div>
-                    <div className={cl("header__select", "d-flex align-items-center")}>
-                      <div className={cl("header__lang", "header__select-item", "me-2")}>
+                    <div
+                      className={cl(
+                        "header__select",
+                        "d-flex align-items-center"
+                      )}
+                    >
+                      <div
+                        className={cl(
+                          "header__lang",
+                          "header__select-item",
+                          "me-2"
+                        )}
+                      >
                         <select>
                           <option>EN</option>
                           <option>BN</option>
@@ -188,7 +227,12 @@ function Header() {
                           <option>AM</option>
                         </select>
                       </div>
-                      <div className={cl("header__currency", "header__select-item")}>
+                      <div
+                        className={cl(
+                          "header__currency",
+                          "header__select-item"
+                        )}
+                      >
                         <select>
                           <option>USD</option>
                           <option>Euro</option>
@@ -209,14 +253,31 @@ function Header() {
                 <div className={"col-xxl-2 col-xl-2 col-lg-3 col-6"}>
                   <div className={cl("logo")}>
                     <Link to={"/"} className={cl("logo")}>
-                      <Image src={images.logo} alt="Trang chủ" className={"img-fluid"} />
+                      <Image
+                        src={images.logo}
+                        alt="Trang chủ"
+                        className={"img-fluid"}
+                      />
                     </Link>
                   </div>
                 </div>
-                <div className={"col-xxl-3 col-xl-3 col-lg-4 d-none d-lg-block"}>
-                  <div className={cl("category__menu", "d-flex justify-content-center align-items-center")}>
+                <div
+                  className={"col-xxl-3 col-xl-3 col-lg-4 d-none d-lg-block"}
+                >
+                  <div
+                    className={cl(
+                      "category__menu",
+                      "d-flex justify-content-center align-items-center"
+                    )}
+                  >
                     <nav>
                       <ul>
+                        <li>
+                          <Link to={"/register"}>dang ky</Link>
+                        </li>
+                        <li>
+                          <Link to={"/login"}>dang nhap</Link>
+                        </li>
                         <li>
                           <Link to={"/following"}>Gỗ</Link>
                         </li>
@@ -227,7 +288,7 @@ function Header() {
                           <Link to={"/search"}>Bàn</Link>
                         </li>
                         <li>
-                          <Link to={"/"}>Trang trí</Link>
+                          <Link to={"/post/:id"}>Trang trí</Link>
                         </li>
                         <li>
                           <Link to={"/"}>khác</Link>
@@ -236,7 +297,9 @@ function Header() {
                     </nav>
                   </div>
                 </div>
-                <div className={"col-xxl-5 col-xl-5 col-lg-4 d-none d-lg-block"}>
+                <div
+                  className={"col-xxl-5 col-xl-5 col-lg-4 d-none d-lg-block"}
+                >
                   <div className={cl("header__search")}>
                     <form action="#">
                       <div className={cl("header__search-input")}>
@@ -250,10 +313,16 @@ function Header() {
                 </div>
                 <div className={"col-xxl-2 col-xl-2 col-lg-1 col-6"}>
                   <div
-                    className={cl("header__bottom-right-wrapper", "d-flex justify-content-center align-items-center")}
+                    className={cl(
+                      "header__bottom-right-wrapper",
+                      "d-flex justify-content-center align-items-center"
+                    )}
                   >
                     <div
-                      className={cl("header__bottom-right", "d-none d-xl-flex align-items-center justify-content-end")}
+                      className={cl(
+                        "header__bottom-right",
+                        "d-none d-xl-flex align-items-center justify-content-end"
+                      )}
                     >
                       <div className={cl("header__action", "ml-30")}>
                         <ul>
@@ -263,8 +332,16 @@ function Header() {
                             </Link>
                           </li>
                           <li>
-                            <Link to={"#"} className={""} data-bs-toggle="modal" data-bs-target="#cartMiniModal">
-                              <FontAwesomeIcon icon={faBasketShopping} className={""} />
+                            <Link
+                              to={"#"}
+                              className={""}
+                              data-bs-toggle="modal"
+                              data-bs-target="#cartMiniModal"
+                            >
+                              <FontAwesomeIcon
+                                icon={faBasketShopping}
+                                className={""}
+                              />
                               <span className={cl("cart-count")}>3</span>
                             </Link>
                           </li>

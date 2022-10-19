@@ -4,6 +4,7 @@ import className from "classnames/bind";
 import styles from "../../components/GlobalStyles";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
 
 const cl = className.bind(styles);
 
@@ -21,13 +22,14 @@ function Posts() {
   });
 
   const onSubmit = (data) => {
-    console.log(data);
     axios
       .post(`${process.env.REACT_APP_URL_API}/posts`, data)
       .then((response) => {
-        console.log("da chay port create posts");
+        navigate(`/`);
       });
   };
+
+  let navigate = useNavigate();
 
   return (
     <div className={"container mb-5 mt-5"}>

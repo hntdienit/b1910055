@@ -1,11 +1,9 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 
-const Posts = sequelize.define(
-  "Posts",
+const Comments = sequelize.define(
+  "Comments",
   {
-    name: { type: DataTypes.STRING },
-    description: { type: DataTypes.STRING },
     content: { type: DataTypes.STRING },
   },
   {
@@ -13,4 +11,4 @@ const Posts = sequelize.define(
   }
 );
 
-export default Posts;
+export default Comments;
