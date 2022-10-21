@@ -4,7 +4,8 @@ import sequelize from "../config/db.js";
 const Comments = sequelize.define(
   "Comments",
   {
-    content: { type: DataTypes.STRING },
+    content: { type: DataTypes.STRING, allowNull: false },
+    username: { type: DataTypes.STRING, allowNull: false },
   },
   {
     // Other model options go here

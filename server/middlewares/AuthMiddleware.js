@@ -9,6 +9,7 @@ const validateToken = (req, res, next) => {
 
   try {
     const validToken = jwt.verify(accessToken, process.env.JWT_SECRET);
+    req.user = validToken.sub;
     if (validToken) {
       return next();
     }

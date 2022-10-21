@@ -6,6 +6,7 @@ const Users = sequelize.define(
   {
     username: { type: DataTypes.STRING, allowNull: false },
     password: { type: DataTypes.STRING, allowNull: false },
+    role: { type: DataTypes.STRING, defaultValue: "user" },
   },
   {
     // Other model options go here

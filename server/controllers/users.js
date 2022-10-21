@@ -3,11 +3,11 @@ import jwt from "jsonwebtoken";
 
 import Users from "../models/Users.js";
 
-const endCode = (userID) => {
+const endCode = (id, username, role) => {
   return jwt.sign(
     {
       iss: "B1910055",
-      sub: userID,
+      sub: { id, username, role },
       iat: new Date().setTime(),
       exp: new Date().setDate(new Date().getDate() + 3),
     },
@@ -15,8 +15,13 @@ const endCode = (userID) => {
   );
 };
 
+const checkAuth = async (req, res, next) => {
+  return res.json({ role: req.user.role });
+};
+
 const login = async (req, res, next) => {
   const { username, password } = req.body;
+
   const user = await Users.findOne({ where: { username: username } });
 
   if (!user) return res.status(200).json({ error: "user doesn't exist!" });
@@ -24,9 +29,15 @@ const login = async (req, res, next) => {
   bcrypt.compare(password, user.password).then((match) => {
     if (!match)
       return res.status(200).json({ error: "Wrong username and password!" });
-    const accessToken = endCode(user.id);
-    return res.status(200).json(accessToken);
+    const accessToken = endCode(user.id, user.username, user.role);
+    return res
+      .status(200)
+      .json({ accessToken: accessToken, userRole: user.role });
   });
+};
+
+const getLogin = async (req, res, next) => {
+  return res.status(201).json(req.user);
 };
 
 const register = async (req, res, next) => {
@@ -43,6 +54,8 @@ const register = async (req, res, next) => {
 };
 
 export default {
+  checkAuth,
   login,
+  getLogin,
   register,
 };
