@@ -10,8 +10,7 @@ import {} from "@fortawesome/free-solid-svg-icons";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 import styles from "./Login.module.scss";
-import {AuthContext} from "../../helpers/AuthContext.js"
-
+import { AuthContext } from "../../helpers/AuthContext.js";
 
 import Button from "../../components/Button";
 
@@ -21,7 +20,7 @@ function Login() {
   // const [username, setUsername] = useState("");
   // const [password, setPassword] = useState("");
 
-  const {setAuth} = useContext(AuthContext)
+  const { setAuth } = useContext(AuthContext);
 
   const initialValues = {
     username: "",
@@ -43,16 +42,21 @@ function Login() {
 
   let navigate = useNavigate();
 
-  const login = (data) => {
+  const login = async (data) => {
     // const data = { username: username, password: password };
-    axios
+    await axios
       .post(`${process.env.REACT_APP_URL_API}/auth/login`, data)
       .then((response) => {
         if (response.data.error) {
           alert(response.data.error);
         } else {
           localStorage.setItem("accessToken", response.data.accessToken);
-          setAuth(true)
+          // console.log(response.data.username)
+          setAuth({
+            username: response.data.username,
+            id: response.data.id,
+            status: true,
+          });
           navigate(`/`);
         }
       });

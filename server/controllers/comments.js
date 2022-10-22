@@ -21,8 +21,20 @@ const postPosts = async (req, res, next) => {
   return res.status(201).json(comment);
 };
 
+const deleteComment = async (req, res, next) => {
+  console.log("vao delete: ");
+  const commentId = req.params.commentId;
+  await Comments.destroy({
+    where: {
+      id: commentId,
+    },
+  });
+  return res.status(201).json("xoa thanh cong");
+};
+
 export default {
   getPosts,
   getPostId,
   postPosts,
+  deleteComment,
 };

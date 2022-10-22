@@ -13,4 +13,6 @@ router
 
 router.route("/:postId").get(CommentsController.getPostId);
 
+router.route("/:commentId").delete(AuthMiddleware.validateToken, CommentsController.deleteComment);
+
 export default router;

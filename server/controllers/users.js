@@ -32,12 +32,16 @@ const login = async (req, res, next) => {
     const accessToken = endCode(user.id, user.username, user.role);
     return res
       .status(200)
-      .json({ accessToken: accessToken, userRole: user.role });
+      .json({ accessToken: accessToken, username: user.username, useID: user.id });
   });
 };
 
 const getLogin = async (req, res, next) => {
   return res.status(201).json(req.user);
+  // const accessToken = endCode(user.id, user.username, user.role);
+  // return res
+  //   .status(200)
+  //   .json({ accessToken: accessToken, userRole: user.role });
 };
 
 const register = async (req, res, next) => {

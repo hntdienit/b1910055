@@ -31,6 +31,11 @@ app.use(express.json({ extended: true }));
 
 /* middlewares */
 app.use(cors());
+// app.use(cors({
+//   origin: "http://localhost:3005",
+//   methods: "GET,POST,PUT,DELETE,PATCH",
+//   credentials: true,
+// }))
 app.use(logger("dev")); /* when debug console.log */
 
 /* routes */

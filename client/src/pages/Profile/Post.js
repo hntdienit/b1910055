@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { AuthContext } from "../../helpers/AuthContext.js";
 
 function Post() {
   let { id } = useParams();
@@ -8,6 +9,8 @@ function Post() {
   const [post, setPost] = useState({});
   const [comments, setComments] = useState([]);
   const [newComment, setNewComments] = useState("");
+
+  const { auth } = useContext(AuthContext);
 
   useEffect(() => {
     axios
@@ -51,6 +54,22 @@ function Post() {
       });
   };
 
+  const deleteComment = (commentId) => {
+    axios
+      .delete(`${process.env.REACT_APP_URL_API}/comments/${commentId}`, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        setComments(
+          comments.filter((val) => {
+            return val.id !== commentId;
+          })
+        );
+      });
+  };
+
   return (
     <h3 className={"container my-5"}>
       <div className={"row"}>
@@ -74,11 +93,20 @@ function Post() {
           <hr></hr>
           <div>
             <div>
-              {comments.map((value) => {
+              {comments.map((value, index) => {
                 return (
-                  <div key={value.id}>
+                  <div key={index}>
                     <div>{value.content}</div>
                     <div>{value.username}</div>
+                    {auth.username === value.username && (
+                      <button
+                        onClick={() => {
+                          deleteComment(value.id);
+                        }}
+                      >
+                        xoa
+                      </button>
+                    )}
                     <hr></hr>
                   </div>
                 );

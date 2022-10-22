@@ -16,7 +16,7 @@ import P404 from "../pages/P404";
 import { useState } from "react";
 
 function checkLogin() {
-  let role = 'user';
+  let role = "user";
 
   // axios
   //   .post(
@@ -41,7 +41,7 @@ function checkLogin() {
   return role;
 }
 
-console.log("cai ham", checkLogin());
+// console.log("cai ham", checkLogin());
 
 /* not login */
 const publicRoutes = [
