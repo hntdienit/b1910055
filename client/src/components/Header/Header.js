@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import className from "classnames/bind";
+
+import { AuthContext } from "../../helpers/AuthContext.js";
 import styles from "./Header.module.scss";
 // import Tippy from "@tippyjs/react";
 // import "tippy.js/dist/tippy.css";
@@ -109,6 +111,8 @@ const PRICE = [
 const currentUser = true;
 
 function Header() {
+  const { auth, setAuth } = useContext(AuthContext);
+
   const [searchResult, setSearchResult] = useState([]);
 
   useEffect(() => {
@@ -124,6 +128,12 @@ function Header() {
         break;
       default:
     }
+  };
+
+  
+  const logout = () => {
+    localStorage.removeItem("accessToken");
+    setAuth({ username: "", id: 0, status: false, role: ""});
   };
 
   return (
@@ -272,12 +282,24 @@ function Header() {
                   >
                     <nav>
                       <ul>
-                        <li>
-                          <Link to={"/register"}>dang ky</Link>
-                        </li>
-                        <li>
-                          <Link to={"/login"}>dang nhap</Link>
-                        </li>
+                        {auth.role !== "" ? (
+                          <>
+                            <li>
+                              <Link onClick={logout}>dang xuat</Link>
+                              <div>{auth.username}</div>
+                              <div>quyen: {auth.role}</div>
+                            </li>
+                          </>
+                        ) : (
+                          <><li>
+                              <Link to={"/register"}>dang ky</Link>
+                            </li>
+                            <li>
+                              <Link to={"/login"}>dang nhap</Link>
+                            </li>
+                          </>
+                        )}
+
                         <li>
                           <Link to={"/following"}>Gỗ</Link>
                         </li>

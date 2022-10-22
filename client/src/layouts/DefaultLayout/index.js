@@ -7,7 +7,7 @@ import styles from './DefaultLayout.module.scss';
 
 const cl = className.bind(styles);
 
-function DefaultLayout({ children }) {
+function DefaultLayout({children }) {
   return (
     <div className={cl('wrapper')}>
       <Header />

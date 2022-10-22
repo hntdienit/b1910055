@@ -32,7 +32,7 @@ const login = async (req, res, next) => {
     const accessToken = endCode(user.id, user.username, user.role);
     return res
       .status(200)
-      .json({ accessToken: accessToken, username: user.username, useID: user.id });
+      .json({ accessToken: accessToken, username: user.username, useID: user.id, role: user.role });
   });
 };
 

@@ -51,11 +51,12 @@ function Login() {
           alert(response.data.error);
         } else {
           localStorage.setItem("accessToken", response.data.accessToken);
-          // console.log(response.data.username)
+          // console.log(response.data.role)
           setAuth({
             username: response.data.username,
             id: response.data.id,
             status: true,
+            role: response.data.role,
           });
           navigate(`/`);
         }
