@@ -3,6 +3,9 @@ import comments from "./comments.js";
 import users from './users.js'
 import likes from "./like.js"
 
+/* import routes */
+import categories from "./categories.js"
+
 const router = (app) => {
   app.get("/", (req, res, next) => {
     return res.status(200).json({
@@ -10,11 +13,13 @@ const router = (app) => {
     });
   });
 
-  /* router */
+  /* router-delete */
   app.use("/posts", posts);
   app.use("/comments", comments);
   app.use("/auth", users);
   app.use("/likes", likes);
+  /* router */
+  app.use("/categories", categories);
 
   /* 404 */
   app.use("/:error", (req, res, next) => {

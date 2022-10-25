@@ -5,6 +5,9 @@ import Comments from "./Comments.js";
 import Users from "./Users.js";
 import Likes from "./Likes.js";
 
+/* Models */
+import "./Categories.js";
+
 const relationship = () => {
   // // Author x Book: One to Many
   // Author.hasMany(Book, { foreignKey: 'authorId', as: 'books' })

@@ -13,6 +13,7 @@ import Post from "../pages/Profile/Post.js";
 
 /* Pages Admin */
 import AdminHome from "../pages/Admin/Home";
+import {CreaterCategory, ListCategory, EditCategory} from "../pages/Admin/Category";
 
 // import Search from '../pages/Search';
 import P404 from "../pages/P404";
@@ -26,6 +27,24 @@ const routes = [
   {
     path: "/admin",
     component: AdminHome,
+    layout: AdminLayout,
+    role: "admin",
+  },
+  {
+    path: "/admin/category",
+    component: CreaterCategory,
+    layout: AdminLayout,
+    role: "admin",
+  },
+  {
+    path: "/admin/listcategory",
+    component: ListCategory,
+    layout: AdminLayout,
+    role: "admin",
+  },
+  {
+    path: "/admin/editcategory/:EditId",
+    component: EditCategory,
     layout: AdminLayout,
     role: "admin",
   },
