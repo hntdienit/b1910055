@@ -304,6 +304,9 @@ function Header() {
                           <Link to={"/following"}>Gỗ</Link>
                         </li>
                         <li>
+                          <Link to={"/admin"}>Admin</Link>
+                        </li>
+                        <li>
                           <Link to={"/profile"}>Ghế</Link>
                         </li>
                         <li>

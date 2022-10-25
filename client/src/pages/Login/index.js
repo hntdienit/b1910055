@@ -58,7 +58,13 @@ function Login() {
             status: true,
             role: response.data.role,
           });
-          navigate(`/`);
+          console.log("trong login", response.data.role)
+          if(response.data.role === "admin"){
+            navigate("/admin");
+          } else {
+            navigate("/");
+          }
+          
         }
       });
   };

@@ -4,8 +4,9 @@ import axios from "axios";
 
 import { AuthContext } from "./helpers/AuthContext.js";
 
-import { publicRoutes, privateRoutes } from "./routes";
-import { DefaultLayout, AdminLayout } from "./layouts";
+import routes from "./routes";
+import DefaultLayout from "./layouts/DefaultLayout/DefaultLayout.js";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.js";
 
 function App() {
   const [auth, setAuth] = useState({
@@ -26,7 +27,7 @@ function App() {
         if (response.data.error) {
           setAuth({ username: "", id: 0, status: false, role: "" });
         } else {
-          // console.log("user id", response.data.role)
+          // console.log("user id", response.data.id);
           setAuth({
             username: response.data.username,
             id: response.data.id,
@@ -43,47 +44,29 @@ function App() {
         <Router>
           <div className="App">
             <Routes>
-              {publicRoutes.map((route, index) => {
+              {routes.map((item, index) => {
                 let Layout = DefaultLayout;
-                if (route.layout) {
-                  Layout = route.layout;
-                } else if (route.layout === null) {
-                  Layout = Fragment;
-                }
-                const Page = route.component;
+                if (item.layout) Layout = item.layout;
+                if (item.layout === null) Layout = Fragment;
+                let Page = item.component;
                 return (
                   <Route
                     key={index}
-                    path={route.path}
+                    path={item.path}
                     element={
-                      <Layout>
-                        <Page />
-                      </Layout>
+                      item.role ? (
+                        <ProtectedRoute role={item.role}>
+                          <Layout>
+                            <Page></Page>
+                          </Layout>
+                        </ProtectedRoute>
+                      ) : (
+                        <Layout>
+                          <Page></Page>
+                        </Layout>
+                      )
                     }
-                  />
-                );
-              })}
-              {privateRoutes.map((route, index) => {
-                let Layout = DefaultLayout;
-                if (auth.role === "admin") {
-                  Layout = AdminLayout;
-                }
-                if (route.layout) {
-                  Layout = route.layout;
-                } else if (route.layout === null) {
-                  Layout = Fragment;
-                }
-                const Page = route.component;
-                return (
-                  <Route
-                    key={index}
-                    path={route.path}
-                    element={
-                      <Layout>
-                        <Page />
-                      </Layout>
-                    }
-                  />
+                  ></Route>
                 );
               })}
             </Routes>
