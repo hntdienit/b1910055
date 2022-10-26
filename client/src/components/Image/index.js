@@ -15,7 +15,7 @@ const Image = forwardRef(
 
     return (
       <img
-        className={classNames(styles.wrapper, className)}
+        className={classNames(className, styles.wrapper)}
         ref={ref}
         src={fallback || src}
         alt={alt}

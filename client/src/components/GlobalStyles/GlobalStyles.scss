@@ -1,6 +1,5 @@
 // @import url(normalize.css);
 
-@import "~bootstrap/scss/bootstrap";
 @import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
 
 :root {
@@ -36,7 +35,7 @@ body {
 }
 
 a {
-  text-decoration: none;
+  text-decoration: none !important;
 }
 h1,
 h2,
