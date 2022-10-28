@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import className from "classnames/bind";
 
 import { AuthContext } from "../../helpers/AuthContext.js";
@@ -9,15 +9,18 @@ import styles from "./AdminHeader.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
+
+
+
+---------------------------------------------------------------------------------------------
+let navigate = useNavigate();
+navigate("/ad");
+----------------------------------------------------------------------------------------------
 /* import assets */
 import images from "../../assets/images";
-
 /* import components */
 import Image from "../Image";
-
-
-
 <Image src={images.logo} alt="Trang chu" className={("")}/>
-
+----------------------------------------------------------------------------------------------
 <i><FontAwesomeIcon icon={faMagnifyingGlass} className={""} /></i>
 

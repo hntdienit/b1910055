@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import className from "classnames/bind";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -20,6 +20,9 @@ import { faHouse, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 const cl = className.bind(styles);
 
 function CreateCategory() {
+
+  let navigate = useNavigate();
+
   const initialValues = {
     name: "",
   };
@@ -43,7 +46,7 @@ function CreateCategory() {
         if (response.data.error) {
           alert(response.data.error);
         } else {
-          alert(response.data);
+          navigate("/admin/listcategory");
         }
       });
   };

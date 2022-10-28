@@ -139,11 +139,11 @@ function ListCategory() {
                           <div className={cl("text-primary")} title="Views">
                             <FontAwesomeIcon icon={faEye} className={""} />
                           </div>
-                          <div className={cl("text-warning")} title="Edit">
+                          <div className={cl("")} title="Edit">
                             <button>
                               <Link
                                 to={`/admin/editcategory/${value.id}`}
-                                className={cl("")}
+                                className={cl("text-warning")}
                               >
                                 <FontAwesomeIcon icon={faPen} className={""} />
                               </Link>

@@ -4,10 +4,18 @@
   }
 
 .page-content {
-  margin-left: 210px;
-  margin-top: 60px;
-  padding: 1.5rem;
-  transition: all 0.2s;
+  &-off{
+      margin-left: 250px;
+      margin-top: 75px;
+      padding: 1.5rem;
+      transition: all 0.2s;
+  }
+  &-on{
+      margin-left: 120px;
+      margin-top: 75px;
+      padding: 1.5rem;
+      transition: all 0.2s;
+  }
 }
 
 @media screen and (max-width: 1199px) {
@@ -16,15 +24,4 @@
   }
 }
 
-.sidebar-wrapper {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 270px;
-    height: 100%;
-    background-color: #ffffff;
-    background-clip: padding-box;
-    border-right: 1px solid #e2e3e4;
-    transition: all 0.2s;
-    z-index: 16;
-  }
+

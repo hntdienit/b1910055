@@ -1,5 +1,9 @@
+import { useState } from "react";
+
 import Header from "../../components/AdminHeader/AdminHeader.js";
 import SideBar from "../../components/AdminSideBar/AdminSideBar.js";
+
+import { MenuContext } from "../../helpers/MenuContext.js";
 
 import className from "classnames/bind";
 import styles from "./AdminLayout.module.scss";
@@ -7,18 +11,20 @@ import styles from "./AdminLayout.module.scss";
 const cl = className.bind(styles);
 
 function AdminLayout({ children }) {
+
+  const [logo, setLogo] = useState(false)
+
   return (
-    <div className={cl("wrapper", "container mt-5")}>
-      <div className={cl("top-header")}>
-        <Header />
-      </div>
-      <div className={cl("sidebar-wrapper")}>
-        <SideBar />
-      </div>
-      <div className={cl("page-content")}>
+    <MenuContext.Provider value={{ logo, setLogo }}>
+      <div className={cl("wrapper", "mt-5")}>
+      <Header />
+      <SideBar />
+      <div className={cl(logo === true ? "page-content-on" : "page-content-off")}>
         <div className={cl("content")}>{children}</div>
       </div>
     </div>
+    </MenuContext.Provider>
+    
   );
 }
 

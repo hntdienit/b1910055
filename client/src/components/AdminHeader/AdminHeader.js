@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import className from "classnames/bind";
 
+import { MenuContext } from "../../helpers/MenuContext.js";
+
+import className from "classnames/bind";
 import styles from "./AdminHeader.module.scss";
 
 /* import FontAwesomeIcon */
@@ -23,23 +25,40 @@ import Image from "../Image";
 const cl = className.bind(styles);
 
 function Header() {
+
+  
+  const { logo, setLogo } = useContext(MenuContext)
+  
+
+  const logoChange = () => {
+    if (logo === true) {
+      setLogo(false)
+    }
+    if (logo === false) {
+      setLogo(true)
+    }
+  };
+
   return (
     <>
-      <div className={cl("page-topbar")}>
+      <div className={cl("page-topbar", logo === true ? "page-topbar-on" : "page-topbar-off")}>
         <div className={cl("navbar-header")}>
           <div className={cl("d-flex")}>
-            <div className={cl("navbar-brand-box")}>
-              <Link to={"/admin"} className={cl("logo")}>
+            <div className={cl(logo === true ? "vertical-menu-on" : "vertical-menu-off")}>
+              {/* <Link to={"/admin"} className={cl("logo")}>
                 <span className={cl("logo-lg")}>
                   <Image src={images.logo} alt="Trang chu" className={""} />
                 </span>
-              </Link>
+              </Link> */}
             </div>
 
             <button
               type="button"
+              onClick={() => {
+                logoChange()
+              }}
               className={cl(
-                "btn btn-sm px-3 header-item pt-2",
+                "btn btn-sm px-3 header-item pt-2 ms-3",
                 "font-size-24",
                 "header-custom",
                 "waves-effect",
