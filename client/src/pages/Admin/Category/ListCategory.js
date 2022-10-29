@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import ReactPaginate from "react-paginate";
 import axios from "axios";
 import className from "classnames/bind";
 
@@ -9,6 +10,7 @@ import styles from "./Category.module.scss";
 /* import FontAwesomeIcon */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faAdd,
   faEye,
   faHouse,
   faMagnifyingGlass,
@@ -20,23 +22,41 @@ import {
 // import images from "../../assets/images";
 
 /* import components */
+import Button from "../../../components/Button";
 
 const cl = className.bind(styles);
 
 function ListCategory() {
-
   const [list, setList] = useState([]);
+  const [page, setPage] = useState(0);
+  const [limit, setLimit] = useState(5);
+  const [pages, setPages] = useState(0);
+  const [rows, setRows] = useState(0);
+  const [keyword, setKeyword] = useState("");
+  const [query, setQuery] = useState("");
+
+  let navigate = useNavigate();
+
   useEffect(() => {
     axios
-      .get(`${process.env.REACT_APP_URL_API}/categories`)
+      .get(
+        `${process.env.REACT_APP_URL_API}/categories?page=${page}&limit=${limit}`
+      )
       .then((response) => {
         if (response.data.error) {
           alert(response.data.error);
         } else {
-          setList(response.data);
+          setList(response.data.result);
+          setPage(response.data.page);
+          setPages(response.data.totalPage);
+          setRows(response.data.totalRows);
         }
       });
-  }, []);
+  }, [page, limit]);
+
+  const changePage = ({ selected }) => {
+    setPage(selected);
+  };
 
   const deleteCaTegory = (CategoryId) => {
     axios
@@ -51,6 +71,7 @@ function ListCategory() {
             return val.id !== CategoryId;
           })
         );
+        // navigate("/admin/listcategory");
       });
   };
 
@@ -98,6 +119,14 @@ function ListCategory() {
                 placeholder="Tìm kiếm...."
               />
             </form>
+            <Button
+              to={"/admin/category"}
+              leftIcon={<FontAwesomeIcon icon={faAdd} />}
+              className={cl("ms-5 py-1 px-3")}
+              primary
+            >
+              New Category
+            </Button>
           </div>
           <div className={cl("table-responsive", "mt-3")}>
             <table className={cl("table align-middle")}>
@@ -114,7 +143,7 @@ function ListCategory() {
                   return (
                     <tr key={index}>
                       <td></td>
-                      <td>{index + 1}</td>
+                      <td>{(page + 1) * limit - limit + index + 1}</td>
                       {/* <td>
                     <div class="d-flex align-items-center gap-3 cursor-pointer">
                       <img
@@ -147,7 +176,6 @@ function ListCategory() {
                               >
                                 <FontAwesomeIcon icon={faPen} className={""} />
                               </Link>
-                              
                             </button>
                           </div>
                           <div className={cl("text-danger")} title="Delete">
@@ -166,6 +194,49 @@ function ListCategory() {
                 })}
               </tbody>
             </table>
+            <div className={cl("d-flex flex-row mt-4")}>
+              <div className={cl("")}>
+                <select
+                  className={cl("form-select ms-5")}
+                  onChange={(e) => {
+                    setLimit(e.target.value);
+                    setPage(0)
+                  }}
+                >
+                  <option value="5">5</option>
+                  <option value="10">10</option>
+                  <option value="15">15</option>
+                  <option value="20">20</option>
+                </select>
+              </div>
+              <nav
+                className="pagination is-centered ms-auto me-5"
+                key={rows}
+                role="navigation"
+                aria-label="pagination"
+              >
+                <ReactPaginate
+                  nextLabel="next >"
+                  onPageChange={changePage}
+                  pageRangeDisplayed={1}
+                  marginPagesDisplayed={2}
+                  pageCount={pages}
+                  previousLabel="< previous"
+                  pageClassName="page-item"
+                  pageLinkClassName="page-link"
+                  previousClassName="page-item"
+                  previousLinkClassName="page-link"
+                  nextClassName="page-item"
+                  nextLinkClassName="page-link"
+                  breakLabel="..."
+                  breakClassName="page-item"
+                  breakLinkClassName="page-link"
+                  containerClassName="pagination"
+                  activeClassName="active"
+                  renderOnZeroPageCount={null}
+                />
+              </nav>
+            </div>
           </div>
         </div>
       </div>

@@ -8,17 +8,15 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(CategoryController.getAllCategory)
+  // .get(CategoryController.getAllCategory)
+  .get(CategoryController.pagination)
   .post(AuthMiddleware.validateToken, CategoryController.postCreateCategory);
 
-router.route("/:categoryId").get(CategoryController.getCategoryId);
-
 router
   .route("/:categoryId")
-  .patch(AuthMiddleware.validateToken, CategoryController.patchCategoryId);
-
-router
-  .route("/:categoryId")
+  .get(CategoryController.getCategoryId)
+  .patch(AuthMiddleware.validateToken, CategoryController.patchCategoryId)
   .delete(AuthMiddleware.validateToken, CategoryController.deleteCategoryId);
+
 
 export default router;

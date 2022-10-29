@@ -10,8 +10,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faList, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 
+const cl = className.bind(styles);
 
 
+import Button from "../Button";
+<Button
+    to={"/"}
+    rightIcon={<FontAwesomeIcon icon={faChevronRight} />}
+    className={cl("slider__btn")}
+>
+    Discover Now
+</Button>
 ---------------------------------------------------------------------------------------------
 let navigate = useNavigate();
 navigate("/ad");

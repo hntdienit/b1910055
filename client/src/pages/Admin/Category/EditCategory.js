@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useLayoutEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import className from "classnames/bind";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -22,6 +22,8 @@ const cl = className.bind(styles);
 function EditCategory() {
   const { EditId } = useParams();
   const [category, setCategory] = useState({});
+
+  let navigate = useNavigate();
 
   useLayoutEffect(() => {
     axios
@@ -58,7 +60,7 @@ function EditCategory() {
         if (response.data.error) {
           alert(response.data.error);
         } else {
-          alert("sua thanh cong!");
+          navigate("/admin/listcategory");
         }
       });
   };
