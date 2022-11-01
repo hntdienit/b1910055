@@ -7,9 +7,6 @@ import Register from "../pages/Register";
 import Login from "../pages/Login";
 import Following from "../pages/Following";
 import Home from "../pages/Home";
-import Profile from "../pages/Profile";
-import Posts from "../pages/Profile/Posts.js";
-import Post from "../pages/Profile/Post.js";
 
 /* Pages Admin */
 import AdminHome from "../pages/Admin/Home";
@@ -63,22 +60,22 @@ const routes = [
     component: Register,
     layout: null,
   },
-  {
-    path: "/profile",
-    component: Profile,
-    role: "user",
-  },
-  {
-    path: "/search",
-    component: Posts,
-    role: "user",
-    // layout: null,
-  },
-  {
-    path: "/post/:id",
-    component: Post,
-    // layout: null,
-  },
+  // {
+  //   path: "/profile",
+  //   component: Profile,
+  //   role: "user",
+  // },
+  // {
+  //   path: "/search",
+  //   component: Posts,
+  //   role: "user",
+  //   // layout: null,
+  // },
+  // {
+  //   path: "/post/:id",
+  //   component: Post,
+  //   // layout: null,
+  // },
   {
     path: "/P403",
     component: P403,

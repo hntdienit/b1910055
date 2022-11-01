@@ -1,14 +1,13 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 
-const Categories = sequelize.define(
-  "categories",
+const Wishlists = sequelize.define(
+  "Wishlists",
   {
-    name: { type: DataTypes.STRING, allowNull: true },
   },
   {
     // Other model options go here
   }
 );
 
-export default Categories;
+export default Wishlists;

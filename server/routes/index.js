@@ -1,7 +1,4 @@
-import posts from "./posts.js";
-import comments from "./comments.js";
 import users from './users.js'
-import likes from "./like.js"
 
 /* import routes */
 import categories from "./categories.js"
@@ -13,11 +10,8 @@ const router = (app) => {
     });
   });
 
-  /* router-delete */
-  app.use("/posts", posts);
-  app.use("/comments", comments);
+  // router-delete
   app.use("/auth", users);
-  app.use("/likes", likes);
   /* router */
   app.use("/categories", categories);
 

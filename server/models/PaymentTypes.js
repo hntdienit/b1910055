@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 
-const Categories = sequelize.define(
-  "categories",
+const PaymentTypes = sequelize.define(
+  "PaymentTypes",
   {
     name: { type: DataTypes.STRING, allowNull: true },
   },
@@ -11,4 +11,4 @@ const Categories = sequelize.define(
   }
 );
 
-export default Categories;
+export default PaymentTypes;

@@ -1,14 +1,14 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 
-const Categories = sequelize.define(
-  "categories",
+const Addresses = sequelize.define(
+  "Addresses",
   {
-    name: { type: DataTypes.STRING, allowNull: true },
+    address: { type: DataTypes.STRING, allowNull: true },
   },
   {
     // Other model options go here
   }
 );
 
-export default Categories;
+export default Addresses;
