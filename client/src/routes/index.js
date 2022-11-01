@@ -1,91 +1,35 @@
 /* Layouts */
 import AdminLayout from "../layouts/AdminLayout/AdminLayout";
-// import { HeaderOnly } from './Layouts';
+
+/* Pages Public */
+import P404 from "../pages/P404";
+import P403 from "../pages/P403";
 
 /* Pages */
 import Register from "../pages/Register";
 import Login from "../pages/Login";
-import Following from "../pages/Following";
 import Home from "../pages/Home";
 
 /* Pages Admin */
 import AdminHome from "../pages/Admin/Home";
-import {CreaterCategory, ListCategory, EditCategory} from "../pages/Admin/Category";
+import { CreaterCategory, ListCategory, EditCategory } from "../pages/Admin/Category";
+import { CreateVariation } from "../pages/Admin/Variation";
 
-// import Search from '../pages/Search';
-import P404 from "../pages/P404";
-import P403 from "../pages/P403";
 
 const routes = [
-  {
-    path: "/",
-    component: Home,
-  },
-  {
-    path: "/admin",
-    component: AdminHome,
-    layout: AdminLayout,
-    role: "admin",
-  },
-  {
-    path: "/admin/category",
-    component: CreaterCategory,
-    layout: AdminLayout,
-    role: "admin",
-  },
-  {
-    path: "/admin/listcategory",
-    component: ListCategory,
-    layout: AdminLayout,
-    role: "admin",
-  },
-  {
-    path: "/admin/editcategory/:EditId",
-    component: EditCategory,
-    layout: AdminLayout,
-    role: "admin",
-  },
-  {
-    path: "/login",
-    component: Login,
-    layout: null,
-  },
-  {
-    path: "/following",
-    component: Following,
-    role: "admin",
-  },
-  {
-    path: "/register",
-    component: Register,
-    layout: null,
-  },
-  // {
-  //   path: "/profile",
-  //   component: Profile,
-  //   role: "user",
-  // },
-  // {
-  //   path: "/search",
-  //   component: Posts,
-  //   role: "user",
-  //   // layout: null,
-  // },
-  // {
-  //   path: "/post/:id",
-  //   component: Post,
-  //   // layout: null,
-  // },
-  {
-    path: "/P403",
-    component: P403,
-    layout: null,
-  },
-  {
-    path: "*",
-    component: P404,
-    layout: null,
-  },
+  { path: "/login", component: Login, layout: null },
+  { path: "/register", component: Register, layout: null },
+
+  { path: "/admin/category", component: CreaterCategory, layout: AdminLayout, role: "admin" },
+  { path: "/admin/listcategory", component: ListCategory, layout: AdminLayout, role: "admin" },
+  { path: "/admin/editcategory/:EditId", component: EditCategory, layout: AdminLayout, role: "admin" },
+
+  { path: "/admin/variation", component: CreateVariation, layout: AdminLayout, role: "admin" },
+
+  { path: "/P403", component: P403, layout: null },
+  { path: "/admin", component: AdminHome, layout: AdminLayout, role: "admin" },
+  { path: "/", component: Home },
+  { path: "*", component: P404, layout: null },
 ];
 
 export default routes;

@@ -2,6 +2,8 @@ import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import className from "classnames/bind";
 
+import { toast } from "react-toastify";
+
 import { AuthContext } from "../../helpers/AuthContext.js";
 import styles from "./Header.module.scss";
 // import Tippy from "@tippyjs/react";
@@ -130,8 +132,8 @@ function Header() {
     }
   };
 
-  
   const logout = () => {
+    toast.info("byle", {});
     localStorage.removeItem("accessToken");
     setAuth({ username: "", id: 0, status: false, role: ""});
   };

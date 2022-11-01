@@ -7,6 +7,9 @@ import CategoryController from "../controllers/categories.js";
 const router = express.Router();
 
 router
+  .route("/getall")
+  .get(CategoryController.getAllCategory)
+router
   .route("/")
   // .get(CategoryController.getAllCategory)
   .get(CategoryController.pagination)

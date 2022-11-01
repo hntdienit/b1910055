@@ -32,4 +32,13 @@ import Image from "../Image";
 <Image src={images.logo} alt="Trang chu" className={("")}/>
 ----------------------------------------------------------------------------------------------
 <i><FontAwesomeIcon icon={faMagnifyingGlass} className={""} /></i>
+----------------------------------------------------------------------------------------------
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+toast.success("Success Notification !", {});
+toast.error("Error Notification !", {});
+toast.warn("Warning Notification !", {});
+toast.info("Info Notification !", {});
+<ToastContainer autoClose={3000} />
+----------------------------------------------------------------------------------------------
 

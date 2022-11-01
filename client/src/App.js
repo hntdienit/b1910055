@@ -2,6 +2,9 @@ import { Fragment, useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import axios from "axios";
 
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { AuthContext } from "./helpers/AuthContext.js";
 
 import routes from "./routes";
@@ -73,6 +76,7 @@ function App() {
           </div>
         </Router>
       </AuthContext.Provider>
+      <ToastContainer autoClose={5000} />
     </div>
   );
 }

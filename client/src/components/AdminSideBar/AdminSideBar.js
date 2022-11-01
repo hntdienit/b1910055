@@ -56,12 +56,7 @@ function SideBar() {
 
   return (
     <>
-      <div
-        className={cl(
-          "vertical-menu",
-          logo === true ? "vertical-menu-on" : "vertical-menu-off"
-        )}
-      >
+      <div className={cl("vertical-menu", logo === true ? "vertical-menu-on" : "vertical-menu-off")}>
         <div className={cl("vertical-menu-height")}>
           <div className={cl("sidebar-menu")}>
             <div className={cl("navbar-brand-box")}>
@@ -85,11 +80,7 @@ function SideBar() {
                 >
                   <FontAwesomeIcon icon={faMagnifyingGlass} className={""} />
 
-                  <span
-                    className={cl("badge rounded-pill bg-primary float-end")}
-                  >
-                    2
-                  </span>
+                  <span className={cl("badge rounded-pill bg-primary float-end")}>2</span>
                   <span className={cl("ms-3")}>Dashboard</span>
                 </Link>
               </li>
@@ -105,17 +96,51 @@ function SideBar() {
                   <div className={cl("")}>
                     <FontAwesomeIcon icon={faListSquares} className={""} />
                     <span className={cl("ms-3")}>
+                      Variation
+                      {subMenu[0] === true ? (
+                        <FontAwesomeIcon icon={faCaretDown} className={"align-middle float-end"} />
+                      ) : (
+                        <FontAwesomeIcon icon={faCaretRight} className={"float-end"} />
+                      )}
+                    </span>
+                  </div>
+                </Link>
+                {subMenu[0] === true ? (
+                  <ul className={cl("sub-menu")}>
+                    <li>
+                      <Link to={"/admin/variation"}>
+                        <FontAwesomeIcon icon={faSquarePlus} className={"me-2 text-success"} />
+                        New variation
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={"/admin/listcategory"}>
+                        <FontAwesomeIcon icon={faListDots} className={"me-2 text-success"} />
+                        List categories
+                      </Link>
+                    </li>
+                  </ul>
+                ) : (
+                  ""
+                )}
+              </li>
+
+              <li>
+                <Link
+                  onClick={() => {
+                    logoChange();
+                    menuChange(0);
+                  }}
+                  className={cl("waves-effect")}
+                >
+                  <div className={cl("")}>
+                    <FontAwesomeIcon icon={faListSquares} className={""} />
+                    <span className={cl("ms-3")}>
                       Category
                       {subMenu[0] === true ? (
-                        <FontAwesomeIcon
-                          icon={faCaretDown}
-                          className={"align-middle float-end"}
-                        />
+                        <FontAwesomeIcon icon={faCaretDown} className={"align-middle float-end"} />
                       ) : (
-                        <FontAwesomeIcon
-                          icon={faCaretRight}
-                          className={"float-end"}
-                        />
+                        <FontAwesomeIcon icon={faCaretRight} className={"float-end"} />
                       )}
                     </span>
                   </div>
@@ -124,19 +149,13 @@ function SideBar() {
                   <ul className={cl("sub-menu")}>
                     <li>
                       <Link to={"/admin/category"}>
-                        <FontAwesomeIcon
-                          icon={faSquarePlus}
-                          className={"me-2 text-success"}
-                        />
+                        <FontAwesomeIcon icon={faSquarePlus} className={"me-2 text-success"} />
                         New category
                       </Link>
                     </li>
                     <li>
                       <Link to={"/admin/listcategory"}>
-                        <FontAwesomeIcon
-                          icon={faListDots}
-                          className={"me-2 text-success"}
-                        />
+                        <FontAwesomeIcon icon={faListDots} className={"me-2 text-success"} />
                         List categories
                       </Link>
                     </li>
