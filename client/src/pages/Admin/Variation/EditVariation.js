@@ -1,21 +1,29 @@
-import React, { useEffect, useState, useContext, useLayoutEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import className from "classnames/bind";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+
+import { useFormik, Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 
-// import { AuthContext } from "../../helpers/AuthContext.js";
+import className from "classnames/bind";
 import styles from "./Variation.module.scss";
 
-/* import FontAwesomeIcon */
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+
+import HomeIcon from "@mui/icons-material/Home";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import SaveIcon from "@mui/icons-material/Save";
+
+//  xoa
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-
-/* import assets */
-// import images from "../../assets/images";
-
-/* import components */
 
 const cl = className.bind(styles);
 
@@ -25,54 +33,61 @@ function EditCategory() {
 
   let navigate = useNavigate();
 
-  useLayoutEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_URL_API}/categories/${EditId}`)
-      .then((response) => {
-        if (response.data.error) {
-          alert(response.data.error);
-        } else {
-          setCategory(response.data);
-        }
-      });
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_URL_API}/categories/${EditId}`).then((response) => {
+      if (response.data.error) {
+        alert(response.data.error);
+      } else {
+        setCategory(response.data);
+      }
+    });
   }, []);
 
   const initialValues = {
     name: category.name,
   };
 
-  const validationSchema = yup.object().shape({
+  const editForm = async (data) => {
+    console.log("vao ham")
+    // await axios
+    //   .patch(`${process.env.REACT_APP_URL_API}/categories/${EditId}`, data, {
+    //     headers: {
+    //       accessToken: localStorage.getItem("accessToken"),
+    //     },
+    //   })
+    //   .then((response) => {
+    //     if (response.data.error) {
+    //       alert(response.data.error);
+    //     } else {
+    //       navigate("/admin/listcategory");
+    //     }
+    //   });
+  };
+
+  const validationSchema = yup.object({
     name: yup
       .string()
-      .min(3, "Tên thể loại cần nhiều hơn 3 ký tự!")
-      .max(15, "Tên thể loại cần ít hơn 15 ký tự!")
-      .required("Tên thể loại không được trống!"),
+      .min(3, "The variation names need more than 3 characters!")
+      .max(15, "The variation names need less than 15 characters!")
+      .required("The variation name cannot be empty!"),
+    categoryId: yup.string().required("you haven't selected a variation!"),
   });
 
-  const editForm = async (data) => {
-    await axios
-      .patch(`${process.env.REACT_APP_URL_API}/categories/${EditId}`, data, {
-        headers: {
-          accessToken: localStorage.getItem("accessToken"),
-        },
-      })
-      .then((response) => {
-        if (response.data.error) {
-          alert(response.data.error);
-        } else {
-          navigate("/admin/listcategory");
-        }
-      });
-  };
-  if (category.name !== undefined)
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      categoryId: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      editForm(values);
+    },
+  });
+
+  if (category.name !== undefined) {
     return (
       <>
-        <div
-          className={cl(
-            "page-breadcrumb",
-            "d-none d-sm-flex align-items-center mb-3"
-          )}
-        >
+        <div className={cl("page-breadcrumb", "d-none d-sm-flex align-items-center mb-3")}>
           <div className={cl("breadcrumb-title", "pe-2")}>
             <Link to={"/admin"}>
               <FontAwesomeIcon icon={faHouse} className={""} />
@@ -104,14 +119,9 @@ function EditCategory() {
                   >
                     {(props) => (
                       <div className={cl("mt-5")}>
-                        <Form
-                          className={cl("form-test")}
-                          onSubmit={props.handleSubmit}
-                        >
+                        <Form className={cl("form-test")} onSubmit={props.handleSubmit}>
                           <div className={cl("row mb-3")}>
-                            <label className={cl("col-sm-3 col-form-label")}>
-                              Tên thể loại:
-                            </label>
+                            <label className={cl("col-sm-3 col-form-label")}>Tên thể loại:</label>
                             <div className={cl("col-sm-9")}>
                               <Field
                                 type="text"
@@ -130,14 +140,9 @@ function EditCategory() {
                           </div>
 
                           <div className={cl("row")}>
-                            <label
-                              className={cl("col-sm-3 col-form-label")}
-                            ></label>
+                            <label className={cl("col-sm-3 col-form-label")}></label>
                             <div className={cl("col-sm-9")}>
-                              <button
-                                type="submit"
-                                className={cl("btn btn-primary px-5")}
-                              >
+                              <button type="submit" className={cl("btn btn-primary px-5")}>
                                 Lưu
                               </button>
                             </div>
@@ -153,6 +158,9 @@ function EditCategory() {
         </div>
       </>
     );
+  } else {
+    return <div>loading..............</div>;
+  }
 }
 
 export default EditCategory;

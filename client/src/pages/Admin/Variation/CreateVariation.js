@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { toast } from "react-toastify";
@@ -17,10 +17,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 
-import HomeIcon from "@mui/icons-material/Home";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SaveIcon from "@mui/icons-material/Save";
 
+import AdminPageTitle from "../../../components/AdminPageTitle";
+import AdminCardHeader from "../../../components/AdminCardHeader";
 
 function CreateVariation() {
   const [categories, setCategories] = useState([]);
@@ -45,9 +45,9 @@ function CreateVariation() {
       })
       .then((response) => {
         if (response.data.error) {
-          alert(response.data.error);
+          toast.error(`Add new variation failed! - error: ${response.data.error}`, {});
         } else {
-          toast.success("Success Notification !", {});
+          toast.success("Add new variation successfully!", {});
           navigate("/admin/listcategory");
         }
       });
@@ -74,23 +74,10 @@ function CreateVariation() {
 
   return (
     <>
-      <Box component={"div"}>
-        <Typography variant="h5" component="div" marginBottom={3} color={"#000"}>
-          <Link to={"/admin"}>
-            <HomeIcon />
-          </Link>{" "}
-          | Variation
-        </Typography>
-      </Box>
-
-      <Card elevation={6}>
+      <AdminPageTitle>Variation</AdminPageTitle>
+      <Card elevation={4}>
         <CardContent>
-          <Typography variant="h6" component="div" marginBottom={2} color={"#198754"}>
-            <Typography variant="h6" component="span" marginRight={1}>
-              <AddCircleOutlineIcon />
-            </Typography>
-            New variation
-          </Typography>
+          <AdminCardHeader add>Variation</AdminCardHeader>
           <Box component={"form"} sx={{ flexGrow: 1 }} onSubmit={formik.handleSubmit} autoComplete="off">
             <Grid container justifyContent="center" alignItems="center" spacing={2} paddingX={2}>
               <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
@@ -112,7 +99,7 @@ function CreateVariation() {
                   fullWidth
                   margin="normal"
                   select
-                  label="chon loai"
+                  label="category"
                   id="categoryId"
                   name="categoryId"
                   value={formik.values.categoryId}
@@ -122,7 +109,7 @@ function CreateVariation() {
                 >
                   {categories.map((option) => (
                     <MenuItem key={option.id} value={option.id}>
-                      {option.id} - {option.name}
+                      {option.name}
                     </MenuItem>
                   ))}
                 </TextField>

@@ -114,9 +114,9 @@ function SideBar() {
                       </Link>
                     </li>
                     <li>
-                      <Link to={"/admin/listcategory"}>
+                      <Link to={"/admin/listvariation"}>
                         <FontAwesomeIcon icon={faListDots} className={"me-2 text-success"} />
-                        List categories
+                        List variation
                       </Link>
                     </li>
                   </ul>

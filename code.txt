@@ -41,4 +41,7 @@ toast.warn("Warning Notification !", {});
 toast.info("Info Notification !", {});
 <ToastContainer autoClose={3000} />
 ----------------------------------------------------------------------------------------------
+import AdminPageTitle from "../../../components/AdminPageTitle";
+<AdminPageTitle>Variation</AdminPageTitle>
+----------------------------------------------------------------------------------------------
 

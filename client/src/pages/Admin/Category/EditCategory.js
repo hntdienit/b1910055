@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useLayoutEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import className from "classnames/bind";
@@ -25,16 +25,14 @@ function EditCategory() {
 
   let navigate = useNavigate();
 
-  useLayoutEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_URL_API}/categories/${EditId}`)
-      .then((response) => {
-        if (response.data.error) {
-          alert(response.data.error);
-        } else {
-          setCategory(response.data);
-        }
-      });
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_URL_API}/categories/${EditId}`).then((response) => {
+      if (response.data.error) {
+        alert(response.data.error);
+      } else {
+        setCategory(response.data);
+      }
+    });
   }, []);
 
   const initialValues = {
@@ -64,15 +62,10 @@ function EditCategory() {
         }
       });
   };
-  if (category.name !== undefined)
+  if (category.name !== undefined) {
     return (
       <>
-        <div
-          className={cl(
-            "page-breadcrumb",
-            "d-none d-sm-flex align-items-center mb-3"
-          )}
-        >
+        <div className={cl("page-breadcrumb", "d-none d-sm-flex align-items-center mb-3")}>
           <div className={cl("breadcrumb-title", "pe-2")}>
             <Link to={"/admin"}>
               <FontAwesomeIcon icon={faHouse} className={""} />
@@ -102,49 +95,41 @@ function EditCategory() {
                     }}
                     validationSchema={validationSchema}
                   >
-                    {(props) => (
-                      <div className={cl("mt-5")}>
-                        <Form
-                          className={cl("form-test")}
-                          onSubmit={props.handleSubmit}
-                        >
-                          <div className={cl("row mb-3")}>
-                            <label className={cl("col-sm-3 col-form-label")}>
-                              Tên thể loại:
-                            </label>
-                            <div className={cl("col-sm-9")}>
-                              <Field
-                                type="text"
-                                class="form-control"
-                                onChange={props.handleChange}
-                                onBlur={props.handleBlur}
-                                value={props.values.name}
-                                id="name"
-                                name="name"
-                              />
+                    {(props) => {
+                      return (
+                        <div className={cl("mt-5")}>
+                          <Form className={cl("form-test")} onSubmit={props.handleSubmit}>
+                            <div className={cl("row mb-3")}>
+                              <label className={cl("col-sm-3 col-form-label")}>Tên thể loại:</label>
+                              <div className={cl("col-sm-9")}>
+                                <Field
+                                  type="text"
+                                  className={cl("form-control")}
+                                  onChange={props.handleChange}
+                                  onBlur={props.handleBlur}
+                                  value={props.values.name}
+                                  id="name"
+                                  name="name"
+                                />
 
-                              <div className={"mt-1"}>
-                                <ErrorMessage name="name" component={"span"} />
+                                <div className={"mt-1"}>
+                                  <ErrorMessage name="name" component={"span"} />
+                                </div>
                               </div>
                             </div>
-                          </div>
 
-                          <div className={cl("row")}>
-                            <label
-                              className={cl("col-sm-3 col-form-label")}
-                            ></label>
-                            <div className={cl("col-sm-9")}>
-                              <button
-                                type="submit"
-                                className={cl("btn btn-primary px-5")}
-                              >
-                                Lưu
-                              </button>
+                            <div className={cl("row")}>
+                              <label className={cl("col-sm-3 col-form-label")}></label>
+                              <div className={cl("col-sm-9")}>
+                                <button type="submit" className={cl("btn btn-primary px-5")}>
+                                  Lưu
+                                </button>
+                              </div>
                             </div>
-                          </div>
-                        </Form>
-                      </div>
-                    )}
+                          </Form>
+                        </div>
+                      );
+                    }}
                   </Formik>
                 </div>
               </div>
@@ -153,6 +138,9 @@ function EditCategory() {
         </div>
       </>
     );
+  } else {
+    return <div>loading..............</div>;
+  }
 }
 
 export default EditCategory;
