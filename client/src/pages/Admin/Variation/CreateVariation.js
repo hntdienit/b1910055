@@ -48,7 +48,7 @@ function CreateVariation() {
           toast.error(`Add new variation failed! - error: ${response.data.error}`, {});
         } else {
           toast.success("Add new variation successfully!", {});
-          navigate("/admin/listcategory");
+          navigate("/admin/listvariation");
         }
       });
   };
@@ -76,8 +76,8 @@ function CreateVariation() {
     <>
       <AdminPageTitle>Variation</AdminPageTitle>
       <Card elevation={4}>
+          <AdminCardHeader add title={"Variation"} to={"/admin/listvariation"}></AdminCardHeader>
         <CardContent>
-          <AdminCardHeader add>Variation</AdminCardHeader>
           <Box component={"form"} sx={{ flexGrow: 1 }} onSubmit={formik.handleSubmit} autoComplete="off">
             <Grid container justifyContent="center" alignItems="center" spacing={2} paddingX={2}>
               <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>

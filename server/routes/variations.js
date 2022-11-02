@@ -8,6 +8,7 @@ const router = express.Router();
 
 router
   .route("/")
+  // .get(VariationController.getAll)
   .get(VariationController.pagination)
   .post(AuthMiddleware.validateToken, VariationController.postCreateVariation);
 

@@ -1,13 +1,11 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState} from "react";
+import { Link, useNavigate } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import axios from "axios";
 import className from "classnames/bind";
 
-// import { AuthContext } from "../../helpers/AuthContext.js";
 import styles from "./Category.module.scss";
 
-/* import FontAwesomeIcon */
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAdd,
@@ -18,10 +16,6 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
-/* import assets */
-// import images from "../../assets/images";
-
-/* import components */
 import Button from "../../../components/Button";
 
 const cl = className.bind(styles);
@@ -35,7 +29,6 @@ function ListCategory() {
   const [keyword, setKeyword] = useState("");
   const [query, setQuery] = useState("");
 
-  let navigate = useNavigate();
 
   useEffect(() => {
     axios

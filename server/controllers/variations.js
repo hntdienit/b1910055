@@ -1,9 +1,11 @@
 import Variations from "../models/Variations.js";
+import Categories from "../models/Categories.js"
 
-// const getAllCategory = async (req, res, next) => {
-//   const listOfCategory = await Categories.findAll();
-//   return res.status(200).json(listOfCategory);
-// };
+const getAll = async (req, res, next) => {
+  const listOfVariation= await Variations.findAll({include: Categories});
+  console.log(listOfVariation[0].category.name)
+  return res.status(200).json(listOfVariation);
+};
 
 const getVariationId = async (req, res, next) => {
   const variationId = req.params.variationId;
@@ -12,7 +14,7 @@ const getVariationId = async (req, res, next) => {
 };
 
 const postCreateVariation = async (req, res, next) => {
-  const variation = req.body;
+  const variation = req.body; 
   await Variations.create(variation);
   return res.status(201).json(variation);
 };
@@ -51,7 +53,8 @@ const pagination = async (req, res, next) => {
     offset: offset,
     limit: limit,
     order: [["id", "DESC"]],
-  });
+    include: Categories
+  },);
   res.json({
     result: result,
     page: page,
@@ -62,6 +65,7 @@ const pagination = async (req, res, next) => {
 };
 
 export default {
+  getAll,
   getVariationId,
   postCreateVariation,
   patchVariationId,

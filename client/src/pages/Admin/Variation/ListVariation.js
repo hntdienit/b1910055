@@ -1,153 +1,216 @@
-import React, { useEffect, useState, useContext } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import axios from "axios";
 
+import { useFormik } from "formik";
+import * as yup from "yup";
+
 import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import Paper from "@mui/material/Paper";
-import { visuallyHidden } from "@mui/utils";
+import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import InputAdornment from "@mui/material/InputAdornment";
+import Typography from "@mui/material/Typography";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
 
-function ListCategory() {
-  const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("calories");
-  const [selected, setSelected] = useState([]);
+import SearchIcon from "@mui/icons-material/Search";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+
+import AdminPageTitle from "../../../components/AdminPageTitle";
+import AdminCardHeader from "../../../components/AdminCardHeader";
+
+import className from "classnames/bind";
+import styles from "./Variation.module.scss";
+
+const cl = className.bind(styles);
+
+function ListVariation() {
+  const [list, setList] = useState([]);
   const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [limit, setLimit] = useState(5);
+  const [pages, setPages] = useState(0);
+  const [rows, setRows] = useState(0);
+  const [keyword, setKeyword] = useState("");
+  const [query, setQuery] = useState("");
 
-  const headCells = [
-    { id: "name", label: "Dessert(100g serving)" },
-    { id: "calories", label: "Calories" },
-    { id: "fat", label: "Fat(g)" },
-    { id: "action", label: "action" },
-  ];
-
-  const rows = [
-    {name: "then dien", calories: 32, fat: 312},
-    {name: "then dien", calories: 31, fat: 31},
-    {name: "then dien", calories: 33, fat: 32},
-    {name: "then dien", calories: 30, fat: 3},
-  ];
-
-  const descendingComparator = (a, b, orderBy) => {
-    if (b[orderBy] < a[orderBy]) return -1;
-    if (b[orderBy] > a[orderBy]) return 1;
-    return 0;
-  };
-
-  const getComparator = (order, orderBy) => {
-    return order === "desc"
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
-  };
-
-  const stableSort = (array, comparator) => {
-    const stabilizedThis = array.map((el, index) => [el, index]);
-    stabilizedThis.sort((a, b) => {
-      const order = comparator(a[0], b[0]);
-      if (order !== 0) return order;
-      return a[1] - b[1];
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_URL_API}/variations?page=${page}&limit=${limit}`).then((response) => {
+      if (response.data.error) {
+        alert(response.data.error);
+      } else {
+        setList(response.data.result);
+        setPage(response.data.page);
+        setPages(response.data.totalPage);
+        setRows(response.data.totalRows);
+      }
     });
-    return stabilizedThis.map((el) => el[0]);
+  }, [page, limit]);
+
+  const changePage = ({ selected }) => {
+    setPage(selected);
   };
 
-  function EnhancedTableHead(props) {
-    const { order, orderBy, onRequestSort } = props;
-    const createSortHandler = (property) => (event) => {
-      onRequestSort(event, property);
-    };
-
-    return (
-      <TableHead>
-        <TableRow>
-          {headCells.map((headCell) => (
-            <TableCell
-              key={headCell.id}
-              align="center"
-              padding="normal"
-              sortDirection={orderBy === headCell.id ? order : false}
-            >
-              <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : "asc"}
-                onClick={createSortHandler(headCell.id)}
-              >
-                {headCell.label}
-                {orderBy === headCell.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === "desc" ? "sorted descending" : "sorted ascending"}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
-            </TableCell>
-          ))}
-        </TableRow>
-      </TableHead>
-    );
-  }
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === "asc";
-    setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
+  const deleteCaTegory = (Id) => {
+    axios
+      .delete(`${process.env.REACT_APP_URL_API}/variations/${Id}`, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        setList(
+          list.filter((val) => {
+            return val.id !== Id;
+          })
+        );
+      });
   };
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  // };
 
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
+  const validationSchema = yup.object({});
 
-  // const handleChangeDense = (event) => {
-  //   setDense(event.target.checked);
-  // };
-
-  // const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+  const formik = useFormik({
+    initialValues: {
+      keyword: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      alert(values.keyword);
+    },
+  });
 
   return (
     <>
-      <Box sx={{ width: "100%" }}>
-        <Paper sx={{ width: "100%", mb: 2 }}>
-          <h1>header table</h1>
-          <TableContainer>
-            <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={dense ? "small" : "medium"}>
-              <EnhancedTableHead
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleRequestSort}
+      <AdminPageTitle>Variation</AdminPageTitle>
+      <Card elevation={4}>
+        <AdminCardHeader list title={"Variation"} to={"/admin/variation"}>
+          <Box component={"form"} sx={{ flexGrow: 1 }} onSubmit={formik.handleSubmit} autoComplete="off">
+            <Typography component={"div"}>
+              <TextField
+                size="small"
+                id="keyword"
+                name="keyword"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Button type="submit">
+                        <SearchIcon />
+                      </Button>
+                    </InputAdornment>
+                  ),
+                }}
+                variant="outlined"
+                placeholder="Search item......."
+                value={formik.values.keyword}
+                onChange={formik.handleChange}
               />
-              <TableBody>
-                {stableSort(rows, getComparator(order, orderBy))
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row, index) => {
-                    return (
-                      <TableRow hover tabIndex={-1} key={index}>
-                        <TableCell component="th" scope="row" padding="none" align="center">
-                          {row.name}
-                        </TableCell>
-                        <TableCell align="center">{row.calories}</TableCell>
-                        <TableCell align="center">{row.fat}</TableCell>
-                        <TableCell align="center">1 | 2 | 3</TableCell>
-                      </TableRow>
-                    );
-                  })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-      </Box>
+            </Typography>
+          </Box>
+        </AdminCardHeader>
+
+        <div className={cl("card-body")}>
+          <div className={cl("d-flex align-items-center")}></div>
+          <div className={cl("table-responsive", "mt-3")}>
+            <table className={cl("table align-middle")}>
+              <thead className={cl("table-secondary")}>
+                <tr>
+                  <th></th>
+                  <th>#</th>
+                  <th>Tên thể loại</th>
+                  <th>Tên thể loại</th>
+                  <th>chức năng</th>
+                </tr>
+              </thead>
+              <tbody>
+                {list.map((item, index) => {
+                  return (
+                    <tr key={index}>
+                      <td></td>
+                      <td>{(page + 1) * limit - limit + index + 1}</td>
+                      <td>{item.name}</td>
+                      <td>{item.category.name}</td>
+                      <td>
+                        <div className={cl("table-actions d-flex align-items-center gap-3 fs-6")}>
+                          <div className={cl("")} title="Edit">
+                            <button>
+                              <Link to={`/admin/editcategory/${item.id}`} className={cl("text-warning")}>
+                                <EditIcon />
+                              </Link>
+                            </button>
+                          </div>
+                          <div className={cl("text-danger")} title="Delete">
+                            <button
+                              onClick={() => {
+                                deleteCaTegory(item.id);
+                              }}
+                            >
+                              <DeleteForeverIcon />
+                            </button>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+
+            <Grid container spacing={2} paddingX={3} paddingBottom={2}>
+              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                <FormControl sx={{ minWidth: 120 }}>
+                  <InputLabel id="select-label">Pages</InputLabel>
+                  <Select
+                    labelId="select-label"
+                    value={limit}
+                    label="Pages"
+                    size="small"
+                    onChange={(e) => {
+                      setLimit(e.target.value);
+                      setPage(0);
+                    }}
+                  >
+                    <MenuItem value={5}>5</MenuItem>
+                    <MenuItem value={10}>10</MenuItem>
+                    <MenuItem value={15}>15</MenuItem>
+                    <MenuItem value={20}>20</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                <Typography component={"div"}>
+                  <ReactPaginate
+                    nextLabel=">"
+                    onPageChange={changePage}
+                    pageRangeDisplayed={1}
+                    marginPagesDisplayed={1}
+                    pageCount={pages}
+                    previousLabel="<"
+                    pageClassName="page-item"
+                    pageLinkClassName="page-link"
+                    previousClassName="page-item"
+                    previousLinkClassName="page-link"
+                    nextClassName="page-item"
+                    nextLinkClassName="page-link"
+                    breakLabel="..."
+                    breakClassName="page-item"
+                    breakLinkClassName="page-link"
+                    containerClassName="pagination"
+                    activeClassName="active"
+                    renderOnZeroPageCount={null}
+                  />
+                </Typography>
+              </Grid>
+            </Grid>
+          </div>
+        </div>
+      </Card>
     </>
   );
 }
 
-export default ListCategory;
+export default ListVariation;
