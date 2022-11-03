@@ -1,9 +1,10 @@
 import Variations from "../models/Variations.js";
-import Categories from "../models/Categories.js"
+import Categories from "../models/Categories.js";
+import { Op } from "sequelize";
 
 const getAll = async (req, res, next) => {
-  const listOfVariation= await Variations.findAll({include: Categories});
-  console.log(listOfVariation[0].category.name)
+  const listOfVariation = await Variations.findAll({ include: Categories });
+  console.log(listOfVariation[0].category.name);
   return res.status(200).json(listOfVariation);
 };
 
@@ -14,7 +15,7 @@ const getVariationId = async (req, res, next) => {
 };
 
 const postCreateVariation = async (req, res, next) => {
-  const variation = req.body; 
+  const variation = req.body;
   await Variations.create(variation);
   return res.status(201).json(variation);
 };
@@ -46,15 +47,36 @@ const deleteVariationId = async (req, res, next) => {
 const pagination = async (req, res, next) => {
   const page = parseInt(req.query.page) || 0;
   const limit = parseInt(req.query.limit) || 5;
-  const offset = limit * (page);
-  const totalRows = await Variations.count();
+  const keyword = req.query.keyword || "";
+  const offset = limit * page;
+  // const totalRows = await Variations.count();
+  const totalRows = await Variations.count({
+    where: {
+      [Op.or]: [
+        {
+          name: {
+            [Op.like]: "%" + keyword + "%",
+          },
+        },
+      ],
+    },
+  });
   const totalPage = Math.ceil(totalRows / limit);
   const result = await Variations.findAll({
+    where: {
+      [Op.or]: [
+        {
+          name: {
+            [Op.like]: "%" + keyword + "%",
+          },
+        },
+      ],
+    },
     offset: offset,
     limit: limit,
     order: [["id", "DESC"]],
-    include: Categories
-  },);
+    include: Categories,
+  });
   res.json({
     result: result,
     page: page,
