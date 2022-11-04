@@ -13,7 +13,7 @@ import Home from "../pages/Home";
 /* Pages Admin */
 import AdminHome from "../pages/Admin/Home";
 import { CreaterCategory, ListCategory, EditCategory } from "../pages/Admin/Category";
-import { CreateVariation, ListVariation } from "../pages/Admin/Variation";
+import { CreateVariation, ListVariation, EditVariation } from "../pages/Admin/Variation";
 
 
 const routes = [
@@ -26,6 +26,7 @@ const routes = [
 
   { path: "/admin/variation", component: CreateVariation, layout: AdminLayout, role: "admin" },
   { path: "/admin/listvariation", component: ListVariation, layout: AdminLayout, role: "admin" },
+  { path: "/admin/editvariation/:EditId", component: EditVariation, layout: AdminLayout, role: "admin" },
 
 
   { path: "/P403", component: P403, layout: null },

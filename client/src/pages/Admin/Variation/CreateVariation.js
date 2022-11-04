@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -29,7 +28,7 @@ function CreateVariation() {
   useEffect(() => {
     axios.get(`${process.env.REACT_APP_URL_API}/categories/getall`).then((response) => {
       if (response.data.error) {
-        alert(response.data.error);
+        toast.error(`Data fetch failed - error: ${response.data.error}`, {});
       } else {
         setCategories(response.data);
       }

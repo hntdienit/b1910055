@@ -1,13 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-
-import { useFormik, Formik, Form, Field, ErrorMessage } from "formik";
+import { useFormik } from "formik";
 import * as yup from "yup";
-
-import className from "classnames/bind";
-import styles from "./Variation.module.scss";
-
+import { toast } from "react-toastify";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
@@ -16,54 +12,47 @@ import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-
-import HomeIcon from "@mui/icons-material/Home";
-import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import SaveIcon from "@mui/icons-material/Save";
-
-//  xoa
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHouse, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
-
-const cl = className.bind(styles);
-
+import AdminPageTitle from "../../../components/AdminPageTitle";
+import AdminCardHeader from "../../../components/AdminCardHeader";
+import Loading from "../../Public/Loading";
 function EditCategory() {
   const { EditId } = useParams();
-  const [category, setCategory] = useState({});
-
+  const [variation, setvariation] = useState({});
+  const [categories, setCategories] = useState([]);
   let navigate = useNavigate();
-
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_URL_API}/categories/${EditId}`).then((response) => {
+    axios.get(`${process.env.REACT_APP_URL_API}/categories/getall`).then((response) => {
       if (response.data.error) {
-        alert(response.data.error);
+        toast.error(`Data fetch failed - error: ${response.data.error}`, {});
       } else {
-        setCategory(response.data);
+        setCategories(response.data);
+      }
+    });
+    axios.get(`${process.env.REACT_APP_URL_API}/variations/${EditId}`).then((response) => {
+      if (response.data.error) {
+        toast.error(`Data fetch failed - error: ${response.data.error}`, {});
+      } else {
+        setvariation(response.data);
       }
     });
   }, []);
-
-  const initialValues = {
-    name: category.name,
-  };
-
   const editForm = async (data) => {
-    console.log("vao ham")
-    // await axios
-    //   .patch(`${process.env.REACT_APP_URL_API}/categories/${EditId}`, data, {
-    //     headers: {
-    //       accessToken: localStorage.getItem("accessToken"),
-    //     },
-    //   })
-    //   .then((response) => {
-    //     if (response.data.error) {
-    //       alert(response.data.error);
-    //     } else {
-    //       navigate("/admin/listcategory");
-    //     }
-    //   });
+    await axios
+      .patch(`${process.env.REACT_APP_URL_API}/variations/${EditId}`, data, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          toast.success("Update variation successfully!", {});
+          navigate("/admin/listvariation");
+        }
+      });
   };
-
   const validationSchema = yup.object({
     name: yup
       .string()
@@ -72,95 +61,77 @@ function EditCategory() {
       .required("The variation name cannot be empty!"),
     categoryId: yup.string().required("you haven't selected a variation!"),
   });
-
   const formik = useFormik({
     initialValues: {
-      name: "",
-      categoryId: "",
+      name: undefined,
+      categoryId: undefined,
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
       editForm(values);
     },
   });
-
-  if (category.name !== undefined) {
+  if (!!variation.name) {
+    if (!!!formik.values.name) {
+      formik.setFieldValue("name", variation.name);
+      formik.setFieldValue("categoryId", variation.categoryId);
+    }
     return (
       <>
-        <div className={cl("page-breadcrumb", "d-none d-sm-flex align-items-center mb-3")}>
-          <div className={cl("breadcrumb-title", "pe-2")}>
-            <Link to={"/admin"}>
-              <FontAwesomeIcon icon={faHouse} className={""} />
-            </Link>
-          </div>
-          <div className={cl("ps-3")}>
-            <nav>
-              <ol className={cl("breadcrumb", "mb-0 p-0")}>
-                <li className={cl("breadcrumb-item")}>Thể loại</li>
-              </ol>
-            </nav>
-          </div>
-        </div>
-        <div className={cl("row")}>
-          <div className={cl("col mx-auto")}>
-            <div className={cl("card")}>
-              <div className={cl("card-body")}>
-                <div className={cl("p-4 rounded")}>
-                  <div className={cl("card-title d-flex align-items-center")}>
-                    <h4 className={cl("mb-0")}>Sửa thể loại sản phẩm</h4>
-                  </div>
-                  <hr />
-                  <Formik
-                    initialValues={initialValues}
-                    onSubmit={(values) => {
-                      editForm(values);
-                    }}
-                    validationSchema={validationSchema}
+        <AdminPageTitle>Variation</AdminPageTitle>
+        <Card elevation={4}>
+          <AdminCardHeader edit title={"Variation"} to={"/admin/listvariation"}></AdminCardHeader>
+          <CardContent>
+            <Box component={"form"} sx={{ flexGrow: 1 }} onSubmit={formik.handleSubmit} autoComplete="off">
+              <Grid container justifyContent="center" alignItems="center" spacing={2} paddingX={2}>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                  <TextField
+                    fullWidth
+                    margin="normal"
+                    id="name"
+                    name="name"
+                    label="name"
+                    value={formik.values.name}
+                    onChange={formik.handleChange}
+                    error={formik.touched.name && Boolean(formik.errors.name)}
+                    helperText={formik.touched.name && formik.errors.name}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                  <TextField
+                    fullWidth
+                    margin="normal"
+                    select
+                    label="category"
+                    id="categoryId"
+                    name="categoryId"
+                    value={formik.values.categoryId}
+                    onChange={formik.handleChange}
+                    error={formik.touched.categoryId && Boolean(formik.errors.categoryId)}
+                    helperText={formik.touched.categoryId && formik.errors.categoryId}
                   >
-                    {(props) => (
-                      <div className={cl("mt-5")}>
-                        <Form className={cl("form-test")} onSubmit={props.handleSubmit}>
-                          <div className={cl("row mb-3")}>
-                            <label className={cl("col-sm-3 col-form-label")}>Tên thể loại:</label>
-                            <div className={cl("col-sm-9")}>
-                              <Field
-                                type="text"
-                                class="form-control"
-                                onChange={props.handleChange}
-                                onBlur={props.handleBlur}
-                                value={props.values.name}
-                                id="name"
-                                name="name"
-                              />
-
-                              <div className={"mt-1"}>
-                                <ErrorMessage name="name" component={"span"} />
-                              </div>
-                            </div>
-                          </div>
-
-                          <div className={cl("row")}>
-                            <label className={cl("col-sm-3 col-form-label")}></label>
-                            <div className={cl("col-sm-9")}>
-                              <button type="submit" className={cl("btn btn-primary px-5")}>
-                                Lưu
-                              </button>
-                            </div>
-                          </div>
-                        </Form>
-                      </div>
+                    {categories.map(
+                      (option) => (
+                        <MenuItem key={option.id} value={option.id}>
+                          {option.name}
+                        </MenuItem>
+                      )
                     )}
-                  </Formik>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                  </TextField>
+                </Grid>
+              </Grid>
+              <Typography component="div" marginTop={2} paddingLeft={2}>
+                <Button variant="contained" type="submit" endIcon={<SaveIcon />}>
+                  Save
+                </Button>
+              </Typography>
+            </Box>
+          </CardContent>
+        </Card>
       </>
     );
   } else {
-    return <div>loading..............</div>;
+    return <Loading />;
   }
 }
-
 export default EditCategory;

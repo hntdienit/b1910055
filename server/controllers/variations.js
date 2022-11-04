@@ -24,7 +24,7 @@ const patchVariationId = async (req, res, next) => {
   const variationId = req.params.variationId;
   const variationBody = req.body;
   await Variations.update(
-    { name: variationBody.name },
+    { name: variationBody.name, categoryId: variationBody.categoryId },
     {
       where: {
         id: variationId,
