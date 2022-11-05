@@ -4,7 +4,6 @@ import { Op } from "sequelize";
 
 const getAll = async (req, res, next) => {
   const listOfVariation = await Variations.findAll({ include: Categories });
-  console.log(listOfVariation[0].category.name);
   return res.status(200).json(listOfVariation);
 };
 

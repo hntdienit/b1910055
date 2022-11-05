@@ -26,7 +26,7 @@ const cl = className.bind(styles);
 function SideBar() {
   const { logo, setLogo } = useContext(MenuContext);
 
-  const [subMenu, setSubMenu] = useState([false, false, false]);
+  const [subMenu, setSubMenu] = useState([false, false, false, false]);
 
   const menu = [
     {
@@ -54,6 +54,14 @@ function SideBar() {
           nameMenu: "Category",
           linkCreate: "/admin/category",
           linkList: "/admin/listcategory",
+        },
+        {
+          intMenu: 3,
+          subMenuitem: true,
+          iconMenu: <FontAwesomeIcon icon={faListSquares} />,
+          nameMenu: "Shipping Method",
+          linkCreate: "/admin/shippingmethod",
+          linkList: "/admin/listshippingmethod",
         },
       ],
     },
