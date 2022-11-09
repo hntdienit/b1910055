@@ -1,35 +1,37 @@
 import React, { useEffect, useState } from "react";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import InputAdornment from "@mui/material/InputAdornment";
-import Typography from "@mui/material/Typography";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import {
+  Box,
+  Card,
+  Grid,
+  TextField,
+  Button,
+  InputAdornment,
+  Typography,
+  InputLabel,
+  MenuItem,
+  FormControl,
+  Select,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import AdminPageTitle from "../../../components/AdminPageTitle";
 import AdminCardHeader from "../../../components/AdminCardHeader";
 
-function ListVariation() {
+function ListItem() {
   const [list, setList] = useState([]);
   const [page, setPage] = useState(0);
   const [limit, setLimit] = useState(5);
@@ -38,16 +40,18 @@ function ListVariation() {
   const [deleteload, setDeleteload] = useState(0);
   const [keyword, setKeyword] = useState("");
   useEffect(() => {
-    axios.get(`${process.env.REACT_APP_URL_API}/variations?keyword=${keyword}&page=${page}&limit=${limit}`).then((response) => {
-      if (response.data.error) {
-        alert(response.data.error);
-      } else {
-        setList(response.data.result);
-        setPage(response.data.page);
-        setPages(response.data.totalPage);
-        setRows(response.data.totalRows);
-      }
-    });
+    axios
+      .get(`${process.env.REACT_APP_URL_API}/variationoptions?keyword=${keyword}&page=${page}&limit=${limit}`)
+      .then((response) => {
+        if (response.data.error) {
+          alert(response.data.error);
+        } else {
+          setList(response.data.result);
+          setPage(response.data.page);
+          setPages(response.data.totalPage);
+          setRows(response.data.totalRows);
+        }
+      });
   }, [page, limit, keyword, deleteload]);
   const changePage = ({ selected }) => {
     setPage(selected);
@@ -64,7 +68,7 @@ function ListVariation() {
     }).then((result) => {
       if (result.isConfirmed) {
         axios
-          .delete(`${process.env.REACT_APP_URL_API}/variations/${Id}`, {
+          .delete(`${process.env.REACT_APP_URL_API}/variationoptions/${Id}`, {
             headers: {
               accessToken: localStorage.getItem("accessToken"),
             },
@@ -77,7 +81,7 @@ function ListVariation() {
             );
           });
         Swal.fire("Deleted!", "Your file has been deleted.", "success");
-       setDeleteload(deleteload + 1)
+        setDeleteload(deleteload + 1);
       }
     });
   };
@@ -88,14 +92,14 @@ function ListVariation() {
     },
     validationSchema: validationSchema,
     onSubmit: (values) => {
-      setKeyword(values.keyword)
+      setKeyword(values.keyword);
     },
   });
   return (
     <>
-      <AdminPageTitle>Variation</AdminPageTitle>
+      <AdminPageTitle>Variation Option</AdminPageTitle>
       <Card elevation={4}>
-        <AdminCardHeader list title={"Variation"} to={"/admin/variation"}>
+        <AdminCardHeader list title={"Variation Option"} to={"/admin/variationoption"}>
           <Box component={"form"} sx={{ flexGrow: 1 }} onSubmit={formik.handleSubmit} autoComplete="off">
             <Typography component={"div"}>
               <TextField
@@ -137,7 +141,7 @@ function ListVariation() {
                     </TableCell>
                     <TableCell align="center">
                       <Typography component={"div"} fontWeight="bold">
-                        Category
+                        Variation
                       </Typography>
                     </TableCell>
                     <TableCell align="center">
@@ -154,9 +158,9 @@ function ListVariation() {
                         {(page + 1) * limit - limit + index + 1}
                       </TableCell>
                       <TableCell align="center">{item.name}</TableCell>
-                      <TableCell align="center">{item.Category.name}</TableCell>
+                      <TableCell align="center">{item.Variation.name}</TableCell>
                       <TableCell align="center">
-                        <Link to={`/admin/editvariation/${item.id}`}>
+                        <Link to={`/admin/editvariationoption/${item.id}`}>
                           <Button color="warning">
                             <EditIcon />
                           </Button>
@@ -228,4 +232,4 @@ function ListVariation() {
     </>
   );
 }
-export default ListVariation;
+export default ListItem;

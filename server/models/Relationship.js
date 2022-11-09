@@ -1,4 +1,3 @@
-/* Models */
 import Addresses from "./Addresses.js";
 import CartItems from "./CartItems.js";
 import Carts from "./Carts.js";
@@ -21,97 +20,96 @@ import Wishlists from "./Wishlists.js";
 
 const relationship = () => {
   /* Users x Addresses: Many to Many */
-  Users.belongsToMany(Addresses, { through: "UserAddress" });
-  Addresses.belongsToMany(Users, { through: "UserAddress" });
+  Users.belongsToMany(Addresses, { through: "UserAddress", foreignKey: "userId" });
+  Addresses.belongsToMany(Users, { through: "UserAddress", foreignKey: "addressId" });
 
   /* Addresses x Orders: One to Many */
-  Addresses.hasMany(Orders);
-  Orders.belongsTo(Addresses);
+  Addresses.hasMany(Orders, { foreignKey: "addressId" });
+  Orders.belongsTo(Addresses, { foreignKey: "addressId" });
 
   /* Carts x CartItems: One to Many */
-  Carts.hasMany(CartItems);
-  CartItems.belongsTo(Carts);
+  Carts.hasMany(CartItems, { foreignKey: "cartId" });
+  CartItems.belongsTo(Carts, { foreignKey: "cartId" });
 
   /* Categories x Products: One to Many */
-  Categories.hasMany(Products);
-  Products.belongsTo(Categories);
+  Categories.hasMany(Products, { foreignKey: "categoryId" });
+  Products.belongsTo(Categories, { foreignKey: "categoryId" });
 
   /* Categories x Variations: One to Many */
-  Categories.hasMany(Variations);
-  Variations.belongsTo(Categories);
+  Categories.hasMany(Variations, { foreignKey: "categoryId" });
+  Variations.belongsTo(Categories, { foreignKey: "categoryId" });
 
   /* Categories x Promotions: Many to Many */
-  Categories.belongsToMany(Promotions, { through: "CategoryPromotion" });
-  Promotions.belongsToMany(Categories, { through: "CategoryPromotion" });
+  Categories.belongsToMany(Promotions, { through: "CategoryPromotion", foreignKey: "categoryId" });
+  Promotions.belongsToMany(Categories, { through: "CategoryPromotion", foreignKey: "promotionId" });
 
   /* Categories x Categories: One to Many */
-  Categories.hasMany(Categories, { foreignKey: 'parent'});
-  Categories.belongsTo(Categories, { foreignKey: 'parent'});
+  Categories.hasMany(Categories, { foreignKey: "parent" });
+  Categories.belongsTo(Categories, { foreignKey: "parent" });
 
   /* OrderItems x Reviews: One to Many */
-  OrderItems.hasMany(Reviews);
-  Reviews.belongsTo(OrderItems);
+  OrderItems.hasMany(Reviews, { foreignKey: "orderItemId" });
+  Reviews.belongsTo(OrderItems, { foreignKey: "orderItemId" });
 
   /* Orders x OrderItems: One to Many */
-  Orders.hasMany(OrderItems);
-  OrderItems.belongsTo(Orders);
+  Orders.hasMany(OrderItems, { foreignKey: "orderId" });
+  OrderItems.belongsTo(Orders, { foreignKey: "orderId" });
 
   /* OrderStatuses x Orders: One to Many */
-  OrderStatuses.hasMany(Orders);
-  Orders.belongsTo(OrderStatuses);
+  OrderStatuses.hasMany(Orders, { foreignKey: "orderStatusId" });
+  Orders.belongsTo(OrderStatuses, { foreignKey: "orderStatusId" });
 
   /* PaymentMethods x Orders: One to Many */
-  PaymentMethods.hasMany(Orders);
-  Orders.belongsTo(PaymentMethods);
+  PaymentMethods.hasMany(Orders, { foreignKey: "paymentMethodId" });
+  Orders.belongsTo(PaymentMethods, { foreignKey: "paymentMethodId" });
 
   /* PaymentTypes x PaymentMethods: One to Many */
-  PaymentTypes.hasMany(PaymentMethods);
-  PaymentMethods.belongsTo(PaymentTypes);
+  PaymentTypes.hasMany(PaymentMethods, { foreignKey: "paymentTypeId" });
+  PaymentMethods.belongsTo(PaymentTypes, { foreignKey: "paymentTypeId" });
 
   /* ProductItems x CartItems: One to Many */
-  ProductItems.hasMany(CartItems);
-  CartItems.belongsTo(ProductItems);
+  ProductItems.hasMany(CartItems, { foreignKey: "productItemId" });
+  CartItems.belongsTo(ProductItems, { foreignKey: "productItemId" });
 
   /* ProductItems x OrderItems: One to Many */
-  ProductItems.hasMany(OrderItems);
-  OrderItems.belongsTo(ProductItems);
+  ProductItems.hasMany(OrderItems, { foreignKey: "productItemId" });
+  OrderItems.belongsTo(ProductItems, { foreignKey: "productItemId" });
 
   /* ProductItems x Wishlists: One to Many */
-  ProductItems.hasMany(Wishlists);
-  Wishlists.belongsTo(ProductItems);
+  ProductItems.hasMany(Wishlists, { foreignKey: "productItemId" });
+  Wishlists.belongsTo(ProductItems, { foreignKey: "productItemId" });
 
-    /* ProductItems x VariationOptions: Many to Many */
-    ProductItems.belongsToMany(VariationOptions, { through: "ProductItemOption" });
-    VariationOptions.belongsToMany(ProductItems, { through: "ProductItemOption" });
+  /* ProductItems x VariationOptions: Many to Many */
+  ProductItems.belongsToMany(VariationOptions, { through: "ProductItemOption", foreignKey: "productItemId" });
+  VariationOptions.belongsToMany(ProductItems, { through: "ProductItemOption", foreignKey: "variationOptionId" });
 
   /* Products x ProductItems: One to Many */
-  Products.hasMany(ProductItems);
-  ProductItems.belongsTo(Products);
+  Products.hasMany(ProductItems, { foreignKey: "productId" });
+  ProductItems.belongsTo(Products, { foreignKey: "productId" });
 
   /* ShippingMethods x Orders: One to Many */
-  ShippingMethods.hasMany(Orders);
-  Orders.belongsTo(ShippingMethods);
+  ShippingMethods.hasMany(Orders, { foreignKey: "shippingMethodId" });
+  Orders.belongsTo(ShippingMethods, { foreignKey: "shippingMethodId" });
 
   /* Users x PaymentMethods: One to Many */
-  Users.hasMany(PaymentMethods);
-  PaymentMethods.belongsTo(Users);
+  Users.hasMany(PaymentMethods, { foreignKey: "userId" });
+  PaymentMethods.belongsTo(Users, { foreignKey: "userId" });
 
   /* Users x Reviews: One to Many */
-  Users.hasMany(Reviews);
-  Reviews.belongsTo(Users);
+  Users.hasMany(Reviews, { foreignKey: "userId" });
+  Reviews.belongsTo(Users, { foreignKey: "userId" });
 
   /* Users x Carts: One to Many */
-  Users.hasMany(Carts);
-  Carts.belongsTo(Users);
+  Users.hasMany(Carts, { foreignKey: "userId" });
+  Carts.belongsTo(Users, { foreignKey: "userId" });
 
   /* Users x Wishlists: One to Many */
-  Users.hasMany(Wishlists);
-  Wishlists.belongsTo(Users);
+  Users.hasMany(Wishlists, { foreignKey: "userId" });
+  Wishlists.belongsTo(Users, { foreignKey: "userId" });
 
   /* Variations x VariationOptions: One to Many */
-  Variations.hasMany(VariationOptions);
-  VariationOptions.belongsTo(Variations);
-
+  Variations.hasMany(VariationOptions, { foreignKey: "variationId" });
+  VariationOptions.belongsTo(Variations, { foreignKey: "variationId" });
 };
 
 export default relationship;

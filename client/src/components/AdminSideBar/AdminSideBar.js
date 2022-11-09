@@ -7,15 +7,7 @@ import className from "classnames/bind";
 import styles from "./AdminSideBar.module.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMagnifyingGlass,
-  faSquarePlus,
-  faListDots,
-  faListSquares,
-  faCaretRight,
-  faCaretDown,
-  faBars,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSquarePlus, faListDots, faListSquares, faCaretRight, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 import images from "../../assets/images";
 
@@ -26,12 +18,20 @@ const cl = className.bind(styles);
 function SideBar() {
   const { logo, setLogo } = useContext(MenuContext);
 
-  const [subMenu, setSubMenu] = useState([false, false, false, false]);
+  const [subMenu, setSubMenu] = useState([false, false, false, false, false, false]);
 
   const menu = [
     {
       name: "Main",
       data: [
+        {
+          intMenu: 5,
+          subMenuitem: true,
+          iconMenu: <FontAwesomeIcon icon={faListSquares} />,
+          nameMenu: "Product",
+          linkCreate: "/admin/product",
+          linkList: "/admin/listproduct",
+        },
         {
           intMenu: 0,
           subMenuitem: false,
@@ -51,18 +51,27 @@ function SideBar() {
           intMenu: 2,
           subMenuitem: true,
           iconMenu: <FontAwesomeIcon icon={faListSquares} />,
+          nameMenu: "Variation Option",
+          linkCreate: "/admin/variationoption",
+          linkList: "/admin/listvariationoption",
+        },
+        {
+          intMenu: 3,
+          subMenuitem: true,
+          iconMenu: <FontAwesomeIcon icon={faListSquares} />,
           nameMenu: "Category",
           linkCreate: "/admin/category",
           linkList: "/admin/listcategory",
         },
         {
-          intMenu: 3,
+          intMenu: 4,
           subMenuitem: true,
           iconMenu: <FontAwesomeIcon icon={faListSquares} />,
           nameMenu: "Shipping Method",
           linkCreate: "/admin/shippingmethod",
           linkList: "/admin/listshippingmethod",
         },
+        
       ],
     },
   ];
@@ -139,10 +148,7 @@ function SideBar() {
                                   <span className={cl("ms-3")}>
                                     {item.nameMenu}
                                     {subMenu[item.intMenu] === true ? (
-                                      <FontAwesomeIcon
-                                        icon={faCaretDown}
-                                        className={"align-middle float-end"}
-                                      />
+                                      <FontAwesomeIcon icon={faCaretDown} className={"align-middle float-end"} />
                                     ) : (
                                       <FontAwesomeIcon icon={faCaretRight} className={"float-end"} />
                                     )}

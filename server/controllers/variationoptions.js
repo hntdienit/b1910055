@@ -1,55 +1,48 @@
+import VariationOptions from "../models/VariationOptions.js"
 import Variations from "../models/Variations.js";
-import Categories from "../models/Categories.js";
 import { Op } from "sequelize";
-
 const getAll = async (req, res, next) => {
-  const list = await Variations.findAll();
+  const list = await VariationOptions.findAll();
   return res.status(200).json(list);
 };
-
-const getVariationId = async (req, res, next) => {
-  const variationId = req.params.variationId;
-  const variation = await Variations.findByPk(variationId);
-  return res.status(200).json(variation);
+const getItemId = async (req, res, next) => {
+  const itemId = req.params.Id;
+  const item = await VariationOptions.findByPk(itemId);
+  return res.status(200).json(item);
 };
-
-const postCreateVariation = async (req, res, next) => {
-  const variation = req.body;
-  const newItem =  await Variations.create(variation);
-  return res.status(201).json(newItem);
+const postCreateItem = async (req, res, next) => {
+  const item = req.body;
+  await VariationOptions.create(item);
+  return res.status(201).json(item);
 };
-
-const patchVariationId = async (req, res, next) => {
-  const variationId = req.params.variationId;
-  const variationBody = req.body;
-  await Variations.update(
-    { name: variationBody.name, categoryId: variationBody.categoryId },
+const patchItemId = async (req, res, next) => {
+  const itemId = req.params.Id;
+  const itemBody = req.body;
+  await VariationOptions.update(
+    { name: itemBody.name, variationId: itemBody.variationId },
     {
       where: {
-        id: variationId,
+        id: itemId,
       },
     }
   );
   return res.status(201).json("sua thanh cong"); /* 123 */
 };
-
-const deleteVariationId = async (req, res, next) => {
-  const variationId = req.params.variationId;
-  await Variations.destroy({
+const deleteItemId = async (req, res, next) => {
+  const itemId = req.params.Id;
+  await VariationOptions.destroy({
     where: {
-      id: variationId,
+      id: itemId,
     },
   });
   return res.status(201).json("xoa thanh cong"); /* 123 */
 };
-
 const pagination = async (req, res, next) => {
   const page = parseInt(req.query.page) || 0;
   const limit = parseInt(req.query.limit) || 5;
   const keyword = req.query.keyword || "";
   const offset = limit * page;
-  // const totalRows = await Variations.count();
-  const totalRows = await Variations.count({
+  const totalRows = await VariationOptions.count({
     where: {
       [Op.or]: [
         {
@@ -61,7 +54,7 @@ const pagination = async (req, res, next) => {
     },
   });
   const totalPage = Math.ceil(totalRows / limit);
-  const result = await Variations.findAll({
+  const result = await VariationOptions.findAll({
     where: {
       [Op.or]: [
         {
@@ -74,7 +67,7 @@ const pagination = async (req, res, next) => {
     offset: offset,
     limit: limit,
     order: [["id", "DESC"]],
-    include: Categories,
+    include: Variations,
   });
   res.json({
     result: result,
@@ -84,12 +77,11 @@ const pagination = async (req, res, next) => {
     totalPage: totalPage,
   });
 };
-
 export default {
   getAll,
-  getVariationId,
-  postCreateVariation,
-  patchVariationId,
-  deleteVariationId,
+  getItemId,
+  postCreateItem,
+  patchItemId,
+  deleteItemId,
   pagination,
 };

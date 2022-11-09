@@ -30,6 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.json({ extended: true }));
 
 /* middlewares */
+app.use(express.json());
 app.use(cors());
 // app.use(cors({
 //   origin: "http://localhost:3005",
@@ -37,6 +38,8 @@ app.use(cors());
 //   credentials: true,
 // }))
 app.use(logger("dev")); /* when debug console.log */
+
+app.use("/uploads",express.static("./uploads"))
 
 /* routes */
 router(app);

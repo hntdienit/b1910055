@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-function P403() {
+function Page403() {
   return (
     <div>
       <h2>403 page -- khong du quyen truy cap</h2>
@@ -11,4 +11,4 @@ function P403() {
   );
 }
 
-export default P403;
+export default Page403;

@@ -7,8 +7,11 @@ import VariationController from "../controllers/variations.js";
 const router = express.Router();
 
 router
+  .route("/getAll")
+  .get(VariationController.getAll)
+
+  router
   .route("/")
-  // .get(VariationController.getAll)
   .get(VariationController.pagination)
   .post(AuthMiddleware.validateToken, VariationController.postCreateVariation);
 

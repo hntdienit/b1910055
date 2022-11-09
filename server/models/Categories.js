@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
 
 const Categories = sequelize.define(
-  "categories",
+  "Categories",
   {
     name: { type: DataTypes.STRING, allowNull: true },
   },

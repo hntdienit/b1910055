@@ -4,6 +4,8 @@ import users from './users.js'
 import categories from "./categories.js"
 import variations from './variations.js';
 import shippingmethods from './shippingmethods.js';
+import variationoptions from './variationoptions.js';
+import products from './products.js';
 
 const router = (app) => {
   app.get("/", (req, res, next) => {
@@ -18,6 +20,8 @@ const router = (app) => {
   app.use("/categories", categories);
   app.use("/variations", variations);
   app.use("/shippingmethods", shippingmethods);
+  app.use("/variationoptions", variationoptions);
+  app.use("/products", products);
 
   /* 404 */
   app.use("/:error", (req, res, next) => {
