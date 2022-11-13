@@ -7,7 +7,7 @@ import styles from "./SliderOneP.module.scss";
 
 // import FontAwesomeIcon
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronLeft, faChevronRight, faHeart, faL, faLock, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
+import { faChevronLeft, faChevronRight, faHeart, faLock, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 
 // import components
 import Button from "../Button";

@@ -2,7 +2,7 @@
 import AdminLayout from "../layouts/AdminLayout/AdminLayout";
 
 /* Pages Public */
-import Home from "../pages/Home";
+import Home from "../pages/Public/Home";
 
 /* Pages Error */
 import Page404 from "../pages/PageError/Page404";
