@@ -2,6 +2,7 @@ import Addresses from "./Addresses.js";
 import CartItems from "./CartItems.js";
 import Carts from "./Carts.js";
 import Categories from "./Categories.js";
+import Images from "./Images.js";
 import OrderItems from "./OrderItems.js";
 import Orders from "./Orders.js";
 import OrderStatuses from "./OrderStatuses.js";
@@ -70,6 +71,10 @@ const relationship = () => {
   /* ProductItems x CartItems: One to Many */
   ProductItems.hasMany(CartItems, { foreignKey: "productItemId" });
   CartItems.belongsTo(ProductItems, { foreignKey: "productItemId" });
+
+  /* ProductItems x Images: One to Many */
+  ProductItems.hasMany(Images, { foreignKey: "productItemId" });
+  Images.belongsTo(ProductItems, { foreignKey: "productItemId" });
 
   /* ProductItems x OrderItems: One to Many */
   ProductItems.hasMany(OrderItems, { foreignKey: "productItemId" });

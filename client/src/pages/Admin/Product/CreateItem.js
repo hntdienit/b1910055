@@ -11,8 +11,17 @@ import AdminCardHeader from "../../../components/AdminCardHeader";
 function CreateItem() {
   const [categories, setCategories] = useState([]);
   const [files1, setFiles1] = useState("");
+  const [hinh, setHinh] = useState("");
+  const [product, setProduct] = useState([]);
   let navigate = useNavigate();
   useEffect(() => {
+    axios.get(`${process.env.REACT_APP_URL_API}/products`).then((response) => {
+      if (response.data.error) {
+        toast.error(`Data fetch failed - error: ${response.data.error}`, {});
+      } else {
+        setProduct(response.data);
+      }
+    });
     axios.get(`${process.env.REACT_APP_URL_API}/categories/getAll`).then((response) => {
       if (response.data.error) {
         toast.error(`Data fetch failed - error: ${response.data.error}`, {});
@@ -66,56 +75,75 @@ function CreateItem() {
         if (response.data.error) {
           toast.error(`Add new product failed! - error: ${response.data.error}`, {});
         } else {
-          console.log(response.data.thu);
+          console.log(response.data.hinh);
+          setHinh(response.data.hinh)
           // toast.success("Add new product successfully!", {});
           // navigate("/admin/listproduct");
         }
       });
   };
 
-  // const validationSchema = yup.object({
-  // categoryId: yup.string().required("you haven't selected a variation!"),
-  // name: yup
-  //   .string()
-  //   .min(3, "The product name needs more than 3 characters!")
-  //   .max(15, "The product name needs less than 15 characters!")
-  //   .required("The product name cannot be empty!"),
-  // description: yup
-  //   .string()
-  //   .min(3, "The product description needs more than 3 characters!")
-  //   .max(30, "The product description needs less than 30 characters!")
-  //   .required("The product description cannot be empty!"),
-  // image: null,
-  // color: yup
-  //   .string()
-  //   .min(3, "The product color needs more than 3 characters!")
-  //   .max(30, "The product color needs less than 30 characters!")
-  //   .required("The product color cannot be empty!"),
-  // size: yup
-  //   .string()
-  //   .min(3, "The product size needs more than 3 characters!")
-  //   .max(30, "The product size needs less than 30 characters!")
-  //   .required("The product size cannot be empty!"),
-  // stock: yup.number().required("The product stock cannot be empty!"),
-  // price: yup.number().required("The product price cannot be empty!"),
-  // });
+  const SUPPORTED_FORMATS = ["image/jpg", "image/jpeg", "image/png"];
+  const validationSchema = yup.object({
+    categoryId: yup
+      .string()
+      .matches(/[1-9]+/, "Is not in correct format")
+      .required("you haven't selected a variation!"),
+    name: yup
+      .string()
+      .min(3, "The product name needs more than 3 characters!")
+      .max(15, "The product name needs less than 15 characters!")
+      .required("The product name cannot be empty!"),
+    description: yup
+      .string()
+      .min(3, "The product description needs more than 3 characters!")
+      .max(30, "The product description needs less than 30 characters!")
+      .required("The product description cannot be empty!"),
+    color: yup
+      .string()
+      .min(3, "The product color needs more than 3 characters!")
+      .max(30, "The product color needs less than 30 characters!")
+      .required("The product color cannot be empty!"),
+    size: yup
+      .string()
+      .min(3, "The product size needs more than 3 characters!")
+      .max(30, "The product size needs less than 30 characters!")
+      .required("The product size cannot be empty!"),
+    stock: yup.number().required("The product stock cannot be empty!"),
+    price: yup.number().required("The product price cannot be empty!"),
+    // image: yup
+    //   .mixed()
+    //   .nullable()
+    //   .required()
+    //   .test("FILE_SIZE", "qua lon", (value) => !value || (value && value.size <= 1024 * 1024))
+    //   .test(
+    //     "FILE_FORMAT",
+    //     "khong dung dang hinh",
+    //     (value) => !value || (value && SUPPORTED_FORMATS.includes(value?.type))
+    //   ),
+  });
 
   const formik = useFormik({
     initialValues: {
-      // categoryId: "",
+      categoryId: "",
       name: "",
-      // description: "",
-      // image: [],
-      // color: "",
-      // size: "",
-      // stock: "",
-      // price: "",
+      description: "",
+      color: "",
+      size: "",
+      stock: "",
+      price: "",
       image: [],
     },
-    // validationSchema: validationSchema,
+    validationSchema: validationSchema,
     onSubmit: (values) => {
       const formDataToSend = new FormData();
       formDataToSend.append("name", values.name);
+      formDataToSend.append("categoryId", values.categoryId);
+      formDataToSend.append("description", values.description);
+      formDataToSend.append("color", values.color);
+      formDataToSend.append("size", values.size);
+      formDataToSend.append("stock", values.stock);
+      formDataToSend.append("price", values.price);
       for (let i = 0; i < files1.length; i++) {
         formDataToSend.append("image", files1[i]);
       }
@@ -128,171 +156,134 @@ function CreateItem() {
       <Card elevation={4}>
         <AdminCardHeader add title={"Product"} to={"/admin/listproduct"}></AdminCardHeader>
         <CardContent>
-          <form onSubmit={formik.handleSubmit} className="container" encType="multipart/form-data">
-            <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-              <TextField
-                fullWidth
-                margin="normal"
-                id="name"
-                name="name"
-                label="name"
-                value={formik.values.name}
-                onChange={formik.handleChange}
-                error={formik.touched.name && Boolean(formik.errors.name)}
-                helperText={formik.touched.name && formik.errors.name}
-              />
-            </Grid>
-            <div lg="12" className="mb-3">
-              <input type="file" name="image" multiple onChange={handleFilesChange} />
-            </div>
-            {/* {reviewDetails.images && (
-                <Col lg="12" className="mb-3">
-                  <input type="file" name="reviewImages" multiple onChange={handleFilesChange} />
-                </Col>
-              )} */}
-
-            <div lg="12">
-              <Button type="submit">Submit</Button>
-            </div>
-          </form>
-
-          {/* <Box component={"form"} sx={{ flexGrow: 1 }} onSubmit={formik.handleSubmit} autoComplete="off">
-              <Grid container justifyContent="center" alignItems="center" spacing={2} paddingX={2}>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                  <TextField
-                    fullWidth
-                    margin="normal"
-                    id="name"
-                    name="name"
-                    label="name"
-                    value={formik.values.name}
-                    onChange={formik.handleChange}
-                    error={formik.touched.name && Boolean(formik.errors.name)}
-                    helperText={formik.touched.name && formik.errors.name}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                  <TextField
-                    fullWidth
-                    margin="normal"
-                    select
-                    label="category"
-                    id="categoryId"
-                    name="categoryId"
-                    value={formik.values.categoryId}
-                    onChange={formik.handleChange}
-                    error={formik.touched.categoryId && Boolean(formik.errors.categoryId)}
-                    helperText={formik.touched.categoryId && formik.errors.categoryId}
-                  >
-                    {categories.map((option) => (
+          {/* {product.map((item, index) => {
+            return (
+              <img key={index} src={item.url} />
+            )
+          })} */}
+          <Box
+            component={"form"}
+            sx={{ flexGrow: 1 }}
+            onSubmit={formik.handleSubmit}
+            autoComplete="off"
+            encType="multipart/form-data"
+          >
+            <Grid container justifyContent="center" alignItems="center" spacing={2} paddingX={2}>
+              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  id="name"
+                  name="name"
+                  label="name"
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  error={formik.touched.name && Boolean(formik.errors.name)}
+                  helperText={formik.touched.name && formik.errors.name}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  select
+                  label="category"
+                  id="categoryId"
+                  name="categoryId"
+                  value={formik.values.categoryId}
+                  onChange={formik.handleChange}
+                  error={formik.touched.categoryId && Boolean(formik.errors.categoryId)}
+                  helperText={formik.touched.categoryId && formik.errors.categoryId}
+                >
+                  {categories.length === 0 ? (
+                    <MenuItem value="a">You need to add category first!</MenuItem>
+                  ) : (
+                    categories.map((option) => (
                       <MenuItem key={option.id} value={option.id}>
                         {option.name}
                       </MenuItem>
-                    ))}
-                  </TextField>
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                  <TextField
-                    fullWidth
-                    margin="normal"
-                    id="description"
-                    name="description"
-                    label="description"
-                    value={formik.values.description}
-                    onChange={formik.handleChange}
-                    error={formik.touched.description && Boolean(formik.errors.description)}
-                    helperText={formik.touched.description && formik.errors.description}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                  <input
-                    // fullWidth
-                    type={"file"}
-                    margin="normal"
-                    id="image"
-                    name="image"
-                    value={formik.values.image}
-                    onChange={formik.handleChange}
-                    // error={formik.touched.image && Boolean(formik.errors.image)}
-                    // helperText={formik.touched.image && formik.errors.image}
-                  />
-                  <input
-                    id="image"
-                    name="image"
-                    type="file"
-                    onChange={(event) => {
-                      formik.setFieldValue("image", event.currentTarget.files[0]);
-                    }}
-                  />
-
-                  <input
-                    id="image"
-                    name="image"
-                    type="file"
-                    onChange={(event) => {
-                      formik.setFieldValue("image", event.currentTarget.files[0]);
-                    }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                  <TextField
-                    fullWidth
-                    margin="normal"
-                    id="color"
-                    name="color"
-                    label="color"
-                    value={formik.values.color}
-                    onChange={formik.handleChange}
-                    error={formik.touched.color && Boolean(formik.errors.color)}
-                    helperText={formik.touched.color && formik.errors.color}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                  <TextField
-                    fullWidth
-                    margin="normal"
-                    id="size"
-                    name="size"
-                    label="size"
-                    value={formik.values.size}
-                    onChange={formik.handleChange}
-                    error={formik.touched.size && Boolean(formik.errors.size)}
-                    helperText={formik.touched.size && formik.errors.size}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                  <TextField
-                    fullWidth
-                    margin="normal"
-                    id="stock"
-                    name="stock"
-                    label="stock"
-                    value={formik.values.stock}
-                    onChange={formik.handleChange}
-                    error={formik.touched.stock && Boolean(formik.errors.stock)}
-                    helperText={formik.touched.stock && formik.errors.stock}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
-                  <TextField
-                    fullWidth
-                    margin="normal"
-                    id="price"
-                    name="price"
-                    label="price"
-                    value={formik.values.price}
-                    onChange={formik.handleChange}
-                    error={formik.touched.price && Boolean(formik.errors.price)}
-                    helperText={formik.touched.price && formik.errors.price}
-                  />
-                </Grid>
+                    ))
+                  )}
+                </TextField>
               </Grid>
-              <Typography component="div" marginTop={2} paddingLeft={2}>
-                <Button variant="contained" type="submit" endIcon={<SaveIcon />}>
-                  Save
-                </Button>
-              </Typography>
-            </Box> */}
+              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  id="description"
+                  name="description"
+                  label="description"
+                  value={formik.values.description}
+                  onChange={formik.handleChange}
+                  error={formik.touched.description && Boolean(formik.errors.description)}
+                  helperText={formik.touched.description && formik.errors.description}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                <input type="file" name="image" multiple onChange={handleFilesChange} />
+                {/* <div className={"mt-1"}>
+                <ErrorMessage name="image" component={"span"} />
+                </div> */}
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  id="color"
+                  name="color"
+                  label="color"
+                  value={formik.values.color}
+                  onChange={formik.handleChange}
+                  error={formik.touched.color && Boolean(formik.errors.color)}
+                  helperText={formik.touched.color && formik.errors.color}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  id="size"
+                  name="size"
+                  label="size"
+                  value={formik.values.size}
+                  onChange={formik.handleChange}
+                  error={formik.touched.size && Boolean(formik.errors.size)}
+                  helperText={formik.touched.size && formik.errors.size}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  id="stock"
+                  name="stock"
+                  label="stock"
+                  value={formik.values.stock}
+                  onChange={formik.handleChange}
+                  error={formik.touched.stock && Boolean(formik.errors.stock)}
+                  helperText={formik.touched.stock && formik.errors.stock}
+                />
+              </Grid>
+              <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+                <TextField
+                  fullWidth
+                  margin="normal"
+                  id="price"
+                  name="price"
+                  label="price"
+                  value={formik.values.price}
+                  onChange={formik.handleChange}
+                  error={formik.touched.price && Boolean(formik.errors.price)}
+                  helperText={formik.touched.price && formik.errors.price}
+                />
+              </Grid>
+            </Grid>
+            <Typography component="div" marginTop={2} paddingLeft={2}>
+              <Button variant="contained" type="submit" endIcon={<SaveIcon />}>
+                Save
+              </Button>
+            </Typography>
+          </Box>
         </CardContent>
       </Card>
     </>

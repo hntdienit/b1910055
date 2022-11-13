@@ -5,7 +5,6 @@ const ProductItems = sequelize.define(
   "ProductItems",
   {
     stock: { type: DataTypes.INTEGER, allowNull: true },
-    image: { type: DataTypes.STRING, allowNull: true },
     price: { type: DataTypes.INTEGER, allowNull: true },
     color: { type: DataTypes.STRING, allowNull: true },
     size: { type: DataTypes.STRING, allowNull: true },

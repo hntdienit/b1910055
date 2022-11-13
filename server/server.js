@@ -39,7 +39,8 @@ app.use(cors());
 // }))
 app.use(logger("dev")); /* when debug console.log */
 
-app.use("/uploads",express.static("./uploads"))
+// app.use("/uploads",express.static("./uploads"))
+app.use(express.static("public"));
 
 /* routes */
 router(app);
