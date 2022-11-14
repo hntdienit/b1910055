@@ -1,0 +1,37 @@
+.features__item:hover .features__icon {
+  transform: translateY(-5px) translate3d(0, -5px, 0);
+}
+.features__item-border {
+  position: relative;
+  &:after {
+    position: absolute;
+    content: "";
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 106px;
+    background-color: #e5e5e5;
+  }
+}
+
+.features__icon {
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.3s cubic-bezier(0.21, 0.6, 0.44, 2.18);
+  margin-bottom: 5px;
+  font-size: 45px;
+  color: #b9a16b;
+}
+
+.features__content {
+  p {
+    color: #999999;
+  }
+}
+
+.features__title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 2px;
+}

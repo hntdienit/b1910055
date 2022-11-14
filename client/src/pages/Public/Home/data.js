@@ -15,6 +15,15 @@ export const slider = [
   },
 ];
 
+export const banner = [
+  {
+    id: 1,
+    category: "SUMMER ‘21",
+    title: "Living Luxury",
+    img: images.slider_1,
+  },
+];
+
 export const category = [
   {
     id: 1,

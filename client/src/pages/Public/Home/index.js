@@ -2,7 +2,9 @@ import Category from "../../../components/Category";
 import SliderM from "../../../components/Slider";
 import SliderOneP from "../../../components/SliderOneP";
 import OneProductCard from "../../../components/OneProductCard";
-import { slider, category, sliderOneP, category1 } from "./data";
+import Banner from "../../../components/Banner";
+import Features from "../../../components/Features";
+import { slider, category, sliderOneP, category1, banner } from "./data";
 
 function Home() {
   return (
@@ -18,6 +20,13 @@ function Home() {
             <OneProductCard data={category1}></OneProductCard>
           </div>
         </div>
+        <div className={"row py-4"}>
+          <Banner data={banner}></Banner>
+        </div>
+        <div className={"row py-4"}>
+          <Features data={banner}></Features>
+        </div>
+
       </div>
     </>
   );
