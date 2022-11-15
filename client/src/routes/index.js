@@ -1,5 +1,5 @@
 /* Layouts */
-import AdminLayout from "../layouts/AdminLayout/AdminLayout";
+import AdminLayout from "../layouts/AdminLayout";
 
 /* Pages Public */
 import Home from "../pages/Public/Home";

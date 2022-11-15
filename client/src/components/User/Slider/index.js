@@ -10,14 +10,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
 
 // import components
-import Button from "../Button";
-import Image from "../Image";
+import Button from "../../Public/Button";
+import Image from "../../Public/Image";
 
 const cl = className.bind(styles);
 
 function SliderM(slider) {
-
-  const [data, setData] = useState(slider.data)
+  const [data, setData] = useState(slider.data);
 
   const customeSlider = useRef();
 

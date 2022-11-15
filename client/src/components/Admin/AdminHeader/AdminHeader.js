@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import { MenuContext } from "../../helpers/MenuContext.js";
+import { MenuContext } from "../../../helpers/MenuContext.js";
 
 import className from "classnames/bind";
 import styles from "./AdminHeader.module.scss";
@@ -17,10 +17,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 /* import assets */
-import images from "../../assets/images";
+import images from "../../../assets/images";
 
 /* import components */
-import Image from "../Image";
+import Image from "../../Public/Image";
 
 const cl = className.bind(styles);
 

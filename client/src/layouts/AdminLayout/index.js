@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import Header from "../../components/AdminHeader/AdminHeader.js";
-import SideBar from "../../components/AdminSideBar/AdminSideBar.js";
+import Header from "../../components/Admin/AdminHeader/AdminHeader.js";
+import SideBar from "../../components/Admin/AdminSideBar/AdminSideBar.js";
 
 import { MenuContext } from "../../helpers/MenuContext.js";
 

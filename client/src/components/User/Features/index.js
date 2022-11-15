@@ -9,8 +9,8 @@ import RepeatOnIcon from "@mui/icons-material/RepeatOn";
 import ThreePIcon from "@mui/icons-material/ThreeP";
 
 // import components
-import Button from "../Button";
-import Image from "../Image";
+import Button from "../../Public/Button";
+import Image from "../../Public/Image";
 
 const cl = className.bind(styles);
 
@@ -45,7 +45,7 @@ function Features(sliderOneP) {
       <div className={cl("pb-5")}>
         <div className={cl("row")}>
           {items.map((item) => (
-            <div className={cl("col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-6")}>
+            <div key={item.title} className={cl("col-xxl-3 col-xl-3 col-lg-3 col-md-6 col-sm-6")}>
               <div className={cl("features__item", "text-center mb-4", "features__item-border")}>
                 <div className={cl("features__icon")}>{item.icon}</div>
                 <div className={cl("features__content")}>

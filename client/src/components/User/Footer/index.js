@@ -15,12 +15,12 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 
 // import assets
-import images from "../../assets/images";
+import images from "../../../assets/images";
 
 // import components
-import Button from "../Button";
-import { Menu, Search } from "../Wrapper";
-import Image from "../Image";
+// import Button from "../Button";
+// import { Menu, Search } from "../Wrapper";
+import Image from "../../Public/Image";
 
 const cl = className.bind(styles);
 

@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "./helpers/AuthContext.js";
 
 import routes from "./routes";
-import DefaultLayout from "./layouts/DefaultLayout/DefaultLayout.js";
+import DefaultLayout from "./layouts/DefaultLayout";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.js";
 
 function App() {

@@ -3,8 +3,8 @@ import className from "classnames/bind";
 import styles from "./Category.module.scss";
 
 // import components
-import Image from "../Image";
-import Button from "../Button";
+import Image from "../../Public/Image";
+import Button from "../../Public/Button";
 
 const cl = className.bind(styles);
 

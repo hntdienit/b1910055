@@ -153,6 +153,102 @@ export const category1 = [
     img: images.slider_2,
     quantity: 73,
   },
+  {
+    id: 16,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id: 17,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id: 18,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id: 19,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id: 20,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id: 21,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id: 22,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id: 23,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id:24,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id: 25,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id: 26,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id: 27,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id: 28,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id: 29,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id: 30,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
+  {
+    id: 31,
+    title: "Kitchen",
+    img: images.slider_2,
+    quantity: 73,
+  },
 ];
 
 export const sliderOneP = [

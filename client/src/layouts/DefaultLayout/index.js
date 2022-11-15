@@ -1,7 +1,7 @@
 import className from 'classnames/bind';
 
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Header from '../../components/User/Header';
+import Footer from '../../components/User/Footer';
 import styles from './DefaultLayout.module.scss';
 // import Silder from '../../components/Slider';
 

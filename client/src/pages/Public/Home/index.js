@@ -1,9 +1,10 @@
-import Category from "../../../components/Category";
-import SliderM from "../../../components/Slider";
-import SliderOneP from "../../../components/SliderOneP";
-import OneProductCard from "../../../components/OneProductCard";
-import Banner from "../../../components/Banner";
-import Features from "../../../components/Features";
+import Category from "../../../components/User/Category";
+import SliderM from "../../../components/User/Slider";
+import SliderOneP from "../../../components/User/SliderOneP";
+import TrendingProduct from "../../../components/User/TrendingProduct";
+import Banner from "../../../components/User/Banner";
+import Features from "../../../components/User/Features";
+import NewProduct from "../../../components/User/NewProduct"
 import { slider, category, sliderOneP, category1, banner } from "./data";
 
 function Home() {
@@ -17,7 +18,7 @@ function Home() {
             <SliderOneP data={sliderOneP}></SliderOneP>
           </div>
           <div className={"col-xxl-7 col-xl-12 col-lg-12"}>
-            <OneProductCard data={category1}></OneProductCard>
+            <TrendingProduct data={category1}></TrendingProduct>
           </div>
         </div>
         <div className={"row py-4"}>
@@ -25,6 +26,9 @@ function Home() {
         </div>
         <div className={"row py-4"}>
           <Features data={banner}></Features>
+        </div>
+        <div className={"row py-4"}>
+          <NewProduct data={category1}></NewProduct>
         </div>
 
       </div>

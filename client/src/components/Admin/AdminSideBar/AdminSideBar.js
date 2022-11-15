@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
-import { MenuContext } from "../../helpers/MenuContext.js";
+import { MenuContext } from "../../../helpers/MenuContext.js";
 
 import className from "classnames/bind";
 import styles from "./AdminSideBar.module.scss";
@@ -9,9 +9,9 @@ import styles from "./AdminSideBar.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquarePlus, faListDots, faListSquares, faCaretRight, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
-import images from "../../assets/images";
+import images from "../../../assets/images";
 
-import Image from "../Image";
+import Image from "../../Public/Image";
 
 const cl = className.bind(styles);
 

@@ -10,8 +10,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight, faHeart, faLock, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 
 // import components
-import Button from "../Button";
-import Image from "../Image";
+import Button from "../../Public/Button";
+import Image from "../../Public/Image";
 
 const cl = className.bind(styles);
 
@@ -31,7 +31,7 @@ function SliderOneP(sliderOneP) {
   const settings = {
     arrows: false,
     infinite: true,
-    autoplay: true,
+    // autoplay: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -49,7 +49,7 @@ function SliderOneP(sliderOneP) {
           {data.map((item) => (
             <div key={item.id} className={cl("product__sale-item")}>
               <div className={cl("product__sale-thumb", "d-flex justify-content-center")}>
-                <Button to={"#"} className={cl("btn-img")}>
+                <Button to={"#"} className={cl("btn-img", "d-flex justify-content-center")}>
                   <Image src={item.img} />
                 </Button>
                 <div className={cl("product__sale-flash")}>

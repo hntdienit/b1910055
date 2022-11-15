@@ -4,8 +4,8 @@ import className from "classnames/bind";
 import styles from "./Banner.module.scss";
 
 // import components
-import Button from "../Button";
-import Image from "../Image";
+import Button from "../../Public/Button";
+import Image from "../../Public/Image";
 
 const cl = className.bind(styles);
 
