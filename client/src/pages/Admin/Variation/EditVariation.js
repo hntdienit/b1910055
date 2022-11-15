@@ -13,8 +13,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import SaveIcon from "@mui/icons-material/Save";
-import AdminPageTitle from "../../../components/AdminPageTitle";
-import AdminCardHeader from "../../../components/AdminCardHeader";
+import AdminPageTitle from "../../../components/Admin/AdminPageTitle";
+import AdminCardHeader from "../../../components/Admin/AdminCardHeader";
 import Loading from "../../Public/Loading";
 function EditCategory() {
   const { EditId } = useParams();

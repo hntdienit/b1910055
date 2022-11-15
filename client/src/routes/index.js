@@ -14,6 +14,7 @@ import Login from "../pages/Auth/Login";
 
 /* Pages Admin */
 import AdminHome from "../pages/Admin/Home";
+import ProductDetail from "../pages/Public/ProductDetail";
 import { CreaterCategory, ListCategory, EditCategory } from "../pages/Admin/Category";
 import { CreateVariation, ListVariation, EditVariation } from "../pages/Admin/Variation";
 import { CreateShippingMethod, ListShippingMethod, EditShippingMethod } from "../pages/Admin/ShippingMethod";
@@ -23,6 +24,8 @@ import { CreateProduct, ListProduct, EditProduct } from "../pages/Admin/Product"
 const routes = [
   { path: "/login", component: Login, layout: null },
   { path: "/register", component: Register, layout: null },
+
+  { path: "/product/:id", component: ProductDetail },
 
   { path: "/admin/category", component: CreaterCategory, layout: AdminLayout, role: "admin" },
   { path: "/admin/listcategory", component: ListCategory, layout: AdminLayout, role: "admin" },

@@ -6,8 +6,8 @@ import * as yup from "yup";
 import { toast } from "react-toastify";
 import { Box, Card, CardContent, Grid, TextField, Button, MenuItem, Typography } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import AdminPageTitle from "../../../components/AdminPageTitle";
-import AdminCardHeader from "../../../components/AdminCardHeader";
+import AdminPageTitle from "../../../components/Admin/AdminPageTitle";
+import AdminCardHeader from "../../../components/Admin/AdminCardHeader";
 import Loading from "../../Public/Loading";
 function EditItem() {
   const { EditId } = useParams();

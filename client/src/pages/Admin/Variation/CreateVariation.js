@@ -18,8 +18,8 @@ import Typography from "@mui/material/Typography";
 
 import SaveIcon from "@mui/icons-material/Save";
 
-import AdminPageTitle from "../../../components/AdminPageTitle";
-import AdminCardHeader from "../../../components/AdminCardHeader";
+import AdminPageTitle from "../../../components/Admin/AdminPageTitle";
+import AdminCardHeader from "../../../components/Admin/AdminCardHeader";
 
 function CreateVariation() {
   const [categories, setCategories] = useState([]);

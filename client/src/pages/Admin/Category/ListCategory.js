@@ -16,7 +16,7 @@ import {
   faTrash,
 } from "@fortawesome/free-solid-svg-icons";
 
-import Button from "../../../components/Button";
+import Button from "../../../components/Public/Button";
 
 const cl = className.bind(styles);
 

@@ -26,8 +26,8 @@ import Paper from "@mui/material/Paper";
 import SearchIcon from "@mui/icons-material/Search";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
-import AdminPageTitle from "../../../components/AdminPageTitle";
-import AdminCardHeader from "../../../components/AdminCardHeader";
+import AdminPageTitle from "../../../components/Admin/AdminPageTitle";
+import AdminCardHeader from "../../../components/Admin/AdminCardHeader";
 
 function ListShippingMethod() {
   const [list, setList] = useState([]);

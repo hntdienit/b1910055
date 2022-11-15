@@ -6,8 +6,8 @@ import { useFormik, Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import { Box, Grid, Card, CardContent, TextField, Button, Typography, MenuItem } from "@mui/material";
 import SaveIcon from "@mui/icons-material/Save";
-import AdminPageTitle from "../../../components/AdminPageTitle";
-import AdminCardHeader from "../../../components/AdminCardHeader";
+import AdminPageTitle from "../../../components/Admin/AdminPageTitle";
+import AdminCardHeader from "../../../components/Admin/AdminCardHeader";
 function CreateItem() {
   const [categories, setCategories] = useState([]);
   const [files1, setFiles1] = useState("");
