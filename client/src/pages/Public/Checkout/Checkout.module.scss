@@ -1,0 +1,173 @@
+
+
+.your-order {
+	padding: 30px 40px 45px;
+	border: 3px solid #e4e4e4;
+}
+
+@media (max-width: 767px) {
+  .your-order {
+    padding: 15px;
+  }
+}
+
+.your-order h3 {
+  border-bottom: 1px solid #e4e4e4;
+  font-size: 30px;
+  margin: 0 0 20px;
+  padding-bottom: 10px;
+  width: 100%;
+}
+
+.your-order-table table {
+  background: none;
+  border: 0;
+  width: 100%;
+}
+
+.your-order-table table th, .your-order-table table td {
+  border-bottom: 1px solid #e4e4e4;
+  border-right: medium none;
+  color: #6f7172;
+  font-size: 14px;
+  padding: 15px 0;
+  text-align: left;
+}
+
+@media (max-width: 767px) {
+  .your-order-table table th, .your-order-table table td {
+    padding-right: 10px;
+  }
+}
+
+.your-order-table table th {
+  border-top: medium none;
+  color: #6f7172;
+  font-weight: normal;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+  width: 250px;
+}
+
+.panel-body > p {
+  color: #222;
+}
+
+.your-order-table table .shipping ul li input {
+  position: relative;
+  top: 2px;
+}
+
+.your-order-table table .shipping ul li label {
+  color: #6f7172;
+}
+
+.your-order-table table .shipping th {
+  vertical-align: top;
+}
+
+.your-order-table table .order-total th {
+  border-bottom: 0;
+  font-size: 14px;
+}
+
+.your-order-table table .order-total td {
+  border-bottom: medium none;
+}
+
+.your-order-table table tr.cart_item:hover {
+  background: #F9F9F9;
+}
+
+.your-order-table table tr.order-total td span {
+  color: #222;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+@media (max-width: 575.98px) {
+  .table-responsive-sm {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .table-responsive-md {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .table-responsive-lg {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 1199.98px) {
+  .table-responsive-xl {
+    overflow-x: auto;
+  }
+}
+
+@media (max-width: 1399.98px) {
+  .table-responsive-xxl {
+    overflow-x: auto;
+  }
+}
+
+.order-button-payment button {
+  width: 100%;
+}
+
+.btn {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  background-color: #ff8429;
+  border-color: transparent;
+  color: #222;
+  border-radius: 0px;
+  font-size: 14px;
+  font-weight: 700;
+  height: 60px;
+  line-height: 60px;
+  padding: 0px 50px;
+  border-width: 0;
+  border-style: solid;
+  box-shadow: none;
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  z-index: 1;
+  white-space: nowrap;
+  border-radius: 8px;
+}
+
+.btn::before {
+  position: absolute;
+  content: "";
+  width: 75px;
+  height: 75px;
+  background-color: #000000;
+  border-radius: 50%;
+  left: 0;
+  bottom: 0;
+  transform: translate(-50%, 50%);
+  z-index: -1;
+  opacity: 0.1;
+  transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.btn:hover::before {
+  width: 1200px;
+  height: 470px;
+}
+
+.btn:hover {
+  box-shadow: none;
+  color: #ffffff;
+}

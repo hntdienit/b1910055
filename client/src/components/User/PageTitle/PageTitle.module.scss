@@ -1,0 +1,28 @@
+.page__title {
+  margin-top: 3rem;
+  margin-bottom: 2rem;
+}
+
+.page__title-inner h1 {
+  font-size: 36px;
+  color: #333;
+  text-transform: capitalize;
+  margin-bottom: 25px;
+}
+
+@media only screen and (min-width: 576px) and (max-width: 767px), (max-width: 575px) {
+  .page__title-inner {
+    margin-top: 0px;
+  }
+}
+
+li {
+  font-size: 12px;
+  text-transform: capitalize;
+  color: #292929;
+  font-weight: 500;
+}
+
+a:hover {
+  color: #ff8429;
+}

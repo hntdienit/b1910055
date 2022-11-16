@@ -3,6 +3,12 @@ import AdminLayout from "../layouts/AdminLayout";
 
 /* Pages Public */
 import Home from "../pages/Public/Home";
+import ProductDetail from "../pages/Public/ProductDetail";
+import Cart from "../pages/Public/Cart"
+import Checkout from "../pages/Public/Checkout"
+
+/* Pages User */
+import Wishlist from "../pages/User/Wishlist"
 
 /* Pages Error */
 import Page404 from "../pages/PageError/Page404";
@@ -14,7 +20,6 @@ import Login from "../pages/Auth/Login";
 
 /* Pages Admin */
 import AdminHome from "../pages/Admin/Home";
-import ProductDetail from "../pages/Public/ProductDetail";
 import { CreaterCategory, ListCategory, EditCategory } from "../pages/Admin/Category";
 import { CreateVariation, ListVariation, EditVariation } from "../pages/Admin/Variation";
 import { CreateShippingMethod, ListShippingMethod, EditShippingMethod } from "../pages/Admin/ShippingMethod";
@@ -26,6 +31,9 @@ const routes = [
   { path: "/register", component: Register, layout: null },
 
   { path: "/product/:id", component: ProductDetail },
+  { path: "/cart/:id", component: Cart },
+  { path: "/wishlist/:id", component: Wishlist },
+  { path: "/checkout/:id", component: Checkout },
 
   { path: "/admin/category", component: CreaterCategory, layout: AdminLayout, role: "admin" },
   { path: "/admin/listcategory", component: ListCategory, layout: AdminLayout, role: "admin" },

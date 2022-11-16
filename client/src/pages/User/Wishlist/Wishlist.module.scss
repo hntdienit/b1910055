@@ -1,0 +1,93 @@
+.table-content {
+  table {
+    background: #ffffff;
+    border-color: #e4e4e4;
+    border-radius: 0;
+    border-style: solid;
+    border-width: 1px 0 0 1px;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 0;
+    td.product-name {
+      font-size: 16px;
+      font-weight: 400;
+      text-transform: capitalize;
+      a:hover {
+        color: #ff8429;
+      }
+    }
+  }
+  .product-quantity {
+    float: none;
+  }
+}
+
+.table-content .table > :not(:last-child) > :last-child > * {
+  border-bottom-color: #e4e4e4;
+}
+
+.table-content table td {
+  border-top: medium none;
+  padding: 20px 10px;
+  vertical-align: middle;
+  font-size: 16px;
+}
+
+.table-content table th,
+.table-content table td {
+  border-bottom: 1px solid #e4e4e4;
+  border-right: 1px solid #e4e4e4;
+}
+
+td.product-thumbnail img {
+  width: 5rem;
+}
+
+.product-quantity {
+  float: none;
+}
+
+.btn {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  background-color: #ff8429;
+  border-color: transparent;
+  color: #222;
+  border-radius: 0px;
+  font-size: 14px;
+  font-weight: 700;
+  height: 50px;
+  line-height: 48px;
+  padding: 0px 50px;
+  border-width: 0;
+  border-style: solid;
+  box-shadow: none;
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+  z-index: 1;
+  white-space: nowrap;
+  border-radius: 8px;
+  &::before {
+    position: absolute;
+    content: "";
+    width: 75px;
+    height: 75px;
+    background-color: #000000;
+    border-radius: 50%;
+    left: 0;
+    bottom: 0;
+    transform: translate(-50%, 50%);
+    z-index: -1;
+    opacity: 0.1;
+    transition: all 0.5s cubic-bezier(0.645, 0.045, 0.355, 1);
+  }
+  &:hover::before {
+    width: 1200px;
+    height: 470px;
+  }
+  &:hover {
+    box-shadow: none;
+    color: #fff;
+  }
+}

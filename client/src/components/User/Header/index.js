@@ -13,19 +13,12 @@ import styles from "./Header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faHeart,
-  faCartShopping,
-  faLanguage,
-  faSackDollar,
   faGraduationCap,
   faBook,
-  faDollarSign,
   faHome,
   faUser,
   faSearch,
   faBasketShopping,
-  faTimes,
-  faShoppingBasket,
-  faShoppingBag,
 } from "@fortawesome/free-solid-svg-icons";
 
 // import assets
@@ -135,14 +128,14 @@ function Header() {
                     <div className={cl("header__select", "d-flex align-items-center")}>
                       <div className={cl("header__lang", "header__select-item", "me-2")}>
                         <select>
-                          {LANGUAGE.map(item => (
+                          {LANGUAGE.map((item) => (
                             <option key={item.code}>{item.code}</option>
                           ))}
                         </select>
                       </div>
                       <div className={cl("header__currency", "header__select-item")}>
                         <select>
-                        {PRICE.map(item => (
+                          {PRICE.map((item) => (
                             <option key={item.code}>{item.code}</option>
                           ))}
                         </select>
@@ -230,12 +223,12 @@ function Header() {
                       <div className={cl("header__action", "ml-30")}>
                         <ul>
                           <li>
-                            <Link to={"/"} className={""}>
+                            <Link to={"/wishlist/2"} className={""}>
                               <FontAwesomeIcon icon={faHeart} className={""} />
                             </Link>
                           </li>
                           <li>
-                            <Link to={"#"} className={""}>
+                            <Link to={"/cart/3"} className={""}>
                               <FontAwesomeIcon icon={faBasketShopping} className={""} />
                               <span className={cl("cart-count")}>3</span>
                             </Link>
