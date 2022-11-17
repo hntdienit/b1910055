@@ -2,10 +2,11 @@ import users from './users.js'
 
 /* import routes */
 import categories from "./categories.js"
-import variations from './variations.js';
+// import variations from './variations.js';
 import shippingmethods from './shippingmethods.js';
-import variationoptions from './variationoptions.js';
+// import variationoptions from './variationoptions.js';
 import products from './products.js';
+import promotions from './promotions.js';
 
 const router = (app) => {
   app.get("/", (req, res, next) => {
@@ -18,10 +19,11 @@ const router = (app) => {
   app.use("/auth", users);
   /* router */
   app.use("/categories", categories);
-  app.use("/variations", variations);
+  // app.use("/variations", variations);
   app.use("/shippingmethods", shippingmethods);
-  app.use("/variationoptions", variationoptions);
+  // app.use("/variationoptions", variationoptions);
   app.use("/products", products);
+  app.use("/promotions", promotions);
 
   /* 404 */
   app.use("/:error", (req, res, next) => {

@@ -30,7 +30,6 @@ function App() {
         if (response.data.error) {
           setAuth({ username: "", id: 0, status: false, role: "" });
         } else {
-          // console.log("user id", response.data.id);
           setAuth({
             username: response.data.username,
             id: response.data.id,

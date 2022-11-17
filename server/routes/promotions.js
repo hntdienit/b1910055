@@ -1,19 +1,19 @@
-// import express from "express";
+import express from "express";
 
-// import AuthMiddleware from "../middlewares/AuthMiddleware.js";
+import AuthMiddleware from "../middlewares/AuthMiddleware.js";
 
-// import VariationController from "../controllers/variations.js";
+import PromotionsController from "../controllers/promotions.js";
 
-// const router = express.Router();
+const router = express.Router();
 
 // router
 //   .route("/getAll")
 //   .get(VariationController.getAll)
 
-//   router
-//   .route("/")
+  router
+  .route("/")
 //   .get(VariationController.pagination)
-//   .post(AuthMiddleware.validateToken, VariationController.postCreateVariation);
+  .post(AuthMiddleware.validateToken, PromotionsController.postCreatePromotion);
 
 // router
 //   .route("/:variationId")
@@ -22,4 +22,4 @@
 //   .delete(AuthMiddleware.validateToken, VariationController.deleteVariationId);
 
 
-// export default router;
+export default router;

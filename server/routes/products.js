@@ -22,6 +22,8 @@ router
     ProductController.postCreateProduct
   );
 
+router.route("/newproduct").get(ProductController.getNewProduct);
+
 // router
 //   .route("/:Id")
 //   .get(ItemController.getItemId)

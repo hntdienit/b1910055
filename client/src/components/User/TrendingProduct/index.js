@@ -1,23 +1,35 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
+import axios from "axios";
+import { toast } from "react-toastify";
 import className from "classnames/bind";
 import styles from "./TrendingProduct.module.scss";
 
-// import FontAwesomeIcon
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft, faChevronRight, faHeart, faLock, faShoppingBag } from "@fortawesome/free-solid-svg-icons";
 
-// import components
 import Button from "../../Public/Button";
 import Image from "../../Public/Image";
 
 const cl = className.bind(styles);
 
 function TrendingProduct(sliderOneP) {
-  const [data, setData] = useState(sliderOneP.data);
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_URL_API}/products/newproduct`).then((response) => {
+      if (response.data.error) {
+        toast.error(`Data fetch failed - error: ${response.data.error}`, {});
+      } else {
+        setData(response.data);
+      }
+    });
+  }, []);
 
   const customeSlider = useRef();
 
@@ -84,26 +96,7 @@ function TrendingProduct(sliderOneP) {
       <div className={cl("wrapper")}>
         <div className={cl("section__title-wrapper", "d-sm-flex align-items-start")}>
           <div className={cl("me-5")}>
-            <h3 className={cl("section__title")}>Special Offer</h3>
-          </div>
-          <div className={cl("product__tab")}>
-            <ul className={cl("nav", "nav-tabs")}>
-              <li className={cl("")}>
-                <button className={cl("nav-link", "active")} type="button">
-                  New
-                </button>
-              </li>
-              <li className={cl("")}>
-                <button className={cl("nav-link")} type="button">
-                  Featured
-                </button>
-              </li>
-              <li className={cl("")}>
-                <button className={cl("nav-link")} type="button">
-                  Top Sellers
-                </button>
-              </li>
-            </ul>
+            <h3 className={cl("section__title")}>Trending Product</h3>
           </div>
         </div>
         <div>
@@ -114,24 +107,22 @@ function TrendingProduct(sliderOneP) {
                   <div className={cl("mb-3")}>
                     <div className={cl("product__item")}>
                       <div className={cl("product__thumb", "overflow-hidden")}>
-                        <Link href="/">
-                          <Image src={item.img} />
-                        </Link>
+                        <Image src={item.ProductItems[0].Images[0].url} />
                         <div className={cl("product__action", "transition-3")}>
                           <ul>
                             <li>
-                              <Button to={"/"}>
-                                <FontAwesomeIcon icon={faHeart} className={""} />
+                              <Button to={`/product/${item.id}`}>
+                                <VisibilityIcon />
                               </Button>
                             </li>
                             <li>
                               <Button to={"/"}>
-                                <FontAwesomeIcon icon={faHeart} className={""} />
+                                <FavoriteBorderIcon />
                               </Button>
                             </li>
                             <li>
                               <Button to={"/"}>
-                                <FontAwesomeIcon icon={faHeart} className={""} />
+                                <AddShoppingCartIcon />
                               </Button>
                             </li>
                           </ul>
@@ -140,13 +131,13 @@ function TrendingProduct(sliderOneP) {
                     </div>
                     <div className="pt-3 text-center">
                       <Link className={cl("product__tag")} href="#">
-                        Wooden
+                        {item.Category.name}
                       </Link>
                       <h3 className={cl("product__title")}>
-                        <a href="product-details.html">Mauris volutpat id lorem ut efficitur</a>
+                        <a href="product-details.html">{item.name}</a>
                       </h3>
                       <div className={cl("product__price")}>
-                        <span>$150.00</span>
+                        <span>${item.ProductItems[0].price}</span>
                       </div>
                     </div>
                   </div>

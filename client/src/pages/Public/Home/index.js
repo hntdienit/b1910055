@@ -1,3 +1,4 @@
+import { slider, category, sliderOneP, category1, banner } from "./data";
 import Category from "../../../components/User/Category";
 import SliderM from "../../../components/User/Slider";
 import SliderOneP from "../../../components/User/SliderOneP";
@@ -5,7 +6,6 @@ import TrendingProduct from "../../../components/User/TrendingProduct";
 import Banner from "../../../components/User/Banner";
 import Features from "../../../components/User/Features";
 import NewProduct from "../../../components/User/NewProduct"
-import { slider, category, sliderOneP, category1, banner } from "./data";
 
 function Home() {
   return (
@@ -28,9 +28,8 @@ function Home() {
           <Features data={banner}></Features>
         </div>
         <div className={"row py-4"}>
-          <NewProduct data={category1}></NewProduct>
+          <NewProduct></NewProduct>
         </div>
-
       </div>
     </>
   );

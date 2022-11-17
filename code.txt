@@ -44,4 +44,19 @@ toast.info("Info Notification !", {});
 import AdminPageTitle from "../../../components/AdminPageTitle";
 <AdminPageTitle>Variation</AdminPageTitle>
 ----------------------------------------------------------------------------------------------
-
+useEffect(() => {
+    axios.get(`${process.env.REACT_APP_URL_API}/products`).then((response) => {
+      if (response.data.error) {
+        toast.error(`Data fetch failed - error: ${response.data.error}`, {});
+      } else {
+        setProduct(response.data);
+      }
+    });
+    axios.get(`${process.env.REACT_APP_URL_API}/categories/getAll`).then((response) => {
+      if (response.data.error) {
+        toast.error(`Data fetch failed - error: ${response.data.error}`, {});
+      } else {
+        setCategories(response.data);
+      }
+    });
+  }, []);

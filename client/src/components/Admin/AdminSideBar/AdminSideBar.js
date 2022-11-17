@@ -18,14 +18,14 @@ const cl = className.bind(styles);
 function SideBar() {
   const { logo, setLogo } = useContext(MenuContext);
 
-  const [subMenu, setSubMenu] = useState([false, false, false, false, false, false]);
+  const [subMenu, setSubMenu] = useState([false, false, false, false, false]);
 
   const menu = [
     {
       name: "Main",
       data: [
         {
-          intMenu: 5,
+          intMenu: 0,
           subMenuitem: true,
           iconMenu: <FontAwesomeIcon icon={faListSquares} />,
           nameMenu: "Product",
@@ -33,30 +33,14 @@ function SideBar() {
           linkList: "/admin/listproduct",
         },
         {
-          intMenu: 0,
+          intMenu: 1,
           subMenuitem: false,
           iconMenu: <FontAwesomeIcon icon={faListSquares} />,
           nameMenu: "Home",
           linkMenu: "/admin",
         },
         {
-          intMenu: 1,
-          subMenuitem: true,
-          iconMenu: <FontAwesomeIcon icon={faListSquares} />,
-          nameMenu: "Variation",
-          linkCreate: "/admin/variation",
-          linkList: "/admin/listvariation",
-        },
-        {
           intMenu: 2,
-          subMenuitem: true,
-          iconMenu: <FontAwesomeIcon icon={faListSquares} />,
-          nameMenu: "Variation Option",
-          linkCreate: "/admin/variationoption",
-          linkList: "/admin/listvariationoption",
-        },
-        {
-          intMenu: 3,
           subMenuitem: true,
           iconMenu: <FontAwesomeIcon icon={faListSquares} />,
           nameMenu: "Category",
@@ -64,12 +48,20 @@ function SideBar() {
           linkList: "/admin/listcategory",
         },
         {
-          intMenu: 4,
+          intMenu: 3,
           subMenuitem: true,
           iconMenu: <FontAwesomeIcon icon={faListSquares} />,
           nameMenu: "Shipping Method",
           linkCreate: "/admin/shippingmethod",
           linkList: "/admin/listshippingmethod",
+        },
+        {
+          intMenu: 4,
+          subMenuitem: true,
+          iconMenu: <FontAwesomeIcon icon={faListSquares} />,
+          nameMenu: "Promotion",
+          linkCreate: "/admin/promotion",
+          linkList: "/admin/listpromotion",
         },
         
       ],

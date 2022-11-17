@@ -1,10 +1,36 @@
 import { Op } from "sequelize";
-import VariationOptions from "../models/VariationOptions.js";
-import Variations from "../models/Variations.js";
+// import VariationOptions from "../models/VariationOptions.js";
+// import Variations from "../models/Variations.js";
+import Categories from "../models/Categories.js";
 import Products from "../models/Products.js";
 import ProductItems from "../models/ProductItems.js";
 import Images from "../models/Images.js";
 import fs from "fs";
+
+const getNewProduct = async (req, res, next) => {
+  const list = await Products.findAll({
+    include: [
+      { model: Categories },
+      {
+        model: ProductItems,
+        include: [
+          {
+            model: Images,
+            // where: {
+            //   productItemId: 24
+            // order: ["title", "DESC"],
+            // },
+            required: false,
+          }
+        ],
+      },
+    ],
+    limit: 22,
+    order: [["createdAt", "DESC"]],
+  });
+
+  return res.status(200).json(list);
+};
 
 const getAll = async (req, res, next) => {
   const list = await Images.findAll({
@@ -148,6 +174,7 @@ const postCreateItem = async (req, res, next) => {
 //   });
 // };
 export default {
+  getNewProduct,
   getAll,
   // getItemId,
   postCreateProduct,

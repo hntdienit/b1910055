@@ -36,7 +36,7 @@ function CreateItem() {
   };
 
   const postForm = async (data) => {
-    console.log(data);
+    // console.log(data);
 
     //   const formData = new FormData();
     //   for (let data in datas) {
@@ -78,7 +78,7 @@ function CreateItem() {
           console.log(response.data.hinh);
           setHinh(response.data.hinh)
           // toast.success("Add new product successfully!", {});
-          // navigate("/admin/listproduct");
+          navigate("/admin");
         }
       });
   };

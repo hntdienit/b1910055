@@ -15,8 +15,6 @@ import Reviews from "./Reviews.js";
 import ShippingMethods from "./ShippingMethods.js";
 import "./StoreInformations.js";
 import Users from "./Users.js";
-import VariationOptions from "./VariationOptions.js";
-import Variations from "./Variations.js";
 import Wishlists from "./Wishlists.js";
 
 const relationship = () => {
@@ -35,14 +33,6 @@ const relationship = () => {
   /* Categories x Products: One to Many */
   Categories.hasMany(Products, { foreignKey: "categoryId" });
   Products.belongsTo(Categories, { foreignKey: "categoryId" });
-
-  /* Categories x Variations: One to Many */
-  Categories.hasMany(Variations, { foreignKey: "categoryId" });
-  Variations.belongsTo(Categories, { foreignKey: "categoryId" });
-
-  /* Categories x Promotions: Many to Many */
-  Categories.belongsToMany(Promotions, { through: "CategoryPromotion", foreignKey: "categoryId" });
-  Promotions.belongsToMany(Categories, { through: "CategoryPromotion", foreignKey: "promotionId" });
 
   /* Categories x Categories: One to Many */
   Categories.hasMany(Categories, { foreignKey: "parent" });
@@ -84,9 +74,9 @@ const relationship = () => {
   ProductItems.hasMany(Wishlists, { foreignKey: "productItemId" });
   Wishlists.belongsTo(ProductItems, { foreignKey: "productItemId" });
 
-  /* ProductItems x VariationOptions: Many to Many */
-  ProductItems.belongsToMany(VariationOptions, { through: "ProductItemOption", foreignKey: "productItemId" });
-  VariationOptions.belongsToMany(ProductItems, { through: "ProductItemOption", foreignKey: "variationOptionId" });
+  /* ProductItems x Promotions: Many to Many */
+  ProductItems.belongsToMany(Promotions, { through: "ProductItemPromotion", foreignKey: "ProductItemId" });
+  Promotions.belongsToMany(ProductItems, { through: "ProductItemPromotion", foreignKey: "promotionId" });
 
   /* Products x ProductItems: One to Many */
   Products.hasMany(ProductItems, { foreignKey: "productId" });
@@ -112,9 +102,6 @@ const relationship = () => {
   Users.hasMany(Wishlists, { foreignKey: "userId" });
   Wishlists.belongsTo(Users, { foreignKey: "userId" });
 
-  /* Variations x VariationOptions: One to Many */
-  Variations.hasMany(VariationOptions, { foreignKey: "variationId" });
-  VariationOptions.belongsTo(Variations, { foreignKey: "variationId" });
 };
 
 export default relationship;
