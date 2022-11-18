@@ -1,24 +1,33 @@
-import React, { useEffect, useState} from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
+import Swal from "sweetalert2";
 import axios from "axios";
-import className from "classnames/bind";
-
-import styles from "./Category.module.scss";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAdd,
-  faEye,
-  faHouse,
-  faMagnifyingGlass,
-  faPen,
-  faTrash,
-} from "@fortawesome/free-solid-svg-icons";
-
-import Button from "../../../components/Public/Button";
-
-const cl = className.bind(styles);
+import { useFormik } from "formik";
+import * as yup from "yup";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import InputAdornment from "@mui/material/InputAdornment";
+import Typography from "@mui/material/Typography";
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import SearchIcon from "@mui/icons-material/Search";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import AdminPageTitle from "../../../components/Admin/AdminPageTitle";
+import AdminCardHeader from "../../../components/Admin/AdminCardHeader";
 
 function ListCategory() {
   const [list, setList] = useState([]);
@@ -27,14 +36,12 @@ function ListCategory() {
   const [pages, setPages] = useState(0);
   const [rows, setRows] = useState(0);
   const [keyword, setKeyword] = useState("");
+  const [deleteload, setDeleteload] = useState(0);
   const [query, setQuery] = useState("");
-
 
   useEffect(() => {
     axios
-      .get(
-        `${process.env.REACT_APP_URL_API}/categories?page=${page}&limit=${limit}`
-      )
+      .get(`${process.env.REACT_APP_URL_API}/categories?keyword=${keyword}&page=${page}&limit=${limit}`)
       .then((response) => {
         if (response.data.error) {
           alert(response.data.error);
@@ -45,194 +52,180 @@ function ListCategory() {
           setRows(response.data.totalRows);
         }
       });
-  }, [page, limit]);
+  }, [page, limit, keyword, deleteload]);
 
   const changePage = ({ selected }) => {
     setPage(selected);
   };
 
-  const deleteCaTegory = (CategoryId) => {
-    axios
-      .delete(`${process.env.REACT_APP_URL_API}/categories/${CategoryId}`, {
-        headers: {
-          accessToken: localStorage.getItem("accessToken"),
-        },
-      })
-      .then((response) => {
-        setList(
-          list.filter((val) => {
-            return val.id !== CategoryId;
+  const deleteCaTegory = (Id) => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios
+          .delete(`${process.env.REACT_APP_URL_API}/categories/${Id}`, {
+            headers: {
+              accessToken: localStorage.getItem("accessToken"),
+            },
           })
-        );
-        // navigate("/admin/listcategory");
-      });
+          .then((response) => {
+            setList(
+              list.filter((val) => {
+                return val.id !== Id;
+              })
+            );
+          });
+        Swal.fire("Deleted!", "Your file has been deleted.", "success");
+        setDeleteload(deleteload + 1);
+      }
+    });
   };
 
+  const validationSchema = yup.object({});
+  const formik = useFormik({
+    initialValues: {
+      keyword: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: (values) => {
+      setKeyword(values.keyword);
+    },
+  });
   return (
     <>
-      <div
-        className={cl(
-          "page-breadcrumb",
-          "d-none d-sm-flex align-items-center mb-3"
-        )}
-      >
-        <div className={cl("breadcrumb-title", "pe-2")}>
-          <Link to={"/admin"}>
-            <FontAwesomeIcon icon={faHouse} className={""} />
-          </Link>
-        </div>
-        <div className={cl("ps-3")}>
-          <nav>
-            <ol className={cl("breadcrumb", "mb-0 p-0")}>
-              <li className={cl("breadcrumb-item")}>Thể loại</li>
-            </ol>
-          </nav>
-        </div>
-      </div>
-
-      <div className={cl("card")}>
-        <div className={cl("card-body")}>
-          <div className={cl("d-flex align-items-center")}>
-            <h5 className={cl("mb-0")}>Danh sách thể loại</h5>
-            <form className={cl("ms-auto position-relative")}>
-              <div
-                onClick={() => {
-                  alert("tim");
+      <AdminPageTitle>category</AdminPageTitle>
+      <Card elevation={4}>
+        <AdminCardHeader list title={"category"} to={"/admin/category"}>
+          <Box component={"form"} sx={{ flexGrow: 1 }} onSubmit={formik.handleSubmit} autoComplete="off">
+            <Typography component={"div"}>
+              <TextField
+                size="small"
+                id="keyword"
+                name="keyword"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Button type="submit">
+                        <SearchIcon />
+                      </Button>
+                    </InputAdornment>
+                  ),
                 }}
-                className={cl(
-                  "search-icon",
-                  "position-absolute top-50 translate-middle-y px-3"
-                )}
-              >
-                <FontAwesomeIcon icon={faMagnifyingGlass} className={""} />
-              </div>
-              <input
-                className={cl("form-control ps-5")}
-                type="text"
-                placeholder="Tìm kiếm...."
+                variant="outlined"
+                placeholder="Search item......."
+                value={formik.values.keyword}
+                onChange={formik.handleChange}
               />
-            </form>
-            <Button
-              to={"/admin/category"}
-              leftIcon={<FontAwesomeIcon icon={faAdd} />}
-              className={cl("ms-5 py-1 px-3")}
-              primary
-            >
-              New Category
-            </Button>
-          </div>
-          <div className={cl("table-responsive", "mt-3")}>
-            <table className={cl("table align-middle")}>
-              <thead className={cl("table-secondary")}>
-                <tr>
-                  <th></th>
-                  <th>#</th>
-                  <th>Tên thể loại</th>
-                  <th>chức năng</th>
-                </tr>
-              </thead>
-              <tbody>
-                {list.map((value, index) => {
-                  return (
-                    <tr key={index}>
-                      <td></td>
-                      <td>{(page + 1) * limit - limit + index + 1}</td>
-                      {/* <td>
-                    <div class="d-flex align-items-center gap-3 cursor-pointer">
-                      <img
-                        src="assets/images/avatars/avatar-1.png"
-                        class="rounded-circle"
-                        width="44"
-                        height="44"
-                        alt=""
-                      />
-                      <div class="">
-                        <p class="mb-0">Thomas Hardy</p>
-                      </div>
-                    </div>
-                  </td> */}
-                      <td>{value.name}</td>
-                      <td>
-                        <div
-                          className={cl(
-                            "table-actions d-flex align-items-center gap-3 fs-6"
-                          )}
+            </Typography>
+          </Box>
+        </AdminCardHeader>
+        <Typography component={"div"} marginTop={2} marginX={3}>
+          <Card elevation={3}>
+            <TableContainer component={Paper}>
+              <Table sx={{ minWidth: 650 }}>
+                <TableHead>
+                  <TableRow style={{ backgroundColor: "#e2e3e5" }}>
+                    <TableCell align="center">
+                      <Typography component={"div"} fontWeight="bold">
+                        #
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography component={"div"} fontWeight="bold">
+                        Name
+                      </Typography>
+                    </TableCell>
+                    <TableCell align="center">
+                      <Typography component={"div"} fontWeight="bold">
+                        Action
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {list.map((item, index) => (
+                    <TableRow key={item.id} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
+                      <TableCell component="th" scope="row" align="center">
+                        {(page + 1) * limit - limit + index + 1}
+                      </TableCell>
+                      <TableCell align="center">{item.name}</TableCell>
+                      <TableCell align="center">
+                        <Link to={`/admin/editcategory/${item.id}`}>
+                          <Button color="warning">
+                            <EditIcon />
+                          </Button>
+                        </Link>
+                        |
+                        <Button
+                          color="error"
+                          onClick={() => {
+                            deleteCaTegory(item.id);
+                          }}
                         >
-                          <div className={cl("text-primary")} title="Views">
-                            <FontAwesomeIcon icon={faEye} className={""} />
-                          </div>
-                          <div className={cl("")} title="Edit">
-                            <button>
-                              <Link
-                                to={`/admin/editcategory/${value.id}`}
-                                className={cl("text-warning")}
-                              >
-                                <FontAwesomeIcon icon={faPen} className={""} />
-                              </Link>
-                            </button>
-                          </div>
-                          <div className={cl("text-danger")} title="Delete">
-                            <button
-                              onClick={() => {
-                                deleteCaTegory(value.id);
-                              }}
-                            >
-                              <FontAwesomeIcon icon={faTrash} className={""} />
-                            </button>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-            <div className={cl("d-flex flex-row mt-4")}>
-              <div className={cl("")}>
-                <select
-                  className={cl("form-select ms-5")}
-                  onChange={(e) => {
-                    setLimit(e.target.value);
-                    setPage(0)
-                  }}
-                >
-                  <option value="5">5</option>
-                  <option value="10">10</option>
-                  <option value="15">15</option>
-                  <option value="20">20</option>
-                </select>
-              </div>
-              <nav
-                className="pagination is-centered ms-auto me-5"
-                key={rows}
-                role="navigation"
-                aria-label="pagination"
+                          <DeleteForeverIcon />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Card>
+        </Typography>
+        <Grid container spacing={2} paddingX={3} paddingY={3}>
+          <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+            <FormControl sx={{ minWidth: 120 }}>
+              <InputLabel id="select-label">Pages</InputLabel>
+              <Select
+                labelId="select-label"
+                value={limit}
+                label="Pages"
+                size="small"
+                onChange={(e) => {
+                  setLimit(e.target.value);
+                  setPage(0);
+                }}
               >
-                <ReactPaginate
-                  nextLabel="next >"
-                  onPageChange={changePage}
-                  pageRangeDisplayed={1}
-                  marginPagesDisplayed={2}
-                  pageCount={pages}
-                  previousLabel="< previous"
-                  pageClassName="page-item"
-                  pageLinkClassName="page-link"
-                  previousClassName="page-item"
-                  previousLinkClassName="page-link"
-                  nextClassName="page-item"
-                  nextLinkClassName="page-link"
-                  breakLabel="..."
-                  breakClassName="page-item"
-                  breakLinkClassName="page-link"
-                  containerClassName="pagination"
-                  activeClassName="active"
-                  renderOnZeroPageCount={null}
-                />
-              </nav>
-            </div>
-          </div>
-        </div>
-      </div>
+                <MenuItem value={5}>5</MenuItem>
+                <MenuItem value={10}>10</MenuItem>
+                <MenuItem value={15}>15</MenuItem>
+                <MenuItem value={20}>20</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
+            <Typography component={"div"}>
+              <ReactPaginate
+                nextLabel=">"
+                onPageChange={changePage}
+                pageRangeDisplayed={1}
+                marginPagesDisplayed={1}
+                pageCount={pages}
+                previousLabel="<"
+                pageClassName="page-item"
+                pageLinkClassName="page-link"
+                previousClassName="page-item"
+                previousLinkClassName="page-link"
+                nextClassName="page-item"
+                nextLinkClassName="page-link"
+                breakLabel="..."
+                breakClassName="page-item"
+                breakLinkClassName="page-link"
+                containerClassName="pagination"
+                activeClassName="active"
+                renderOnZeroPageCount={null}
+              />
+            </Typography>
+          </Grid>
+        </Grid>
+      </Card>
     </>
   );
 }

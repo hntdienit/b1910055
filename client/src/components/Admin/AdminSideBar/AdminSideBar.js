@@ -2,12 +2,17 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { MenuContext } from "../../../helpers/MenuContext.js";
+import HomeIcon from "@mui/icons-material/Home";
+import CategoryIcon from "@mui/icons-material/Category";
+import InventoryIcon from "@mui/icons-material/Inventory";
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 
 import className from "classnames/bind";
 import styles from "./AdminSideBar.module.scss";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSquarePlus, faListDots, faListSquares, faCaretRight, faCaretDown } from "@fortawesome/free-solid-svg-icons";
 
 import images from "../../../assets/images";
 
@@ -18,7 +23,7 @@ const cl = className.bind(styles);
 function SideBar() {
   const { logo, setLogo } = useContext(MenuContext);
 
-  const [subMenu, setSubMenu] = useState([false, false, false, false, false]);
+  const [subMenu, setSubMenu] = useState([false, false, false, false]);
 
   const menu = [
     {
@@ -26,44 +31,35 @@ function SideBar() {
       data: [
         {
           intMenu: 0,
-          subMenuitem: true,
-          iconMenu: <FontAwesomeIcon icon={faListSquares} />,
-          nameMenu: "Product",
-          linkCreate: "/admin/product",
-          linkList: "/admin/listproduct",
-        },
-        {
-          intMenu: 1,
           subMenuitem: false,
-          iconMenu: <FontAwesomeIcon icon={faListSquares} />,
+          iconMenu: <HomeIcon />,
           nameMenu: "Home",
           linkMenu: "/admin",
         },
         {
-          intMenu: 2,
+          intMenu: 1,
           subMenuitem: true,
-          iconMenu: <FontAwesomeIcon icon={faListSquares} />,
+          iconMenu: <CategoryIcon />,
           nameMenu: "Category",
           linkCreate: "/admin/category",
           linkList: "/admin/listcategory",
         },
         {
-          intMenu: 3,
+          intMenu: 2,
           subMenuitem: true,
-          iconMenu: <FontAwesomeIcon icon={faListSquares} />,
-          nameMenu: "Shipping Method",
-          linkCreate: "/admin/shippingmethod",
-          linkList: "/admin/listshippingmethod",
+          iconMenu: <InventoryIcon />,
+          nameMenu: "Product",
+          linkCreate: "/admin/product",
+          linkList: "/admin/listproduct",
         },
         {
-          intMenu: 4,
+          intMenu: 3,
           subMenuitem: true,
-          iconMenu: <FontAwesomeIcon icon={faListSquares} />,
+          iconMenu: <LocalOfferIcon />,
           nameMenu: "Promotion",
           linkCreate: "/admin/promotion",
           linkList: "/admin/listpromotion",
         },
-        
       ],
     },
   ];
@@ -140,9 +136,9 @@ function SideBar() {
                                   <span className={cl("ms-3")}>
                                     {item.nameMenu}
                                     {subMenu[item.intMenu] === true ? (
-                                      <FontAwesomeIcon icon={faCaretDown} className={"align-middle float-end"} />
+                                      <ArrowDropDownIcon className={"align-middle float-end"} />
                                     ) : (
-                                      <FontAwesomeIcon icon={faCaretRight} className={"float-end"} />
+                                      <ArrowRightIcon className={"float-end"} />
                                     )}
                                   </span>
                                 </div>
@@ -151,13 +147,13 @@ function SideBar() {
                                 <ul className={cl("sub-menu")}>
                                   <li>
                                     <Link to={item.linkCreate}>
-                                      <FontAwesomeIcon icon={faSquarePlus} className={"me-2 text-success"} />
+                                      <AddToPhotosIcon className={"me-2 text-success"} />
                                       New {item.nameMenu}
                                     </Link>
                                   </li>
                                   <li>
                                     <Link to={item.linkList}>
-                                      <FontAwesomeIcon icon={faListDots} className={"me-2 text-success"} />
+                                      <ListAltIcon className={"me-2 text-success"} />
                                       List {item.nameMenu}
                                     </Link>
                                   </li>

@@ -1,5 +1,5 @@
-// import Variations from "../models/Variations.js";
 import Promotions from "../models/Promotions.js";
+import ProductItemPromotions from "../models/ProductItemPromotions.js";
 // import { Op } from "sequelize";
 
 // const getAll = async (req, res, next) => {
@@ -14,9 +14,24 @@ import Promotions from "../models/Promotions.js";
 // };
 
 const postCreatePromotion = async (req, res, next) => {
-  const promotion = req.body;
-  const newPromotion = await Promotions.create(promotion);
-  return res.status(201).json(newPromotion);
+  const name = req.body.name;
+  const discount = req.body.discount;
+  const startdate = req.body.startdate;
+  const enddate = req.body.enddate;
+  const productItem = req.body.productItem;
+
+  const newPromotion = await Promotions.create({
+    name: name,
+    discount: discount,
+    startdate: startdate,
+    enddate: enddate,
+  });
+
+  productItem.map(async (item) => {
+    await ProductItemPromotions.create({ ProductItemId: item, promotionId: newPromotion.id });
+  });
+
+  return res.status(201).json();
 };
 
 // const patchVariationId = async (req, res, next) => {

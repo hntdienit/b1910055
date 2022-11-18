@@ -75,8 +75,8 @@ const relationship = () => {
   Wishlists.belongsTo(ProductItems, { foreignKey: "productItemId" });
 
   /* ProductItems x Promotions: Many to Many */
-  ProductItems.belongsToMany(Promotions, { through: "ProductItemPromotion", foreignKey: "ProductItemId" });
-  Promotions.belongsToMany(ProductItems, { through: "ProductItemPromotion", foreignKey: "promotionId" });
+  ProductItems.belongsToMany(Promotions, { through: "ProductItemPromotions", foreignKey: "ProductItemId" });
+  Promotions.belongsToMany(ProductItems, { through: "ProductItemPromotions", foreignKey: "promotionId" });
 
   /* Products x ProductItems: One to Many */
   Products.hasMany(ProductItems, { foreignKey: "productId" });

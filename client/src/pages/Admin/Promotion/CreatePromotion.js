@@ -4,7 +4,7 @@ import axios from "axios";
 
 import { toast } from "react-toastify";
 
-import { useFormik, Field } from "formik";
+import { useFormik } from "formik";
 import * as yup from "yup";
 
 import Box from "@mui/material/Box";
@@ -14,13 +14,6 @@ import CardContent from "@mui/material/CardContent";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Checkbox from "@mui/material/Checkbox";
-import FormControlLabel from "@mui/material/FormControlLabel";
-
-// import dayjs from "dayjs";
-// import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-// // import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-// import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 
 import SaveIcon from "@mui/icons-material/Save";
 
@@ -28,46 +21,72 @@ import AdminPageTitle from "../../../components/Admin/AdminPageTitle";
 import AdminCardHeader from "../../../components/Admin/AdminCardHeader";
 
 function CreatePromotion() {
+  const date = new Date();
+  let d = date.getDate();
+  let m = date.getMonth();
+  let y = date.getFullYear();
+
   let navigate = useNavigate();
 
+  const [productItemAPI, setProductItemAPI] = useState([]);
+
+  useEffect(() => {
+    axios.get(`${process.env.REACT_APP_URL_API}/products/getallproductitem`).then((response) => {
+      if (response.data.error) {
+        toast.error(`Data fetch failed - error: ${response.data.error}`, {});
+      } else {
+        setProductItemAPI(response.data);
+      }
+    });
+  }, []);
+
   const postForm = async (data) => {
-    console.log("a", data);
-    // await axios
-    //   .post(`${process.env.REACT_APP_URL_API}/promotions`, data, {
-    //     headers: {
-    //       accessToken: localStorage.getItem("accessToken"),
-    //     },
-    //   })
-    //   .then((response) => {
-    //     if (response.data.error) {
-    //       toast.error(`Add new shipping method failed! - error: ${response.data.error}`, {});
-    //     } else {
-    //       toast.success("Add new shipping method successfully!", {});
-    //       navigate("/admin/listshippingmethod");
-    //     }
-    //   });
+    await axios
+      .post(`${process.env.REACT_APP_URL_API}/promotions`, data, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        if (response.data.error) {
+          toast.error(`${response.data.error}`, {});
+        } else {
+          toast.success("Add new Promotion successfully!", {});
+          navigate("/admin/listpromotion");
+        }
+      });
   };
+
   const validationSchema = yup.object({
     name: yup
       .string()
-      .min(3, "The shipping method names need more than 3 characters!")
-      .max(15, "The shipping method names need less than 15 characters!")
-      .required("The shipping method name cannot be empty!"),
-    discount: yup.number().required("The shipping method discount cannot be empty!"),
+      .min(3, "Promotion names need more than 3 characters!")
+      .max(15, "Promotion names need less than 15 characters!")
+      .required("Promotion names cannot be empty!"),
+    discount: yup
+      .number("Promotion discounts must be the number")
+      .integer("Promotion discount should be an integer")
+      .min(1, "Promotion discounts must be greater than or equal to 1")
+      .max(99, "Promotional discount must be less than or equal to 99")      
+      .required("Promotion discounts cannot be empty!"),
+    startdate: yup
+      .date()
+      .min(`${y}-${m + 1}-${d}`, "Date cannot be less than current date!")
+      .required(),
+    enddate: yup.date().min(yup.ref("startdate"), "End date cannot be before start date").required(),
+    productItem: yup.array().min(1),
   });
-
-  const tags1 = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18 ,19, 20, 21, 22, 23];
 
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
       name: "",
       discount: "",
-      startdate: "2022-12-24",
-      enddate: "2022-12-24",
+      startdate: `${y}-${m + 1}-${d}`,
+      enddate: `${y}-${m + 1}-${d + 3}`,
       productItem: [],
     },
-    // validationSchema: validationSchema,
+    validationSchema: validationSchema,
     onSubmit: (values) => {
       postForm(values);
     },
@@ -95,6 +114,7 @@ function CreatePromotion() {
             <Grid container justifyContent="center" alignItems="center" spacing={2} paddingX={2}>
               <Grid item xs={12} sm={12} md={12} lg={12} xl={12} height="200px" display="flex" flexDirection="column">
                 <h5>Product item | selected ({formik.values.productItem.length})</h5>
+                <Box color={"red"}>{formik.errors.productItem}</Box>
                 <Grid
                   container
                   justifyContent="center"
@@ -104,16 +124,18 @@ function CreatePromotion() {
                   flex={1}
                   overflow="auto"
                 >
-                  {tags1.map((item) => (
-                    <Grid key={item} item xs={12} sm={12} md={6} lg={3} xl={3} textAlign="center">
+                  {productItemAPI.map((item) => (
+                    <Grid key={item.id} item xs={12} sm={12} md={6} lg={3} xl={3} textAlign="center">
                       <input
-                        id={item}
+                        id={item.id}
                         type="checkbox"
-                        name={item}
-                        checked={formik.values.productItem.includes(item)}
+                        name={item.id}
+                        checked={formik.values.productItem.includes(item.id)}
                         onChange={handleChangeProductItem}
                       />
-                      <label htmlFor={item}>san pham 2(xanh)</label>
+                      <label htmlFor={item.id}>
+                        &nbsp;&nbsp;{item.Product.name}({item.color})
+                      </label>
                     </Grid>
                   ))}
                 </Grid>
@@ -137,7 +159,7 @@ function CreatePromotion() {
                   margin="normal"
                   id="discount"
                   name="discount"
-                  label="discount"
+                  label="discount (%)"
                   value={formik.values.discount}
                   onChange={formik.handleChange}
                   error={formik.touched.discount && Boolean(formik.errors.discount)}

@@ -34,9 +34,11 @@ const getNewProduct = async (req, res, next) => {
 
 const getAllProductItem = async (req, res, next) => {
   const list = await ProductItems.findAll({
-    // where: {
-    //   productItemId: 6
-    // }
+    include: [
+      {
+        model: Products,
+        required: false,
+      }]
   });
 
   return res.status(200).json(list);
