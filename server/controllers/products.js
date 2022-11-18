@@ -32,6 +32,16 @@ const getNewProduct = async (req, res, next) => {
   return res.status(200).json(list);
 };
 
+const getAllProductItem = async (req, res, next) => {
+  const list = await ProductItems.findAll({
+    // where: {
+    //   productItemId: 6
+    // }
+  });
+
+  return res.status(200).json(list);
+};
+
 const getAll = async (req, res, next) => {
   const list = await Images.findAll({
     // where: {
@@ -176,6 +186,7 @@ const postCreateItem = async (req, res, next) => {
 export default {
   getNewProduct,
   getAll,
+  getAllProductItem,
   // getItemId,
   postCreateProduct,
   postCreateItem,
