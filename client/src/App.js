@@ -5,11 +5,13 @@ import axios from "axios";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import { AuthContext } from "./helpers/AuthContext.js";
+import { AuthContext } from "./helpers/Context/AuthContext";
+import { CartContext } from "./helpers/Context/CartContext";
 
 import routes from "./routes";
 import DefaultLayout from "./layouts/DefaultLayout";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.js";
+
 
 function App() {
   const [auth, setAuth] = useState({
@@ -18,6 +20,8 @@ function App() {
     status: false,
     role: "",
   });
+
+  const [cartItems, setCartItems] = useState(0)
 
   useEffect(() => {
     axios
@@ -43,6 +47,7 @@ function App() {
   return (
     <div className="App">
       <AuthContext.Provider value={{ auth, setAuth }}>
+      <CartContext.Provider value={{ cartItems, setCartItems }}>
         <Router>
           <div className="App">
             <Routes>
@@ -74,6 +79,8 @@ function App() {
             </Routes>
           </div>
         </Router>
+      </CartContext.Provider>
+        
       </AuthContext.Provider>
       <ToastContainer autoClose={5000} />
     </div>

@@ -4,7 +4,8 @@ import className from "classnames/bind";
 
 import { toast } from "react-toastify";
 
-import { AuthContext } from "../../../helpers/AuthContext.js";
+import { AuthContext } from "../../../helpers/Context/AuthContext";
+import { CartContext } from "../../../helpers/Context/CartContext";
 import styles from "./Header.module.scss";
 // import Tippy from "@tippyjs/react";
 // import "tippy.js/dist/tippy.css";
@@ -52,6 +53,7 @@ const PRICE = [
 const currentUser = true;
 
 function Header() {
+  const { cartItems, setCartItems } = useContext(CartContext);
   const { auth, setAuth } = useContext(AuthContext);
 
   const [searchResult, setSearchResult] = useState([]);
@@ -228,9 +230,9 @@ function Header() {
                             </Link>
                           </li>
                           <li>
-                            <Link to={"/cart/3"} className={""}>
+                            <Link to={"/cart"} className={""}>
                               <FontAwesomeIcon icon={faBasketShopping} className={""} />
-                              <span className={cl("cart-count")}>3</span>
+                              <span className={cl("cart-count")}>{cartItems}</span>
                             </Link>
                           </li>
                           <li>

@@ -11,7 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {} from "@fortawesome/free-solid-svg-icons";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 
-import { AuthContext } from "../../../helpers/AuthContext.js";
+import { AuthContext } from "../../../helpers/Context/AuthContext";
 
 import { Box, Card, Input } from "@mui/material";
 
@@ -41,7 +41,6 @@ function Login() {
   let navigate = useNavigate();
 
   const login = async (data) => {
-    console.log(data)
     await axios.post(`${process.env.REACT_APP_URL_API}/auth/login`, data).then((response) => {
       if (response.data.error) {
         alert(response.data.error);

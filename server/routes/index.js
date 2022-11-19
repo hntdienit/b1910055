@@ -1,10 +1,7 @@
 import users from './users.js'
-
-/* import routes */
+import carts from "./carts.js"
 import categories from "./categories.js"
-// import variations from './variations.js';
 import shippingmethods from './shippingmethods.js';
-// import variationoptions from './variationoptions.js';
 import products from './products.js';
 import promotions from './promotions.js';
 
@@ -15,17 +12,13 @@ const router = (app) => {
     });
   });
 
-  // router-delete
   app.use("/auth", users);
-  /* router */
+  app.use("/carts", carts);
   app.use("/categories", categories);
-  // app.use("/variations", variations);
   app.use("/shippingmethods", shippingmethods);
-  // app.use("/variationoptions", variationoptions);
   app.use("/products", products);
   app.use("/promotions", promotions);
 
-  /* 404 */
   app.use("/:error", (req, res, next) => {
     const err = new Error("Not Found!");
     err.status = 404;
@@ -36,8 +29,6 @@ const router = (app) => {
   app.use((err, req, res, next) => {
     const error = app.get("env") === "development" ? err : {};
     const status = err.status || 500;
-
-    // response to client
     return res.status(status).json({
       error: {
         message: error.message,

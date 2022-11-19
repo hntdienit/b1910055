@@ -21,7 +21,7 @@ const getNewProduct = async (req, res, next) => {
             // order: ["title", "DESC"],
             // },
             required: false,
-          }
+          },
         ],
       },
     ],
@@ -38,10 +38,33 @@ const getAllProductItem = async (req, res, next) => {
       {
         model: Products,
         required: false,
-      }]
+      },
+    ],
   });
 
   return res.status(200).json(list);
+};
+
+const getProductDetail = async (req, res, next) => {
+  const productid = req.params.productid;
+  const product = await Products.findOne({
+    where: {
+      id: productid,
+    },
+    required: false,
+    include: [
+      { model: Categories },
+      {
+        model: ProductItems,
+        include: [
+          {
+            model: Images,
+          },
+        ],
+      },
+    ],
+  });
+  return res.status(200).json(product);
 };
 
 const getAll = async (req, res, next) => {
@@ -189,6 +212,7 @@ export default {
   getNewProduct,
   getAll,
   getAllProductItem,
+  getProductDetail,
   // getItemId,
   postCreateProduct,
   postCreateItem,

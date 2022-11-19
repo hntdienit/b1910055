@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 import Users from "../models/Users.js";
+import Carts from "../models/Carts.js"
 
 const endCode = (id, username, role) => {
   return jwt.sign(
@@ -47,9 +48,12 @@ const getLogin = async (req, res, next) => {
 const register = async (req, res, next) => {
   const { username, password } = req.body;
   bcrypt.hash(password, 10).then(async (hash) => {
-    await Users.create({
+    const newUser = await Users.create({
       username: username,
       password: hash,
+    });
+    await Carts.create({
+      userId: newUser.id
     });
     return res.status(201).json("SUCCESS!");
   });

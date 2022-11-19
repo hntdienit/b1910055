@@ -18,7 +18,7 @@ function Home() {
             <SliderOneP data={sliderOneP}></SliderOneP>
           </div>
           <div className={"col-xxl-7 col-xl-12 col-lg-12"}>
-            <TrendingProduct data={category1}></TrendingProduct>
+            <TrendingProduct></TrendingProduct>
           </div>
         </div>
         <div className={"row py-4"}>

@@ -1,22 +1,24 @@
-import className from 'classnames/bind';
+import className from "classnames/bind";
 
-import Header from '../../components/User/Header';
-import Footer from '../../components/User/Footer';
-import styles from './DefaultLayout.module.scss';
-// import Silder from '../../components/Slider';
+import Header from "../../components/User/Header";
+import Footer from "../../components/User/Footer";
+import styles from "./DefaultLayout.module.scss";
+// import Silder from '../../components/User/Slider';
 
 const cl = className.bind(styles);
 
-function DefaultLayout({children }) {
+function DefaultLayout({ children }) {
   return (
-    <div className={cl('wrapper')}>
-      <Header />
-      {/* <Silder/> */}
-      <div className={cl('')}>
-        <div className={cl('content')}>{children}</div>
-      </div>
-      <Footer />
-    </div>
+    <>
+        <div className={cl("wrapper")}>
+          <Header />
+          {/* <Silder/> */}
+          <div className={cl("")}>
+            <div className={cl("content")}>{children}</div>
+          </div>
+          <Footer />
+        </div>
+    </>
   );
 }
 

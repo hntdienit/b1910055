@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useContext, useState, useRef } from "react";
 import className from "classnames/bind";
 import styles from "./Category.module.scss";
 
@@ -8,8 +8,9 @@ import Button from "../../Public/Button";
 
 const cl = className.bind(styles);
 
-function Category(category) {
-  const [data, setData] = useState(category.data)
+function Category(Products) {
+
+  const [data, setData] = useState(Products.data)
 
   return (
     <div className={"container pt-4"}>

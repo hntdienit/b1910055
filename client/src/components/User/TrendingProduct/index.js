@@ -1,10 +1,13 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import axios from "axios";
 import { toast } from "react-toastify";
 import className from "classnames/bind";
 import styles from "./TrendingProduct.module.scss";
+
+import { AuthContext } from "../../../helpers/Context/AuthContext";
+import { CartContext } from "../../../helpers/Context/CartContext/";
 
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -16,9 +19,13 @@ import { faChevronLeft, faChevronRight, faHeart, faLock, faShoppingBag } from "@
 import Button from "../../Public/Button";
 import Image from "../../Public/Image";
 
+import { onAddCart } from "../../../services/cart";
+
 const cl = className.bind(styles);
 
-function TrendingProduct(sliderOneP) {
+function TrendingProduct() {
+  const { cartItems, setCartItems } = useContext(CartContext);
+  const { auth } = useContext(AuthContext);
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -30,6 +37,28 @@ function TrendingProduct(sliderOneP) {
       }
     });
   }, []);
+
+  const handleQuantity = async (productId) => {
+    await axios
+      .post(
+        `${process.env.REACT_APP_URL_API}/carts/addcartitem`,
+        {
+          productId: productId,
+        },
+        {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.error) {
+          toast.error(`${response.data.error}`, {});
+        } else {
+          toast.success("Product added to cart successfully!", {});
+        }
+      });
+  };
 
   const customeSlider = useRef();
 
@@ -111,7 +140,7 @@ function TrendingProduct(sliderOneP) {
                         <div className={cl("product__action", "transition-3")}>
                           <ul>
                             <li>
-                              <Button to={`/product/${item.id}`}>
+                              <Button to={`/product/${item.ProductItems[0].id}`}>
                                 <VisibilityIcon />
                               </Button>
                             </li>
@@ -121,7 +150,7 @@ function TrendingProduct(sliderOneP) {
                               </Button>
                             </li>
                             <li>
-                              <Button to={"/"}>
+                              <Button to={`/product/${item.ProductItems[0].id}`}>
                                 <AddShoppingCartIcon />
                               </Button>
                             </li>

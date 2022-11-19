@@ -44,6 +44,7 @@ toast.info("Info Notification !", {});
 import AdminPageTitle from "../../../components/AdminPageTitle";
 <AdminPageTitle>Variation</AdminPageTitle>
 ----------------------------------------------------------------------------------------------
+import { ToastContainer, toast } from "react-toastify";
 useEffect(() => {
     axios.get(`${process.env.REACT_APP_URL_API}/products`).then((response) => {
       if (response.data.error) {
@@ -60,3 +61,36 @@ useEffect(() => {
       }
     });
   }, []);
+----------------------------------------------------------------------------------------------
+    const postForm = async (data) => {
+    await axios
+      .post(`${process.env.REACT_APP_URL_API}/categories`, data, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        if (response.data.error) {
+          toast.error(`${response.data.error}`, {});
+        } else {
+          toast.success("Add new category successfully!", {});
+          navigate("/admin/listcategory");
+        }
+      });
+  };
+----------------------------------------------------------------------------------------------
+  console.log("san pham chi tiet", product)
+----------------------------------------------------------------------------------------------
+    if (!!!product.id) {
+    return (
+      <>
+        <Loading></Loading>
+      </>
+    );
+  } else {
+    return (
+      <>
+      </>
+    );
+  }
+

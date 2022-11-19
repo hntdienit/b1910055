@@ -26,6 +26,9 @@ router.route("/newproduct").get(ProductController.getNewProduct);
 
 router.route("/getallproductitem").get(ProductController.getAllProductItem);
 
+router.route("/getproductdetail/:productid").get(ProductController.getProductDetail);
+
+
 // router
 //   .route("/:Id")
 //   .get(ItemController.getItemId)
