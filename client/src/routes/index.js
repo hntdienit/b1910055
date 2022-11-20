@@ -7,6 +7,7 @@ import ProductDetail from "../pages/Public/ProductDetail";
 import ProductList from "../pages/Public/ProductList";
 import Cart from "../pages/Public/Cart"
 import Checkout from "../pages/Public/Checkout"
+import Profile from "../pages/User/Profile"
 
 /* Pages User */
 import Wishlist from "../pages/User/Wishlist"
@@ -34,7 +35,8 @@ const routes = [
   { path: "/productlist", component: ProductList },
   { path: "/cart", component: Cart},
   { path: "/wishlist/:id", component: Wishlist },
-  { path: "/checkout/:id", component: Checkout },
+  { path: "/checkout", component: Checkout },
+  { path: "/profile", component: Profile, roll: "user" },
 
   { path: "/admin/category", component: CreaterCategory, layout: AdminLayout, role: "admin" },
   { path: "/admin/listcategory", component: ListCategory, layout: AdminLayout, role: "admin" },

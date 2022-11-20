@@ -19,35 +19,35 @@ const cl = className.bind(styles);
 
 function Cart() {
   const { setCartItems } = useContext(CartContext);
-  // const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
 
-  const { data, error, isError, isLoading } = useQuery(['product'], fetchingPosts)
+  // const { data, error, isError, isLoading } = useQuery(['product'], fetchingPosts)
 
-  if (isLoading) {
-    return <span>Đang tải...</span>
-  }
+  // if (isLoading) {
+  //   return <span>Đang tải...</span>
+  // }
 
-  if (isError) {
-    return <span>Have an errors: {error.message}</span>
-  }
-  console.log(data)
+  // if (isError) {
+  //   return <span>Have an errors: {error.message}</span>
+  // }
+  // console.log(data)
 
-  // useEffect(() => {
-  //   axios
-  //     .get(`${process.env.REACT_APP_URL_API}/carts`, {
-  //       headers: {
-  //         accessToken: localStorage.getItem("accessToken"),
-  //       },
-  //     })
-  //     .then((response) => {
-  //       if (response.data.error) {
-  //         toast.error(`${response.data.error}`, {});
-  //       } else {
-  //         setData(response.data.CartItems);
-  //         setCartItems(response.data.CartItems.length);
-  //       }
-  //     });
-  // }, []);
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_URL_API}/carts`, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        if (response.data.error) {
+          toast.error(`${response.data.error}`, {});
+        } else {
+          setData(response.data.CartItems);
+          setCartItems(response.data.CartItems.length);
+        }
+      });
+  }, []);
   // useLayoutEffect(() => {
   //   axios
   //     .get(`${process.env.REACT_APP_URL_API}/carts`, {
@@ -65,97 +65,97 @@ function Cart() {
   //     });
   // }, []);
 
-  // const removeProductFromCart = (productitemid) => {
-  //   axios
-  //     .delete(`${process.env.REACT_APP_URL_API}/carts/${productitemid}`, {
-  //       headers: {
-  //         accessToken: localStorage.getItem("accessToken"),
-  //       },
-  //     })
-  //     .then((response) => {
-  //       axios
-  //         .get(`${process.env.REACT_APP_URL_API}/carts`, {
-  //           headers: {
-  //             accessToken: localStorage.getItem("accessToken"),
-  //           },
-  //         })
-  //         .then((response) => {
-  //           if (response.data.error) {
-  //             toast.error(`${response.data.error}`, {});
-  //           } else {
-  //             setData(response.data.CartItems);
-  //             setCartItems(response.data.CartItems.length);
-  //           }
-  //         });
-  //     });
-  // };
+  const removeProductFromCart = (productitemid) => {
+    axios
+      .delete(`${process.env.REACT_APP_URL_API}/carts/${productitemid}`, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        axios
+          .get(`${process.env.REACT_APP_URL_API}/carts`, {
+            headers: {
+              accessToken: localStorage.getItem("accessToken"),
+            },
+          })
+          .then((response) => {
+            if (response.data.error) {
+              toast.error(`${response.data.error}`, {});
+            } else {
+              setData(response.data.CartItems);
+              setCartItems(response.data.CartItems.length);
+            }
+          });
+      });
+  };
 
-  // const onAdd = (productitemid, quantity) => {
-  //   axios
-  //     .patch(
-  //       `${process.env.REACT_APP_URL_API}/carts/${productitemid}`,
-  //       { quantity: quantity },
-  //       {
-  //         headers: {
-  //           accessToken: localStorage.getItem("accessToken"),
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       if (response.data.error) {
-  //         toast.error(`${response.data.error}`, {});
-  //       } else {
-  //         axios
-  //           .get(`${process.env.REACT_APP_URL_API}/carts`, {
-  //             headers: {
-  //               accessToken: localStorage.getItem("accessToken"),
-  //             },
-  //           })
-  //           .then((response) => {
-  //             if (response.data.error) {
-  //               toast.error(`${response.data.error}`, {});
-  //             } else {
-  //               setData(response.data.CartItems);
-  //             }
-  //           });
-  //       }
-  //     });
-  // };
+  const onAdd = (productitemid, quantity) => {
+    axios
+      .patch(
+        `${process.env.REACT_APP_URL_API}/carts/${productitemid}`,
+        { quantity: quantity },
+        {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.error) {
+          toast.error(`${response.data.error}`, {});
+        } else {
+          axios
+            .get(`${process.env.REACT_APP_URL_API}/carts`, {
+              headers: {
+                accessToken: localStorage.getItem("accessToken"),
+              },
+            })
+            .then((response) => {
+              if (response.data.error) {
+                toast.error(`${response.data.error}`, {});
+              } else {
+                setData(response.data.CartItems);
+              }
+            });
+        }
+      });
+  };
 
-  // const onRemove = (productitemid, quantity) => {
-  //   axios
-  //     .patch(
-  //       `${process.env.REACT_APP_URL_API}/carts/${productitemid}`,
-  //       { quantity: quantity },
-  //       {
-  //         headers: {
-  //           accessToken: localStorage.getItem("accessToken"),
-  //         },
-  //       }
-  //     )
-  //     .then((response) => {
-  //       if (response.data.error) {
-  //         toast.error(`${response.data.error}`, {});
-  //       } else {
-  //         axios
-  //           .get(`${process.env.REACT_APP_URL_API}/carts`, {
-  //             headers: {
-  //               accessToken: localStorage.getItem("accessToken"),
-  //             },
-  //           })
-  //           .then((response) => {
-  //             if (response.data.error) {
-  //               toast.error(`${response.data.error}`, {});
-  //             } else {
-  //               setData(response.data.CartItems);
-  //             }
-  //           });
-  //       }
-  //     });
-  // };
+  const onRemove = (productitemid, quantity) => {
+    axios
+      .patch(
+        `${process.env.REACT_APP_URL_API}/carts/${productitemid}`,
+        { quantity: quantity },
+        {
+          headers: {
+            accessToken: localStorage.getItem("accessToken"),
+          },
+        }
+      )
+      .then((response) => {
+        if (response.data.error) {
+          toast.error(`${response.data.error}`, {});
+        } else {
+          axios
+            .get(`${process.env.REACT_APP_URL_API}/carts`, {
+              headers: {
+                accessToken: localStorage.getItem("accessToken"),
+              },
+            })
+            .then((response) => {
+              if (response.data.error) {
+                toast.error(`${response.data.error}`, {});
+              } else {
+                setData(response.data.CartItems);
+              }
+            });
+        }
+      });
+  };
 
-  // const totalPrice = data.CartItems.reduce((a, c) => a + c.ProductItem.price * c.quantity, 0);
-  const totalPrice = 0;
+  const totalPrice = data.reduce((a, c) => a + c.ProductItem.price * c.quantity, 0);
+  // const totalPrice = 0;
   return (
     <>
       <PageTitle title={"Your Cart"} pagename={"Cart"}></PageTitle>
@@ -216,7 +216,7 @@ function Cart() {
                                   <div
                                     className={cl("dec", "qtybutton")}
                                     onClick={() => {
-                                      // onRemove(item.ProductItem.id, item.quantity - 1);
+                                      onRemove(item.ProductItem.id, item.quantity - 1);
                                     }}
                                   >
                                     -
@@ -224,7 +224,7 @@ function Cart() {
                                   <div
                                     className={cl("inc", "qtybutton")}
                                     onClick={() => {
-                                      // onAdd(item.ProductItem.id, item.quantity + 1);
+                                      onAdd(item.ProductItem.id, item.quantity + 1);
                                     }}
                                   >
                                     +
@@ -238,7 +238,7 @@ function Cart() {
                                 <button
                                   type="button"
                                   onClick={() => {
-                                    // removeProductFromCart(item.ProductItem.id);
+                                    removeProductFromCart(item.ProductItem.id);
                                   }}
                                 >
                                   <DeleteOutlineIcon />
@@ -284,7 +284,7 @@ function Cart() {
                             Total <span>${totalPrice.toFixed(2)}</span>
                           </li>
                         </ul>
-                        <Link className={cl("btn")} to={"/"}>
+                        <Link className={cl("btn")} to={"/checkout"}>
                           Proceed to checkout
                         </Link>
                       </div>

@@ -1,6 +1,8 @@
+import addresses from './addresses.js'
 import users from './users.js'
 import carts from "./carts.js"
 import categories from "./categories.js"
+import orders from "./orders.js"
 import shippingmethods from './shippingmethods.js';
 import products from './products.js';
 import promotions from './promotions.js';
@@ -12,9 +14,11 @@ const router = (app) => {
     });
   });
 
+  app.use("/addresses", addresses);
   app.use("/auth", users);
   app.use("/carts", carts);
   app.use("/categories", categories);
+  app.use("/orders", orders);
   app.use("/shippingmethods", shippingmethods);
   app.use("/products", products);
   app.use("/promotions", promotions);

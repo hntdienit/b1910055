@@ -12,6 +12,10 @@ import routes from "./routes";
 import DefaultLayout from "./layouts/DefaultLayout";
 import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute.js";
 
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
+
+const queryClient = new QueryClient()
 
 function App() {
   const [auth, setAuth] = useState({
@@ -45,45 +49,48 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <AuthContext.Provider value={{ auth, setAuth }}>
-      <CartContext.Provider value={{ cartItems, setCartItems }}>
-        <Router>
-          <div className="App">
-            <Routes>
-              {routes.map((item, index) => {
-                let Layout = DefaultLayout;
-                if (item.layout) Layout = item.layout;
-                if (item.layout === null) Layout = Fragment;
-                let Page = item.component;
-                return (
-                  <Route
-                    key={index}
-                    path={item.path}
-                    element={
-                      item.role ? (
-                        <ProtectedRoute role={item.role}>
+    <QueryClientProvider client={queryClient}>
+      <div className="App">
+        <AuthContext.Provider value={{ auth, setAuth }}>
+        <CartContext.Provider value={{ cartItems, setCartItems }}>
+          <Router>
+            <div className="App">
+              <Routes>
+                {routes.map((item, index) => {
+                  let Layout = DefaultLayout;
+                  if (item.layout) Layout = item.layout;
+                  if (item.layout === null) Layout = Fragment;
+                  let Page = item.component;
+                  return (
+                    <Route
+                      key={index}
+                      path={item.path}
+                      element={
+                        item.role ? (
+                          <ProtectedRoute role={item.role}>
+                            <Layout>
+                              <Page></Page>
+                            </Layout>
+                          </ProtectedRoute>
+                        ) : (
                           <Layout>
                             <Page></Page>
                           </Layout>
-                        </ProtectedRoute>
-                      ) : (
-                        <Layout>
-                          <Page></Page>
-                        </Layout>
-                      )
-                    }
-                  ></Route>
-                );
-              })}
-            </Routes>
-          </div>
-        </Router>
-      </CartContext.Provider>
-        
-      </AuthContext.Provider>
-      <ToastContainer autoClose={5000} />
-    </div>
+                        )
+                      }
+                    ></Route>
+                  );
+                })}
+              </Routes>
+            </div>
+          </Router>
+        </CartContext.Provider>
+          
+        </AuthContext.Provider>
+        <ToastContainer autoClose={5000} />
+      </div>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
 

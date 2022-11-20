@@ -19,8 +19,8 @@ import Wishlists from "./Wishlists.js";
 
 const relationship = () => {
   /* Users x Addresses: Many to Many */
-  Users.belongsToMany(Addresses, { through: "UserAddress", foreignKey: "userId" });
-  Addresses.belongsToMany(Users, { through: "UserAddress", foreignKey: "addressId" });
+  Users.belongsToMany(Addresses, { through: "UserAddresses", foreignKey: "userId" });
+  Addresses.belongsToMany(Users, { through: "UserAddresses", foreignKey: "addressId" });
 
   /* Addresses x Orders: One to Many */
   Addresses.hasMany(Orders, { foreignKey: "addressId" });
@@ -85,6 +85,10 @@ const relationship = () => {
   /* ShippingMethods x Orders: One to Many */
   ShippingMethods.hasMany(Orders, { foreignKey: "shippingMethodId" });
   Orders.belongsTo(ShippingMethods, { foreignKey: "shippingMethodId" });
+
+  /* Users x Orders: One to Many */
+  Users.hasMany(Orders, { foreignKey: "userId" });
+  Orders.belongsTo(Users, { foreignKey: "userId" });
 
   /* Users x PaymentMethods: One to Many */
   Users.hasMany(PaymentMethods, { foreignKey: "userId" });

@@ -32,8 +32,3 @@ export async function fetchingPosts() {
   return res.data.CartItems;
 }
 
-export async function productdetail(id) {
-  const res = await axios.get(`${process.env.REACT_APP_URL_API}/products/getproductdetail/${id}`)
-
-  return res.data;
-}

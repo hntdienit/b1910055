@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, { useState, useEffect} from "react";
 import axios from "axios";
-import Slider from "react-slick";
 import { useNavigate, Link } from "react-router-dom";
-import { useFormik, Formik, Form, Field, ErrorMessage } from "formik";
+import { useFormik} from "formik";
 import * as yup from "yup";
-import { Box, Grid, Card, CardContent, TextField, Button, Typography, MenuItem } from "@mui/material";
+import { Box, Grid, TextField} from "@mui/material";
 import className from "classnames/bind";
+import { toast } from "react-toastify";
 
 import PageTitle from "../../../components/User/PageTitle";
 
@@ -16,14 +16,29 @@ import styles from "./Checkout.module.scss";
 const cl = className.bind(styles);
 
 function Checkout() {
-  useEffect(() => {}, []);
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.REACT_APP_URL_API}/orders/checkout`, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        if (response.data.error) {
+          toast.error(`Data fetch failed - error: ${response.data.error}`, {});
+        } else {
+          setData(response.data);
+        }
+      });
+  }, []);
 
   const postForm = async (data) => {
     await axios
       .post(`${process.env.REACT_APP_URL_API}/products`, data, {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
-          "Content-Type": "multipart/form-data",
         },
       })
       .then((response) => {
@@ -38,67 +53,17 @@ function Checkout() {
       });
   };
 
-  const validationSchema = yup.object({
-    categoryId: yup
-      .string()
-      .matches(/[1-9]+/, "Is not in correct format")
-      .required("you haven't selected a variation!"),
-    name: yup
-      .string()
-      .min(3, "The product name needs more than 3 characters!")
-      .max(15, "The product name needs less than 15 characters!")
-      .required("The product name cannot be empty!"),
-    description: yup
-      .string()
-      .min(3, "The product description needs more than 3 characters!")
-      .max(30, "The product description needs less than 30 characters!")
-      .required("The product description cannot be empty!"),
-    color: yup
-      .string()
-      .min(3, "The product color needs more than 3 characters!")
-      .max(30, "The product color needs less than 30 characters!")
-      .required("The product color cannot be empty!"),
-    size: yup
-      .string()
-      .min(3, "The product size needs more than 3 characters!")
-      .max(30, "The product size needs less than 30 characters!")
-      .required("The product size cannot be empty!"),
-    stock: yup.number().required("The product stock cannot be empty!"),
-    price: yup.number().required("The product price cannot be empty!"),
-    // image: yup
-    //   .mixed()
-    //   .nullable()
-    //   .required()
-    //   .test("FILE_SIZE", "qua lon", (value) => !value || (value && value.size <= 1024 * 1024))
-    //   .test(
-    //     "FILE_FORMAT",
-    //     "khong dung dang hinh",
-    //     (value) => !value || (value && SUPPORTED_FORMATS.includes(value?.type))
-    //   ),
-  });
+  const validationSchema = yup.object({});
 
   const formik = useFormik({
     initialValues: {
-      categoryId: "",
-      name: "",
-      description: "",
-      color: "",
-      size: "",
-      stock: "",
-      price: "",
-      image: [],
+      address: "",
+      paymentmethod: "",
+      shippingmethod: "",
     },
-    validationSchema: validationSchema,
+    // validationSchema: validationSchema,
     onSubmit: (values) => {
-      const formDataToSend = new FormData();
-      formDataToSend.append("name", values.name);
-      formDataToSend.append("categoryId", values.categoryId);
-      formDataToSend.append("description", values.description);
-      formDataToSend.append("color", values.color);
-      formDataToSend.append("size", values.size);
-      formDataToSend.append("stock", values.stock);
-      formDataToSend.append("price", values.price);
-      postForm(formDataToSend);
+      postForm(values);
     },
   });
 
@@ -107,71 +72,51 @@ function Checkout() {
       <PageTitle title={"Your Checkout"} pagename={"Checkout"}></PageTitle>
       <div className={cl("checkout-area", "pb-5")}>
         <div className={cl("container")}>
-          <Box
-            component={"form"}
-            sx={{ flexGrow: 1 }}
-            onSubmit={formik.handleSubmit}
-            autoComplete="off"
-            encType="multipart/form-data"
-          >
+          <Box component={"form"} sx={{ flexGrow: 1 }} onSubmit={formik.handleSubmit} autoComplete="off">
             <Grid container justifyContent="center" alignItems="center" spacing={2} paddingX={2}>
               <Grid item xs={12} sm={12} md={6} lg={6} xl={6}>
                 <Grid container spacing={2} paddingX={2}>
                   <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <h4>Billing Details</h4>
+                    <h4>Billing Details</h4>
                   </Grid>
                   <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                     <TextField
                       fullWidth
                       margin="normal"
-                      id="name"
-                      name="name"
-                      label="name"
-                      value={formik.values.name}
+                      id="address"
+                      name="address"
+                      label="address"
+                      value={formik.values.address}
                       onChange={formik.handleChange}
-                      error={formik.touched.name && Boolean(formik.errors.name)}
-                      helperText={formik.touched.name && formik.errors.name}
+                      error={formik.touched.address && Boolean(formik.errors.address)}
+                      helperText={formik.touched.address && formik.errors.address}
                     />
                   </Grid>
-                 
-                  
+
                   <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                     <TextField
                       fullWidth
                       margin="normal"
-                      id="size"
-                      name="size"
-                      label="size"
-                      value={formik.values.size}
+                      id="paymentmethod"
+                      name="paymentmethod"
+                      label="paymentmethod"
+                      value={formik.values.paymentmethod}
                       onChange={formik.handleChange}
-                      error={formik.touched.size && Boolean(formik.errors.size)}
-                      helperText={formik.touched.size && formik.errors.size}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                    <TextField
-                      fullWidth
-                      margin="normal"
-                      id="stock"
-                      name="stock"
-                      label="stock"
-                      value={formik.values.stock}
-                      onChange={formik.handleChange}
-                      error={formik.touched.stock && Boolean(formik.errors.stock)}
-                      helperText={formik.touched.stock && formik.errors.stock}
+                      error={formik.touched.paymentmethod && Boolean(formik.errors.paymentmethod)}
+                      helperText={formik.touched.paymentmethod && formik.errors.paymentmethod}
                     />
                   </Grid>
                   <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                     <TextField
                       fullWidth
                       margin="normal"
-                      id="price"
-                      name="price"
-                      label="price"
-                      value={formik.values.price}
+                      id="shippingmethod"
+                      name="shippingmethod"
+                      label="shippingmethod"
+                      value={formik.values.shippingmethod}
                       onChange={formik.handleChange}
-                      error={formik.touched.price && Boolean(formik.errors.price)}
-                      helperText={formik.touched.price && formik.errors.price}
+                      error={formik.touched.shippingmethod && Boolean(formik.errors.shippingmethod)}
+                      helperText={formik.touched.shippingmethod && formik.errors.shippingmethod}
                     />
                   </Grid>
                 </Grid>
@@ -188,22 +133,22 @@ function Checkout() {
                         </tr>
                       </thead>
                       <tbody>
-                        <tr className={cl("cart_item")}>
-                          <td className={cl("product-name")}>
-                            Vestibulum suscipit <strong className={cl("product-quantity")}> × 1</strong>
-                          </td>
-                          <td className={cl("product-total")}>
-                            <span className={cl("amount")}>$165.00</span>
-                          </td>
-                        </tr>
-                        <tr className={cl("cart_item")}>
-                          <td className={cl("product-name")}>
-                            Vestibulum suscipit <strong className={cl("product-quantity")}> × 1</strong>
-                          </td>
-                          <td className={cl("product-total")}>
-                            <span className={cl("amount")}>$165.00</span>
-                          </td>
-                        </tr>
+                        {data.CartItems?.map((item) => {
+                          return (
+                            <tr key={item.id} className={cl("cart_item")}>
+                              <td className={cl("product-name")}>
+                                {item.ProductItem.Product.name}{" "}
+                                <strong className={cl("product-quantity")}> × {item.quantity}</strong>
+                                <div>
+                                  ({item.ProductItem.color}) - ({item.ProductItem.size})
+                                </div>
+                              </td>
+                              <td className={cl("product-total")}>
+                                <span className={cl("amount")}>${item.quantity * item.ProductItem.price}</span>
+                              </td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                       <tfoot>
                         <tr className={cl("cart-subtotal")}>
@@ -222,7 +167,7 @@ function Checkout() {
                           <th>Order Total</th>
                           <td>
                             <strong>
-                              <span className={cl("amount")}>$215.00</span>
+                              <span className={cl("amount")}>$323</span>
                             </strong>
                           </td>
                         </tr>
@@ -236,9 +181,7 @@ function Checkout() {
                     </button>
                   </div>
                 </div>
-          
               </Grid>
-
             </Grid>
           </Box>
         </div>

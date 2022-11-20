@@ -64,6 +64,7 @@ const getProductDetail = async (req, res, next) => {
       },
     ],
   });
+  // return res.status(200).json({error: "loi roi"});
   return res.status(200).json(product);
 };
 

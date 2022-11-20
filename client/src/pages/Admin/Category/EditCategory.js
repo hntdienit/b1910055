@@ -32,7 +32,7 @@ function EditCategory() {
         setCategory(response.data);
       }
     });
-  }, []);
+  }, [EditId]);
 
   const validationSchema = yup.object({
     name: yup

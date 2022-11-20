@@ -66,23 +66,18 @@ const patchProductItemId = async (req, res, next) => {
     where: { userId: user.id },
   });
 
-  const productItem = await ProductItems.findByPk(productitemid)
+  const productItem = await ProductItems.findByPk(productitemid);
 
-  if(quantity > productItem.stock){
-    return res.status(200).json({ error: "The limited stock has been reached!"})
+  if (quantity > productItem.stock) {
+    return res.status(200).json({ error: "The limited stock has been reached!" });
   }
 
-  if(quantity <= 0){
-    return res.status(200).json({ error: "Product quantity must be greater than or equal to 1!"})
+  if (quantity <= 0) {
+    await CartItems.destroy({ where: { cartId: userCart.id, productItemId: productitemid } });
+    return res.status(201).json();
   }
 
   await CartItems.update({ quantity: quantity }, { where: { cartId: userCart.id, productItemId: productitemid } });
-  return res.status(201).json();
-};
-
-const postCreateCategory = async (req, res, next) => {
-  // const category = req.body;
-  // await Categories.create(category);
   return res.status(201).json();
 };
 
@@ -153,6 +148,6 @@ export default {
   deleteProductItemId,
   patchProductItemId,
 
-  postCreateCategory,
+  // postCreateCategory,
   pagination,
 };

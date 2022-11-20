@@ -1,0 +1,71 @@
+.timeline-cover {
+  position: relative;
+}
+
+.title {
+  position: absolute;
+  top: 2rem;
+  left: 40%;
+  right: 40%;
+}
+
+.timeline-nav-bar {
+  background: #f2f2f2;
+  border: 1px solid #a5fbfb;
+  width: 100%;
+}
+
+.profile-info {
+  text-align: center;
+  padding: 0 20px;
+  z-index: 999;
+  height: 200px;
+}
+
+.profile__info {
+  position: absolute;
+  top: 5rem;
+  left: 5rem;
+}
+
+.profile-photo {
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  border: 10px solid #fff;
+}
+
+.page-contents {
+  padding: 30px 0 50px;
+}
+
+@media only screen and (max-width: 992px) {
+  .age-contents {
+    margin-top: 185px !important;
+  }
+}
+
+.about-profile {
+  margin-bottom: 20px;
+}
+
+.about-profile .about-content-block {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #a5fbfb;
+  line-height: 24px;
+  margin-bottom: 10px;
+}
+
+.about-profile .about-content-block .organization img.img-org {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+.work-info {
+  max-width: 60%;
+  p {
+    word-wrap: break-word;
+  }
+}
