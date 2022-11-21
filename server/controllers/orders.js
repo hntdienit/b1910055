@@ -1,3 +1,6 @@
+import sequelize from "../config/db.js";
+import { Op } from "sequelize";
+
 import Orders from "../models/Orders.js";
 import OrderItems from "../models/OrderItems.js";
 import Carts from "../models/Carts.js";
@@ -67,6 +70,45 @@ const postCheckout = async (req, res, next) => {
   return res.status(200).json(userCartItem);
 };
 
+const getCartMiniOrder = async (req, res, next) => {
+  const date = new Date();
+  let m = date.getMonth() + 1;
+  let y = date.getFullYear();
+  let preM = m - 1;
+  let preY = y;
+
+  if (m === 1) {
+    preY = preY - 1;
+    preM = 12;
+  }
+
+  const preGrowth = await Orders.findAll({
+    where: {
+      [Op.and]: [
+        sequelize.where(sequelize.fn("month", sequelize.col("orderdate")), preM),
+        sequelize.where(sequelize.fn("YEAR", sequelize.col("orderdate")), preY),
+      ],
+    },
+  });
+
+  const newGrowth = await Orders.findAll({
+    where: {
+      [Op.and]: [
+        sequelize.where(sequelize.fn("month", sequelize.col("orderdate")), m),
+        sequelize.where(sequelize.fn("YEAR", sequelize.col("orderdate")), y),
+      ],
+    },
+  });
+  
+  let growth = 100;
+
+  if(preGrowth.length !== 0){
+    growth = (newGrowth.length - preGrowth.length) / preGrowth.length * 100;
+  }
+
+  return res.status(200).json({ newGrowth: newGrowth.length, growth: growth.toFixed(2) });
+};
+
 const postAddProductItemToCart = async (req, res, next) => {
   // const user = req.user;
   // const productItemId = req.body.productItemId;
@@ -122,6 +164,7 @@ export default {
   postAddProductItemToCart,
   deleteProductItemId,
   patchProductItemId,
+  getCartMiniOrder,
 
   getCheckout,
   postCheckout,

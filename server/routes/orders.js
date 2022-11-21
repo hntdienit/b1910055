@@ -8,11 +8,11 @@ const router = express.Router();
 
 router.route("/neworder").post(AuthMiddleware.validateToken, OrderController.postAddProductItemToCart);
 
-// router
-//   .route("/:productitemid")
-//   // .get(CategoryController.getCategoryId)
-//   .patch(AuthMiddleware.validateToken, CartController.patchProductItemId)
-//   .delete(AuthMiddleware.validateToken, CartController.deleteProductItemId);
+router
+  .route("/cartminiorder")
+  .get(AuthMiddleware.validateToken, OrderController.getCartMiniOrder)
+  // .patch(AuthMiddleware.validateToken, CartController.patchProductItemId)
+  // .delete(AuthMiddleware.validateToken, CartController.deleteProductItemId);
 
 router
   .route("/checkout")

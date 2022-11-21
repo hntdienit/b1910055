@@ -15,4 +15,6 @@ router.route("/checkAuth").post(AuthMiddleware.validateToken, UsersController.ch
 router.route("/verify").post(UsersController.verify);
 // router.route("/:id").get(UsersController.getPost)
 
+router.route("/cartminiuser").get(AuthMiddleware.validateToken, UsersController.getCartMiniUser);
+
 export default router;

@@ -1,3 +1,6 @@
+import sequelize from "../config/db.js";
+import { Op } from "sequelize";
+
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import mailer from "../utils/mailer.js";
@@ -112,10 +115,50 @@ const verify = async (req, res, next) => {
   }
 };
 
+const getCartMiniUser= async (req, res, next) => {
+  const date = new Date();
+  let m = date.getMonth() + 1;
+  let y = date.getFullYear();
+  let preM = m - 1;
+  let preY = y;
+
+  if (m === 1) {
+    preY = preY - 1;
+    preM = 12;
+  }
+
+  const preGrowth = await Users.findAll({
+    where: {
+      [Op.and]: [
+        sequelize.where(sequelize.fn("month", sequelize.col("createdAt")), preM),
+        sequelize.where(sequelize.fn("YEAR", sequelize.col("createdAt")), preY),
+      ],
+    },
+  });
+
+  const newGrowth  = await Users.findAll({
+    where: {
+      [Op.and]: [
+        sequelize.where(sequelize.fn("month", sequelize.col("createdAt")), m),
+        sequelize.where(sequelize.fn("YEAR", sequelize.col("createdAt")), y),
+      ],
+    },
+  });
+  
+  let growth = 100;
+
+  if(preGrowth .length !== 0){
+    growth = (newGrowth .length - preGrowth .length) / preGrowth .length * 100;
+  }
+
+  return res.status(200).json({ newGrowth : newGrowth .length, growth: growth.toFixed(2) });
+};
+
 export default {
   checkAuth,
   login,
   getLogin,
   register,
   verify,
+  getCartMiniUser,
 };

@@ -35,22 +35,22 @@ function Checkout() {
   }, []);
 
   const postForm = async (data) => {
-    await axios
-      .post(`${process.env.REACT_APP_URL_API}/products`, data, {
-        headers: {
-          accessToken: localStorage.getItem("accessToken"),
-        },
-      })
-      .then((response) => {
-        if (response.data.error) {
-          // toast.error(`Add new product failed! - error: ${response.data.error}`, {});
-        } else {
-          console.log(response.data.hinh);
-          // setHinh(response.data.hinh)
-          // toast.success("Add new product successfully!", {});
-          // navigate("/admin/listproduct");
-        }
-      });
+    // await axios
+    //   .post(`${process.env.REACT_APP_URL_API}/products`, data, {
+    //     headers: {
+    //       accessToken: localStorage.getItem("accessToken"),
+    //     },
+    //   })
+    //   .then((response) => {
+    //     if (response.data.error) {
+    //       // toast.error(`Add new product failed! - error: ${response.data.error}`, {});
+    //     } else {
+    //       console.log(response.data.hinh);
+    //       // setHinh(response.data.hinh)
+    //       // toast.success("Add new product successfully!", {});
+    //       // navigate("/admin/listproduct");
+    //     }
+    //   });
   };
 
   const validationSchema = yup.object({});

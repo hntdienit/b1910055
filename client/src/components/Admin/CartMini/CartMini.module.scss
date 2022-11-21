@@ -1,0 +1,30 @@
+.mini-stat {
+    border: none
+}
+.mini-stat .mini-stat-icon i {
+    font-size: 30px;
+    width: 64px;
+    height: 64px;
+    line-height: 64px;
+    text-align: center;
+    color: #fff !important;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, .1);
+    display: inline-block
+}
+
+.bg__orange{
+    background: #f56954 !important;
+}
+
+.bg__green{
+    background: #00a65a !important;
+}
+
+.bg__lightblue{
+    background: #00c0ef !important;
+}
+
+.bg__blue{
+    background: #0073b7 !important;
+}
