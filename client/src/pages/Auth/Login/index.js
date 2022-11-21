@@ -13,7 +13,7 @@ import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 import { AuthContext } from "../../../helpers/Context/AuthContext";
 
-import { Box, Card, Input } from "@mui/material";
+import { Box} from "@mui/material";
 
 const cl = className.bind(styles);
 

@@ -1,4 +1,4 @@
-import React, { useEffect,useLayoutEffect, useState, useContext } from "react";
+import React, { useEffect, useLayoutEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
 import className from "classnames/bind";
@@ -11,43 +11,45 @@ import { CartContext } from "../../../helpers/Context/CartContext";
 import PageTitle from "../../../components/User/PageTitle";
 import Loading from "../../../components/Public/Loading";
 
-import { useQuery } from 'react-query'
-import {fetchingPosts} from '../../../services/cart'
+import { useQuery } from "react-query";
+import { fetchingPosts } from "../../../services/cart";
 
 import styles from "./Cart.module.scss";
 const cl = className.bind(styles);
 
 function Cart() {
   const { setCartItems } = useContext(CartContext);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
 
-  // const { data, error, isError, isLoading } = useQuery(['product'], fetchingPosts)
+  const { data, error, isError, isLoading } = useQuery(['product'], fetchingPosts)
 
-  // if (isLoading) {
-  //   return <span>Đang tải...</span>
-  // }
+  if (isLoading) {
+    return <span>Đang tải...</span>
+  }
 
-  // if (isError) {
-  //   return <span>Have an errors: {error.message}</span>
-  // }
+  if (isError) {
+    return <span>Have an errors: {error.message}</span>
+  }
   // console.log(data)
 
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_URL_API}/carts`, {
-        headers: {
-          accessToken: localStorage.getItem("accessToken"),
-        },
-      })
-      .then((response) => {
-        if (response.data.error) {
-          toast.error(`${response.data.error}`, {});
-        } else {
-          setData(response.data.CartItems);
-          setCartItems(response.data.CartItems.length);
-        }
-      });
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get(`${process.env.REACT_APP_URL_API}/carts`, {
+  //       headers: {
+  //         accessToken: localStorage.getItem("accessToken"),
+  //       },
+  //     })
+  //     .then((response) => {
+  //       if (response.data.error) {
+  //         toast.error(`${response.data.error}`, {});
+  //       } else {
+  //         setData(response.data.CartItems);
+  //         setCartItems(response.data.CartItems.length);
+  //       }
+  //     });
+  // }, []);
+
+
   // useLayoutEffect(() => {
   //   axios
   //     .get(`${process.env.REACT_APP_URL_API}/carts`, {
@@ -83,7 +85,7 @@ function Cart() {
             if (response.data.error) {
               toast.error(`${response.data.error}`, {});
             } else {
-              setData(response.data.CartItems);
+              // setData(response.data.CartItems);
               setCartItems(response.data.CartItems.length);
             }
           });
@@ -115,7 +117,7 @@ function Cart() {
               if (response.data.error) {
                 toast.error(`${response.data.error}`, {});
               } else {
-                setData(response.data.CartItems);
+                // setData(response.data.CartItems);
               }
             });
         }
@@ -147,7 +149,7 @@ function Cart() {
               if (response.data.error) {
                 toast.error(`${response.data.error}`, {});
               } else {
-                setData(response.data.CartItems);
+                // setData(response.data.CartItems);
               }
             });
         }

@@ -44,7 +44,7 @@ toast.info("Info Notification !", {});
 import AdminPageTitle from "../../../components/AdminPageTitle";
 <AdminPageTitle>Variation</AdminPageTitle>
 ----------------------------------------------------------------------------------------------
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 useEffect(() => {
     axios.get(`${process.env.REACT_APP_URL_API}/products`).then((response) => {
       if (response.data.error) {

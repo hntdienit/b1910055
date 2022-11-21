@@ -16,8 +16,9 @@ import Wishlist from "../pages/User/Wishlist"
 import Page404 from "../pages/PageError/Page404";
 import Page403 from "../pages/PageError/Page403";
 
-/* Pages */
+/* Pages Auth */
 import Register from "../pages/Auth/Register";
+import Authverify from "../pages/Auth/Authverify";
 import Login from "../pages/Auth/Login";
 
 /* Pages Admin */
@@ -28,8 +29,9 @@ import { CreateProduct, ListProduct, EditProduct } from "../pages/Admin/Product"
 import { CreatePromotion, ListPromotion, EditPromotion } from "../pages/Admin/Promotion";
 
 const routes = [
-  { path: "/login", component: Login, layout: null },
   { path: "/register", component: Register, layout: null },
+  { path: "/authverify", component: Authverify, layout: null },
+  { path: "/login", component: Login, layout: null },
 
   { path: "/product/:id", component: ProductDetail },
   { path: "/productlist", component: ProductList },

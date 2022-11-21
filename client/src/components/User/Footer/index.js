@@ -242,8 +242,8 @@ function Footer() {
                       "d-sm-flex align-items-center justify-content-center"
                     )}
                   >
-                    <p>Bản quyền B1910055 | Huỳnh Nguyễn Thanh Điền</p>
-                    <p>Niên luận Tin Học Ứng Dụng</p>
+                    <p>Copyright B1910055 | Huynh Nguyen Thanh Dien</p>
+                    <p>NL THUD(TN408)</p>
                   </div>
                 </div>
               </div>

@@ -1,188 +1,302 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as yup from "yup";
 import className from "classnames/bind";
 import styles from "./Register.module.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {} from "@fortawesome/free-solid-svg-icons";
-import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { Box } from "@mui/material";
+
+import FacebookIcon from "@mui/icons-material/Facebook";
+import GoogleIcon from "@mui/icons-material/Google";
+import PersonPinIcon from "@mui/icons-material/PersonPin";
+import EmailIcon from "@mui/icons-material/Email";
+import LockIcon from "@mui/icons-material/Lock";
+import KeyIcon from "@mui/icons-material/Key";
 
 const cl = className.bind(styles);
 
 function Register() {
+  let navigate = useNavigate();
+
+  const [verify, setVerify] = useState("");
+  const [resUsername, setResUsername] = useState("");
+
   const initialValues = {
-    username: "",
-    password: "",
+    username: "dien123",
+    email: "hntdienit@gmail.com",
+    password: "Abc123!",
+    repassword: "Abc123!",
+    toggle: true,
   };
 
   const validationSchema = yup.object().shape({
     username: yup
       .string()
-      .min(3, "nhieu hon 3")
-      .max(15, "it hon 15")
-      .required("nhap tai khoan"),
+      .min(6, "Username must be more than 6 characters!")
+      .max(15, "Username must be less than 15 characters!")
+      .required("Username cannot be empty!"),
+    email: yup.string().email("Email is not valid").required("Email cannot be empty!"),
     password: yup
       .string()
-      .min(6, "nhieu hon 6")
-      .max(20, "it hon 20")
-      .required("nhap mat khau"),
+      .min(6, "Password must be more than 6 characters!")
+      .max(15, "Password must be less than 15 characters!")
+      .trim()
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,15}$/,
+        "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character!"
+      )
+      .required("Password cannot be empty!"),
+    repassword: yup.string().oneOf([yup.ref("password"), null], "Passwords must match!"),
+    toggle: yup.boolean().oneOf([true], "You must accept the terms and conditions"),
   });
 
   const onSubmit = (data) => {
-    axios
-      .post(`${process.env.REACT_APP_URL_API}/auth/register`, data)
-      .then((response) => {
-        // navigate(`/`);
-        console.log(data);
-      });
+    axios.post(`${process.env.REACT_APP_URL_API}/auth/register`, data).then((response) => {
+      if (response.data.error) {
+        toast.error(`${response.data.error}`, {});
+      } else {
+        toast.success("Sign up account successfully!", {});
+        setVerify(response.data.verify);
+        setResUsername(response.data.username);
+      }
+    });
   };
 
-  return (
-    // <div className={cl("py-5")}>
-    //   <div className={"container"}>
-    //     <div className={"row"}>
-    //       <div
-    //         className={
-    //           "col-xxl-6 offset-xxl-3 col-xl-6 offset-xl-3 col-lg-8 offset-lg-2"
-    //         }
-    //       >
-    //         <div className={cl("sign__wrapper")}>
-    //           <div className={cl("sign__heade", "mb-3")}>
-    //             <div className={cl("sign__in", "text-center")}>
-    //               <Link
-    //                 to={"#"}
-    //                 className={cl("sign__social", "text-start mb-2")}
-    //               >
-    //                 <FontAwesomeIcon icon={faGoogle} className={"me-2"} />
-    //                 Đăng ký với Google
-    //               </Link>
-    //               <p>
-    //                 <span>........</span> hoặc, <Link to={"#"}>đăng ký</Link>{" "}
-    //                 với tài khoản<span> ........</span>
-    //               </p>
-    //             </div>
-    //           </div>
-    //           <div className={cl("sign__form")}>
-    //             <Formik
-    //               initialValues={initialValues}
-    //               onSubmit={onSubmit}
-    //               validationSchema={validationSchema}
-    //             >
-    //               <Form className={cl("form-test")}>
-    //                 <div className={"mb-3"}>
-    //                   <label>username: </label>
-    //                   <div>
-    //                     <ErrorMessage name="username" component={"span"} />
-    //                   </div>
-    //                   <div>
-    //                     <Field
-    //                       id="username"
-    //                       name="username"
-    //                       placeholder="username ....."
-    //                     />
-    //                   </div>
-    //                   <div class="sign__input-wrapper mb-25">
-    //                     <h5>Full Name</h5>
-    //                     <div class="sign__input">
-    //                       <input type="text" placeholder="Full name" />
-    //                       <i class="fal fa-user"></i>
-    //                     </div>
-    //                   </div>
-    //                 </div>
+  const initialValuesVerify = {
+    verifycode: "",
+  };
 
-    //                 <button type="submit">register</button>
-    //               </Form>
-    //             </Formik>
+  const validationSchemaVerify = yup.object().shape({
+    verifycode: yup
+      .string()
+      .min(6, "Username must be more than 6 characters!")
+      .max(6, "Username must be less than 6 characters!")
+      .required("Username cannot be empty!"),
+  });
 
-    //             <form action="#">
-    //               <div class="sign__input-wrapper mb-25">
-    //                 <h5>Full Name</h5>
-    //                 <div class="sign__input">
-    //                   <input type="text" placeholder="Full name" />
-    //                   <i class="fal fa-user"></i>
-    //                 </div>
-    //               </div>
-    //               <div class="sign__input-wrapper mb-25">
-    //                 <h5>Work email</h5>
-    //                 <div class="sign__input">
-    //                   <input type="text" placeholder="e-mail address" />
-    //                   <i class="fal fa-envelope"></i>
-    //                 </div>
-    //               </div>
-    //               <div class="sign__input-wrapper mb-25">
-    //                 <h5>Password</h5>
-    //                 <div class="sign__input">
-    //                   <input type="text" placeholder="Password" />
-    //                   <i class="fal fa-lock"></i>
-    //                 </div>
-    //               </div>
-    //               <div class="sign__input-wrapper mb-10">
-    //                 <h5>Re-Password</h5>
-    //                 <div class="sign__input">
-    //                   <input type="text" placeholder="Re-Password" />
-    //                   <i class="fal fa-lock"></i>
-    //                 </div>
-    //               </div>
-    //               <div class="sign__action d-flex justify-content-between mb-30">
-    //                 <div class="sign__agree d-flex align-items-center">
-    //                   <input
-    //                     class="m-check-input"
-    //                     type="checkbox"
-    //                     id="m-agree"
-    //                   />
-    //                   <label class="m-check-label" for="m-agree">
-    //                     I agree to the <a href="#">Terms &amp; Conditions</a>
-    //                   </label>
-    //                 </div>
-    //               </div>
-    //               <button class="btn-tp w-100">
-    //                 <span></span> Sign Up
-    //               </button>
-    //               <div class="sign__new text-center mt-20">
-    //                 <p>
-    //                   Already in Markit ? <a href="sign-in.html"> Sign In</a>
-    //                 </p>
-    //               </div>
-    //             </form>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // </div>
+  const onSubmitVerify = (data) => {
+    data.username = resUsername;
+    axios.post(`${process.env.REACT_APP_URL_API}/auth/verify`, data).then((response) => {
+      if (response.data.error) {
+        toast.error(`${response.data.error}`, {});
+      } else {
+        toast.success("Account verification successful, you can log in!", {});
+        navigate("/login");
+      }
+    });
+  };
 
-    <div className={"container mb-5 mt-5"}>
-      <h1>register</h1>
-      <Formik
-        initialValues={initialValues}
-        onSubmit={onSubmit}
-        validationSchema={validationSchema}
-      >
-        <Form className={cl("form-test")}>
-          <label>username: </label>
-          <div>
-            <ErrorMessage name="username" component={"span"} />
+  if (verify !== "") {
+    return (
+      <>
+        <Box component={"div"}>
+          <div className={"container py-5"}>
+            <div className={"row"}>
+              <div className={"col-xxl-6 offset-xxl-3 col-xl-6 offset-xl-3 col-lg-8 offset-lg-2"}>
+                <div className={cl("sign__wrapper", "text-star")}>
+                  <div className={"sign__header"}>
+                    <div className={cl("sign__in", "text-center")}>
+                      <h3>Account verification</h3>
+                    </div>
+                  </div>
+                  <div className={cl("sign__form")}>
+                    <Formik></Formik>
+                    <Formik
+                      initialValues={initialValuesVerify}
+                      enableReinitialize={true}
+                      onSubmit={onSubmitVerify}
+                      validationSchema={validationSchemaVerify}
+                    >
+                      {(props) => (
+                        <div className={cl("mt-5")}>
+                          <form onSubmit={props.handleSubmit} className={cl("form-test")}>
+                            <div className={"my-4"}>
+                              <h5>code</h5>
+                              <div className={cl("sign__input")}>
+                                <Field
+                                  type="text"
+                                  id="verifycode"
+                                  name="verifycode"
+                                  placeholder="Your verification code..."
+                                />
+                                <i>
+                                  <KeyIcon />
+                                </i>
+                              </div>
+                              <div className={"mt-1"}>
+                                <ErrorMessage name="verifycode" component={"span"} />
+                              </div>
+                            </div>
+                            <button className={cl("btn-tp", "w-100")} type="submit">
+                              <span></span> Sign up
+                            </button>
+                            <div className={cl("sign__new", "text-center mt-3")}>
+                              <p>
+                                Do you already have an account?&nbsp;
+                                <Link to={"/login"} className={cl("")}>
+                                  Sign in
+                                </Link>
+                              </p>
+                            </div>
+                          </form>
+                        </div>
+                      )}
+                    </Formik>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div>
-            <Field id="username" name="username" placeholder="username ....." />
-          </div>
+        </Box>
+      </>
+    );
+  } else {
+    return (
+      <>
+        <Box component={"div"}>
+          <div className={"container py-5"}>
+            <div className={"row"}>
+              <div className={"col-xxl-6 offset-xxl-3 col-xl-6 offset-xl-3 col-lg-8 offset-lg-2"}>
+                <div className={cl("sign__wrapper", "text-star")}>
+                  <div className={"sign__header"}>
+                    <div className={cl("sign__in", "text-center")}>
+                      <Link to={"#"} className={cl("sign__social-f", "mb-3")}>
+                        <i className={"me-2"}>
+                          <FacebookIcon />
+                        </i>
+                        Sign Up With Facebook
+                      </Link>
+                      <Link to={"#"} className={cl("sign__social-g", "mb-3")}>
+                        <i className={"me-2"}>
+                          <GoogleIcon />
+                        </i>
+                        Sign Up With Google
+                      </Link>
+                      <p>
+                        <span>........</span> Or,&nbsp;
+                        <Link to={"/login"} className={cl("")}>
+                          sign up&nbsp;
+                        </Link>
+                        with your account<span> ........</span>
+                      </p>
+                    </div>
+                  </div>
+                  <div className={cl("sign__form")}>
+                    <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={validationSchema}>
+                      {({ value, setFieldValue }) => (
+                        <div className={cl("mt-5")}>
+                          <Form className={cl("form-test")}>
+                            <div className={"my-4"}>
+                              <h5>UserName</h5>
+                              <div className={cl("sign__input")}>
+                                <Field type="text" id="username" name="username" placeholder="Your usename..." />
+                                <i>
+                                  <PersonPinIcon />
+                                </i>
+                              </div>
+                              <div className={"mt-1"}>
+                                <ErrorMessage name="username" component={"span"} />
+                              </div>
+                            </div>
+                            <div className={"my-4"}>
+                              <h5>Email</h5>
+                              <div className={cl("sign__input")}>
+                                <Field
+                                  type="email"
+                                  id="email"
+                                  name="email"
+                                  placeholder="abc@mail.com"
+                                  // onChange={(event) => {
+                                  //   setPassword(event.target.value);
+                                  // }}
+                                />
+                                <i>
+                                  <EmailIcon />
+                                </i>
+                              </div>
+                              <div className={"mt-1"}>
+                                <ErrorMessage name="email" component={"span"} />
+                              </div>
+                            </div>
+                            <div className={"my-4"}>
+                              <h5>Password</h5>
+                              <div className={cl("sign__input")}>
+                                <Field
+                                  type="password"
+                                  id="password"
+                                  name="password"
+                                  placeholder="Your password ..."
+                                  // onChange={(event) => {
+                                  //   setPassword(event.target.value);
+                                  // }}
+                                />
+                                <i>
+                                  <LockIcon />
+                                </i>
+                              </div>
+                              <div className={"mt-1"}>
+                                <ErrorMessage name="password" component={"span"} />
+                              </div>
+                            </div>
+                            <div className={"my-4"}>
+                              <h5>Re-Password</h5>
+                              <div className={cl("sign__input")}>
+                                <Field
+                                  type="password"
+                                  id="repassword"
+                                  name="repassword"
+                                  placeholder="Your password ..."
+                                  // onChange={(event) => {
+                                  //   setPassword(event.target.value);
+                                  // }}
+                                />
+                                <i>
+                                  <LockIcon />
+                                </i>
+                              </div>
+                              <div className={"mt-1"}>
+                                <ErrorMessage name="repassword" component={"span"} />
+                              </div>
+                            </div>
 
-          <label>password: </label>
-          <div>
-            <Field type="password" id="password" name="password" placeholder="password ....." />
+                            <div className={"d-sm-flex justify-content-between mb-4"}>
+                              <div className={"d-flex align-items-center"}>
+                                <label>
+                                  <Field type="checkbox" name="toggle" />
+                                  &nbsp;I agree to the Terms & Conditions
+                                </label>
+                              </div>
+                              <div className={"mt-1"}>
+                                <ErrorMessage name="toggle" component={"span"} />
+                              </div>
+                            </div>
+                            <button className={cl("btn-tp", "w-100")} type="submit">
+                              <span></span> Sign up
+                            </button>
+                            <div className={cl("sign__new", "text-center mt-3")}>
+                              <p>
+                                Do you already have an account?&nbsp;
+                                <Link to={"/login"} className={cl("")}>
+                                  Sign in
+                                </Link>
+                              </p>
+                            </div>
+                          </Form>
+                        </div>
+                      )}
+                    </Formik>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <div>
-            <ErrorMessage name="password" component={"span"} />
-          </div>
-
-          <button type="submit">register</button>
-        </Form>
-      </Formik>
-    </div>
-  );
+        </Box>
+      </>
+    );
+  }
 }
 
 export default Register;
