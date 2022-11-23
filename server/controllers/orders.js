@@ -43,7 +43,7 @@ const postCheckout = async (req, res, next) => {
     orderStatusId: 1,
     paymentMethodId: 1,
     shippingMethodId: 1,
-    userId: 1,
+    userId: 3,
   });
 
   const userCart = await Carts.findOne({

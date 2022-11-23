@@ -1,9 +1,11 @@
-import CartMini from "../../../components/Admin/CartMini";
-
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+
+import CartMini from "../../../components/Admin/CartMini";
+import AdminPieChart from "../../../components/Admin/AdminPieChart";
+
 
 function Home() {
   return (
@@ -39,6 +41,7 @@ function Home() {
       </div>
 
       <div>home admin page</div>
+      <AdminPieChart></AdminPieChart>
     </>
   );
 }

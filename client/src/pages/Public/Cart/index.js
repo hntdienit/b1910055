@@ -19,36 +19,37 @@ const cl = className.bind(styles);
 
 function Cart() {
   const { setCartItems } = useContext(CartContext);
+  const [data1, setData1] = useState([]);
   // const [data, setData] = useState([]);
 
-  const { data, error, isError, isLoading } = useQuery(['product'], fetchingPosts)
+  const { data, error, isError, isLoading, refetch } = useQuery(["productCart"], fetchingPosts);
+
+  // useEffect(() => {
+  //   // axios
+  //   //   .get(`${process.env.REACT_APP_URL_API}/carts`, {
+  //   //     headers: {
+  //   //       accessToken: localStorage.getItem("accessToken"),
+  //   //     },
+  //   //   })
+  //   //   .then((response) => {
+  //   //     if (response.data.error) {
+  //   //       toast.error(`${response.data.error}`, {});
+  //   //     } else {
+  //   //       setData1(data);
+  //   //       setCartItems(response.data.CartItems.length);
+  //   //     }
+  //   //   });
+  //   refetch()
+  // }, [data]);
 
   if (isLoading) {
-    return <span>Đang tải...</span>
+    return <span>Loading...</span>;
   }
 
   if (isError) {
-    return <span>Have an errors: {error.message}</span>
+    return <span>Have an errors: {error.message}</span>;
   }
   // console.log(data)
-
-  // useEffect(() => {
-  //   axios
-  //     .get(`${process.env.REACT_APP_URL_API}/carts`, {
-  //       headers: {
-  //         accessToken: localStorage.getItem("accessToken"),
-  //       },
-  //     })
-  //     .then((response) => {
-  //       if (response.data.error) {
-  //         toast.error(`${response.data.error}`, {});
-  //       } else {
-  //         setData(response.data.CartItems);
-  //         setCartItems(response.data.CartItems.length);
-  //       }
-  //     });
-  // }, []);
-
 
   // useLayoutEffect(() => {
   //   axios
@@ -117,7 +118,7 @@ function Cart() {
               if (response.data.error) {
                 toast.error(`${response.data.error}`, {});
               } else {
-                // setData(response.data.CartItems);
+                // setData1(data);
               }
             });
         }
@@ -171,7 +172,7 @@ function Cart() {
             </div>
           )}
 
-          {data.length !== 0 && (
+          {data?.length !== 0 && (
             <div className={cl("row")}>
               <div className={cl("col-12")}>
                 <form action="#">
@@ -190,7 +191,7 @@ function Cart() {
                         </tr>
                       </thead>
                       <tbody>
-                        {data.map((item) => {
+                        {data?.map((item) => {
                           return (
                             <tr key={item.id}>
                               <td className={cl("product-thumbnail")}>

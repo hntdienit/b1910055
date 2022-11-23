@@ -16,6 +16,7 @@ import styles from "./Checkout.module.scss";
 const cl = className.bind(styles);
 
 function Checkout() {
+  let navigate = useNavigate();
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -29,28 +30,31 @@ function Checkout() {
         if (response.data.error) {
           toast.error(`Data fetch failed - error: ${response.data.error}`, {});
         } else {
+          
           setData(response.data);
         }
       });
   }, []);
 
   const postForm = async (data) => {
-    // await axios
-    //   .post(`${process.env.REACT_APP_URL_API}/products`, data, {
-    //     headers: {
-    //       accessToken: localStorage.getItem("accessToken"),
-    //     },
-    //   })
-    //   .then((response) => {
-    //     if (response.data.error) {
-    //       // toast.error(`Add new product failed! - error: ${response.data.error}`, {});
-    //     } else {
-    //       console.log(response.data.hinh);
-    //       // setHinh(response.data.hinh)
-    //       // toast.success("Add new product successfully!", {});
-    //       // navigate("/admin/listproduct");
-    //     }
-    //   });
+    await axios
+      .post(`${process.env.REACT_APP_URL_API}/orders/checkout`, data, {
+        headers: {
+          accessToken: localStorage.getItem("accessToken"),
+        },
+      })
+      .then((response) => {
+        if (response.data.error) {
+          // toast.error(`Add new product failed! - error: ${response.data.error}`, {});
+        } else {
+          console.log(response.data.hinh);
+          // setHinh(response.data.hinh)
+          // toast.success("Add new product successfully!", {});
+          // navigate("/admin/listproduct");
+          toast.success("Checkout successfully!", {});
+          navigate("/");
+        }
+      });
   };
 
   const validationSchema = yup.object({});
