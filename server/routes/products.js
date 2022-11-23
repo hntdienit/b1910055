@@ -7,6 +7,13 @@ import ProductController from "../controllers/products.js";
 
 const router = express.Router();
 
+
+router.route("/newproduct").get(ProductController.getNewProduct);
+
+router.route("/getallproductitem").get(ProductController.getAllProductItem);
+
+router.route("/getproductdetail/:productid").get(ProductController.getProductDetail);
+
 router
   .route("/")
   // .get(ItemController.pagination)
@@ -21,12 +28,6 @@ router
     UploadMiddleware.array("image", 10),
     ProductController.postCreateProduct
   );
-
-router.route("/newproduct").get(ProductController.getNewProduct);
-
-router.route("/getallproductitem").get(ProductController.getAllProductItem);
-
-router.route("/getproductdetail/:productid").get(ProductController.getProductDetail);
 
 
 // router

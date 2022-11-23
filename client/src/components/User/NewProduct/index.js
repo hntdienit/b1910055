@@ -127,7 +127,7 @@ function NewProduct() {
                       <div className={cl("mb-3")}>
                         <div className={cl("product__item")}>
                           <div className={cl("product__thumb", "overflow-hidden")}>
-                            <Image src={item.ProductItems[0].Images[0].url} />
+                            <Image src={item.ProductItems[0].Images[0]?.url} />
                             <div className={cl("product__action", "transition-3")}>
                               <ul>
                                 <li>

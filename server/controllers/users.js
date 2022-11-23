@@ -15,6 +15,12 @@ const setTimeOutOTP = (userId) => {
   }, 1 * 60 * 1000);
 };
 
+const verifyOTP = (userId) => {
+  setTimeout(async function () {
+    await Users.update({ emailverified: 1 }, { where: { id: userId } });
+  }, 1 * 60 * 1000);
+};
+
 const endCode = (id, username, role) => {
   return jwt.sign(
     {
@@ -101,7 +107,8 @@ const verify = async (req, res, next) => {
   });
 
   if (parseInt(verifycode) === parseInt(user.emailverified)) {
-    await Users.update({ emailverified: 1 }, { where: { username: username } });
+    verifyOTP(user.id);
+    await Users.update({ emailverified: 1 }, { where: { id: user.id } });
     return res.json();
   } else {
     if (parseInt(user.emailverified) === 0) {

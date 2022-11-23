@@ -7,13 +7,16 @@ import * as yup from "yup";
 import className from "classnames/bind";
 import styles from "./Login.module.scss";
 
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {} from "@fortawesome/free-solid-svg-icons";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 import { AuthContext } from "../../../helpers/Context/AuthContext";
 
-import { Box} from "@mui/material";
+import { Box } from "@mui/material";
 
 const cl = className.bind(styles);
 
@@ -27,15 +30,20 @@ function Login() {
 
   const validationSchema = yup.object().shape({
     username: yup
-      .string()
-      .min(3, "Tài khoản cần nhiều hơn 3 ký tự!")
-      .max(15, "Tài khoản cần ít hơn 15 ký tự!")
-      .required("Tài khoản không được trống!"),
-    password: yup
-      .string()
-      .min(6, "Mật khẩu cần nhiều hơn 6 ký tự!")
-      .max(20, "Mật khẩu cần ít hơn 20 ký tự!")
-      .required("Mật khẩu không được trống!"),
+    .string()
+    .min(6, "Username must be more than 6 characters!")
+    .max(15, "Username must be less than 15 characters!")
+    .required("Username cannot be empty!"),
+  password: yup
+    .string()
+    .min(6, "Password must be more than 6 characters!")
+    .max(15, "Password must be less than 15 characters!")
+    .trim()
+    .matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,15}$/,
+      "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character!"
+    )
+    .required("Password cannot be empty!"),
   });
 
   let navigate = useNavigate();
@@ -67,61 +75,69 @@ function Login() {
         <div className={"container py-5"}>
           <div className={"row"}>
             <div className={"col-xxl-6 offset-xxl-3 col-xl-6 offset-xl-3 col-lg-8 offset-lg-2"}>
-                {/* <Card elevation={6}> */}
+              {/* <Card elevation={6}> */}
               <div className={cl("sign__wrapper", "text-star")}>
-                  <div className={"sign__header"}>
-                    <div className={cl("sign__in", "text-center")}>
-                      <Link to={"/"} className={cl("sign__social-f", "mb-3")}>
-                        <FontAwesomeIcon icon={faFacebook} className={"me-2"} />
-                        Đăng nhập bằng Facebook
+                <div className={"sign__header"}>
+                  <div className={cl("sign__in", "text-center")}>
+                    <Link to={"/"} className={cl("sign__social-f", "mb-3")}>
+                      <FontAwesomeIcon icon={faFacebook} className={"me-2"} />
+                      Sign Up With Facebook
+                    </Link>
+                    <Link to={"/"} className={cl("sign__social-g", "mb-3")}>
+                      <FontAwesomeIcon icon={faGoogle} className={"me-2"} />
+                      Sign Up With Google
+                    </Link>
+                    <p>
+                      <span>........</span> Or,&nbsp;
+                      <Link to={"/login"} className={cl("")}>
+                        Sign up&nbsp;
                       </Link>
-                      <Link to={"/"} className={cl("sign__social-g", "mb-3")}>
-                        <FontAwesomeIcon icon={faGoogle} className={"me-2"} />
-                        Đăng nhập bằng Google
-                      </Link>
-                      <p>
-                        <span>........</span> hoặc,&nbsp;
-                        <Link to={"/login"} className={cl("")}>
-                          đăng nhập&nbsp;
-                        </Link>
-                        bằng tài khoản<span> ........</span>
-                      </p>
-                    </div>
+                      with your account<span> ........</span>
+                    </p>
                   </div>
-                  <div className={cl("sign__form")}>
-                    <Formik
-                      initialValues={initialValues}
-                      onSubmit={login}
-                      validationSchema={validationSchema}
-                    >
-                      {({value, setFieldValue}) => (
-                        <div className={cl("mt-5")}>
+                </div>
+                <div className={cl("sign__form")}>
+                  {/* <Formik></Formik> */}
+                  <Formik initialValues={initialValues} onSubmit={login} validationSchema={validationSchema}>
+                    {({ value, setFieldValue }) => (
+                      <div className={cl("mt-5")}>
                         <Form className={cl("form-test")}>
-                          <h5>Tài khoản</h5>
-                          <div className={cl("sign__input")}>
-                            <Field
-                              id="username"
-                              name="username"
-                              placeholder="Tài khoản của bạn ..."
-                            />
+                          <div className={"my-4"}>
+                            <h5>Username</h5>
+                            <div className={cl("sign__input")}>
+                              <Field
+                                type="text"
+                                id="username"
+                                name="username"
+                                placeholder="Your username ..."
+                                // onChange={(event) => {
+                                //   setPassword(event.target.value);
+                                // }}
+                              />
+                              <i>
+                                <AccountCircleIcon />
+                              </i>
+                            </div>
                             <div className={"mt-1"}>
                               <ErrorMessage name="username" component={"span"} />
                             </div>
-                          </div> 
+                          </div>
 
                           <div className={"my-4"}>
-                            <h5>Mật khẩu</h5>
+                            <h5>Password</h5>
                             <div className={cl("sign__input")}>
                               <Field
                                 type="password"
                                 id="password"
                                 name="password"
-                                placeholder="Mật khẩu của bạn ..."
+                                placeholder="Your password ..."
                                 // onChange={(event) => {
                                 //   setPassword(event.target.value);
                                 // }}
                               />
-                              <i class="fal fa-lock"></i>
+                              <i>
+                                <VpnKeyIcon />
+                              </i>
                             </div>
                             <div className={"mt-1"}>
                               <ErrorMessage name="password" component={"span"} />
@@ -131,33 +147,32 @@ function Login() {
                           <div className={"d-sm-flex justify-content-between mb-4"}>
                             <div className={"d-flex align-items-center"}>
                               <input className={"m-check-input"} type="checkbox" id="m-agree" />
-                              <label className={"m-check-label"}>&nbsp;Ghi nhớ đăng nhập</label>
+                              <label className={"m-check-label"}>&nbsp;Remember me</label>
                             </div>
                             <div className={cl("sign__forgot")}>
                               <Link to={"#"} className={cl("")}>
-                                Quên mật khẩu?
+                                Forgot password?
                               </Link>
                             </div>
                           </div>
                           <button className={cl("btn-tp", "w-100")} type="submit">
-                            <span></span> Đăng nhập
+                            <span></span> Sign in
                           </button>
                           <div className={cl("sign__new", "text-center mt-3")}>
                             <p>
-                              Bạn chưa có tài khoản?&nbsp;
+                              Do not have an account?&nbsp;
                               <Link to={"/register"} className={cl("")}>
-                                Đăng ký
+                                Sign up
                               </Link>
                             </p>
                           </div>
                         </Form>
                       </div>
-                      )}
-                      
-                    </Formik>
-                  </div>
+                    )}
+                  </Formik>
+                </div>
               </div>
-                {/* </Card> */}
+              {/* </Card> */}
             </div>
           </div>
         </div>
