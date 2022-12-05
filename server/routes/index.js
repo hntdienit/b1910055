@@ -6,6 +6,8 @@ import orders from "./orders.js"
 import shippingmethods from './shippingmethods.js';
 import products from './products.js';
 import promotions from './promotions.js';
+import warehouses from './warehouses.js';
+import importbills from './importbills.js';
 
 const router = (app) => {
   app.get("/", (req, res, next) => {
@@ -22,6 +24,8 @@ const router = (app) => {
   app.use("/shippingmethods", shippingmethods);
   app.use("/products", products);
   app.use("/promotions", promotions);
+  app.use("/warehouses", warehouses);
+  app.use("/importbills", importbills);
 
   app.use("/:error", (req, res, next) => {
     const err = new Error("Not Found!");

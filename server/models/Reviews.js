@@ -6,7 +6,7 @@ const Reviews = sequelize.define(
   {
     content: { type: DataTypes.STRING, allowNull: true },
     image: { type: DataTypes.STRING, allowNull: true },
-    star: { type: DataTypes.INTEGER, allowNull: true }, 
+    star: { type: DataTypes.INTEGER, allowNull: false }, 
   },
   {
     // Other model options go here

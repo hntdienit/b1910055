@@ -53,7 +53,7 @@ const PRICE = [
 const currentUser = true;
 
 function Header() {
-  const { cartItems, setCartItems } = useContext(CartContext);
+  const { CartDetails, setCartDetails } = useContext(CartContext);
   const { auth, setAuth } = useContext(AuthContext);
 
   const [searchResult, setSearchResult] = useState([]);
@@ -232,7 +232,7 @@ function Header() {
                           <li>
                             <Link to={"/cart"} className={""}>
                               <FontAwesomeIcon icon={faBasketShopping} className={""} />
-                              <span className={cl("cart-count")}>{cartItems}</span>
+                              <span className={cl("cart-count")}>{CartDetails}</span>
                             </Link>
                           </li>
                           <li>

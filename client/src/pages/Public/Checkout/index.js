@@ -137,7 +137,7 @@ function Checkout() {
                         </tr>
                       </thead>
                       <tbody>
-                        {data.CartItems?.map((item) => {
+                        {data.CartDetails?.map((item) => {
                           return (
                             <tr key={item.id} className={cl("cart_item")}>
                               <td className={cl("product-name")}>

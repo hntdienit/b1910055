@@ -10,6 +10,7 @@ import AddToPhotosIcon from "@mui/icons-material/AddToPhotos";
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import WarehouseIcon from '@mui/icons-material/Warehouse';
 
 import className from "classnames/bind";
 import styles from "./AdminSideBar.module.scss";
@@ -23,7 +24,7 @@ const cl = className.bind(styles);
 function SideBar() {
   const { logo, setLogo } = useContext(MenuContext);
 
-  const [subMenu, setSubMenu] = useState([false, false, false, false]);
+  const [subMenu, setSubMenu] = useState([false, false, false, false, false]);
 
   const menu = [
     {
@@ -60,6 +61,22 @@ function SideBar() {
           linkCreate: "/admin/promotion",
           linkList: "/admin/listpromotion",
         },
+        {
+          intMenu: 4,
+          subMenuitem: true,
+          iconMenu: <WarehouseIcon />,
+          nameMenu: "Warehouse",
+          linkCreate: "/admin/warehouse",
+          linkList: "/admin/listwarehouse",
+        },
+        // {
+        //   intMenu: 5,
+        //   subMenuitem: true,
+        //   iconMenu: <WarehouseIcon />,
+        //   nameMenu: "ImportBill",
+        //   linkCreate: "/admin/importbill",
+        //   linkList: "/admin/listimportbill",
+        // },
       ],
     },
   ];

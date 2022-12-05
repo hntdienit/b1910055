@@ -82,8 +82,10 @@ function CreatePromotion() {
     initialValues: {
       name: "",
       discount: "",
-      startdate: `${y}-${m + 1}-${d}`,
-      enddate: `${y}-${m + 1}-${d + 3}`,
+      // startdate: `${y}-${m + 1}-${d}`,
+      startdate: "",
+      // enddate: `${y}-${m + 1}-${d + 3}`,
+      enddate: "",
       productItem: [],
     },
     validationSchema: validationSchema,

@@ -6,10 +6,10 @@ import CartController from "../controllers/carts.js";
 
 const router = express.Router();
 
-router.route("/addproductitemtocart").post(AuthMiddleware.validateToken, CartController.postAddProductItemToCart);
+router.route("/addproducttocart").post(AuthMiddleware.validateToken, CartController.postAddProductToCart);
 
 router
-  .route("/:productitemid")
+  .route("/:productdetailid")
   // .get(CategoryController.getCategoryId)
   .patch(AuthMiddleware.validateToken, CartController.patchProductItemId)
   .delete(AuthMiddleware.validateToken, CartController.deleteProductItemId);

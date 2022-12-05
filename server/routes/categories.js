@@ -11,7 +11,6 @@ router
   .get(CategoryController.getAllCategory)
 router
   .route("/")
-  // .get(CategoryController.getAllCategory)
   .get(CategoryController.pagination)
   .post(AuthMiddleware.validateToken, CategoryController.postCreateCategory);
 

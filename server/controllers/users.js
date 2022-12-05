@@ -7,7 +7,7 @@ import mailer from "../utils/mailer.js";
 import emailExistence from "email-existence";
 
 import Users from "../models/Users.js";
-import Carts from "../models/Carts.js";
+// import Carts from "../models/Carts.js";
 
 const setTimeOutOTP = (userId) => {
   setTimeout(async function () {
@@ -86,7 +86,7 @@ const register = async (req, res, next) => {
             <h2>Your account verification code : <span style="color: #00aff0">${newUser.emailverified}</span></h2>
           </div>`
         );
-        Carts.create({ userId: newUser.id });
+        // Carts.create({ userId: newUser.id });
         setTimeOutOTP(newUser.id);
         return res.status(201).json({ verify: "verify", username: newUser.username });
       } else {

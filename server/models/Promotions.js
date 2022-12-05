@@ -4,10 +4,10 @@ import sequelize from "../config/db.js";
 const Promotions = sequelize.define(
   "Promotions",
   {
-    name: { type: DataTypes.STRING, allowNull: true },
-    discount: { type: DataTypes.STRING, allowNull: true },
-    startdate: { type: DataTypes.DATE, allowNull: true },
-    enddate: { type: DataTypes.DATE, allowNull: true },
+    name: { type: DataTypes.STRING, allowNull: false },
+    discount: { type: DataTypes.INTEGER, allowNull: false },
+    startdate: { type: DataTypes.DATE, allowNull: false },
+    enddate: { type: DataTypes.DATE, allowNull: false },
   },
   {
     // Other model options go here

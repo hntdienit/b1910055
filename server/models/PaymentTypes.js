@@ -4,7 +4,7 @@ import sequelize from "../config/db.js";
 const PaymentTypes = sequelize.define(
   "PaymentTypes",
   {
-    name: { type: DataTypes.STRING, allowNull: true },
+    name: { type: DataTypes.STRING, allowNull: false },
   },
   {
     // Other model options go here

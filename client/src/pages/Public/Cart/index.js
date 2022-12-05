@@ -18,12 +18,13 @@ import styles from "./Cart.module.scss";
 const cl = className.bind(styles);
 
 function Cart() {
-  const { setCartItems } = useContext(CartContext);
+  const { setCartDetails } = useContext(CartContext);
   const [data1, setData1] = useState([]);
   // const [data, setData] = useState([]);
 
   const { data, error, isError, isLoading, refetch } = useQuery(["productCart"], fetchingPosts);
 
+  // console.info(data)
   // useEffect(() => {
   //   // axios
   //   //   .get(`${process.env.REACT_APP_URL_API}/carts`, {
@@ -36,7 +37,7 @@ function Cart() {
   //   //       toast.error(`${response.data.error}`, {});
   //   //     } else {
   //   //       setData1(data);
-  //   //       setCartItems(response.data.CartItems.length);
+  //   //       setCartDetails(response.data.CartDetails.length);
   //   //     }
   //   //   });
   //   refetch()
@@ -62,15 +63,15 @@ function Cart() {
   //       if (response.data.error) {
   //         toast.error(`${response.data.error}`, {});
   //       } else {
-  //         setData(response.data.CartItems);
-  //         setCartItems(response.data.CartItems.length);
+  //         setData(response.data.CartDetails);
+  //         setCartDetails(response.data.CartDetails.length);
   //       }
   //     });
   // }, []);
 
-  const removeProductFromCart = (productitemid) => {
+  const removeProductFromCart = (ProductDetailid) => {
     axios
-      .delete(`${process.env.REACT_APP_URL_API}/carts/${productitemid}`, {
+      .delete(`${process.env.REACT_APP_URL_API}/carts/${ProductDetailid}`, {
         headers: {
           accessToken: localStorage.getItem("accessToken"),
         },
@@ -86,17 +87,17 @@ function Cart() {
             if (response.data.error) {
               toast.error(`${response.data.error}`, {});
             } else {
-              // setData(response.data.CartItems);
-              setCartItems(response.data.CartItems.length);
+              // setData(response.data.CartDetails);
+              setCartDetails(response.data.CartDetails.length);
             }
           });
       });
   };
 
-  const onAdd = (productitemid, quantity) => {
+  const onAdd = (ProductDetailid, quantity) => {
     axios
       .patch(
-        `${process.env.REACT_APP_URL_API}/carts/${productitemid}`,
+        `${process.env.REACT_APP_URL_API}/carts/${ProductDetailid}`,
         { quantity: quantity },
         {
           headers: {
@@ -125,10 +126,10 @@ function Cart() {
       });
   };
 
-  const onRemove = (productitemid, quantity) => {
+  const onRemove = (ProductDetailid, quantity) => {
     axios
       .patch(
-        `${process.env.REACT_APP_URL_API}/carts/${productitemid}`,
+        `${process.env.REACT_APP_URL_API}/carts/${ProductDetailid}`,
         { quantity: quantity },
         {
           headers: {
@@ -150,14 +151,14 @@ function Cart() {
               if (response.data.error) {
                 toast.error(`${response.data.error}`, {});
               } else {
-                // setData(response.data.CartItems);
+                // setData(response.data.CartDetails);
               }
             });
         }
       });
   };
 
-  const totalPrice = data.reduce((a, c) => a + c.ProductItem.price * c.quantity, 0);
+  // const totalPrice = data.reduce((a, c) => a + c.ProductItem.price * c.quantity, 0);
   // const totalPrice = 0;
   return (
     <>
@@ -195,23 +196,23 @@ function Cart() {
                           return (
                             <tr key={item.id}>
                               <td className={cl("product-thumbnail")}>
-                                <Link to={`/product/${item.ProductItem.Product.id}`}>
-                                  <img src={item.ProductItem.Images[0].url} alt="" />
+                                <Link to={`/product/${item.ProductDetail.Product.id}`}>
+                                  <img src={item.ProductDetail.Images[0].url} alt="" />
                                 </Link>
                               </td>
                               <td className={cl("product-name")}>
-                                <Link to={`/product/${item.ProductItem.Product.id}`}>
-                                  {item.ProductItem.Product.name}
+                                <Link to={`/product/${item.ProductDetail.Product.id}`}>
+                                  {item.ProductDetail.Product.name}
                                 </Link>
                               </td>
                               <td className={cl("product-name")}>
-                                <Link to={"#"}>{item.ProductItem.color}</Link>
+                                <Link to={"#"}>{item.ProductDetail.color}</Link>
                               </td>
                               <td className={cl("product-name")}>
-                                <Link to={"#"}>{item.ProductItem.size}</Link>
+                                <Link to={"#"}>{item.ProductDetail.size}</Link>
                               </td>
                               <td className={cl("product-price")}>
-                                <span className={cl("amount")}>${item.ProductItem.price}</span>
+                                <span className={cl("amount")}>${item.ProductDetail.price}</span>
                               </td>
                               <td className={cl("product-quantity")}>
                                 <div className={cl("cart-plus-minus")}>
@@ -219,7 +220,7 @@ function Cart() {
                                   <div
                                     className={cl("dec", "qtybutton")}
                                     onClick={() => {
-                                      onRemove(item.ProductItem.id, item.quantity - 1);
+                                      onRemove(item.ProductDetail.id, item.quantity - 1);
                                     }}
                                   >
                                     -
@@ -227,7 +228,7 @@ function Cart() {
                                   <div
                                     className={cl("inc", "qtybutton")}
                                     onClick={() => {
-                                      onAdd(item.ProductItem.id, item.quantity + 1);
+                                      onAdd(item.ProductDetail.id, item.quantity + 1);
                                     }}
                                   >
                                     +
@@ -235,13 +236,13 @@ function Cart() {
                                 </div>
                               </td>
                               <td className={cl("product-subtotal")}>
-                                <span className={cl("amount")}>${item.ProductItem.price * item.quantity}</span>
+                                <span className={cl("amount")}>${item.ProductDetail.price * item.quantity}</span>
                               </td>
                               <td className={cl("product-remove")}>
                                 <button
                                   type="button"
                                   onClick={() => {
-                                    removeProductFromCart(item.ProductItem.id);
+                                    removeProductFromCart(item.ProductDetail.id);
                                   }}
                                 >
                                   <DeleteOutlineIcon />
@@ -284,7 +285,7 @@ function Cart() {
                             Subtotal <span>$250.00</span>
                           </li>
                           <li>
-                            Total <span>${totalPrice.toFixed(2)}</span>
+                            {/* Total <span>${totalPrice.toFixed(2)}</span> */}
                           </li>
                         </ul>
                         <Link className={cl("btn")} to={"/checkout"}>

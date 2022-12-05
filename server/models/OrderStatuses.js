@@ -4,7 +4,7 @@ import sequelize from "../config/db.js";
 const OrderStatuses = sequelize.define(
   "OrderStatuses",
   {
-    status: { type: DataTypes.STRING, allowNull: true },
+    status: { type: DataTypes.STRING, allowNull: false },
   },
   {
     // Other model options go here

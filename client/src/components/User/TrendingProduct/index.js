@@ -5,6 +5,9 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import className from "classnames/bind";
 import styles from "./TrendingProduct.module.scss";
+import { useQuery } from "react-query";
+import {newProduct} from "../../../services/product"
+
 
 import { AuthContext } from "../../../helpers/Context/AuthContext";
 import { CartContext } from "../../../helpers/Context/CartContext/";
@@ -24,19 +27,19 @@ import { onAddCart } from "../../../services/cart";
 const cl = className.bind(styles);
 
 function TrendingProduct() {
-  const { cartItems, setCartItems } = useContext(CartContext);
+  const { CartDetails, setCartDetails } = useContext(CartContext);
   const { auth } = useContext(AuthContext);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
 
-  useEffect(() => {
-    axios.get(`${process.env.REACT_APP_URL_API}/products/newproduct`).then((response) => {
-      if (response.data.error) {
-        toast.error(`Data fetch failed - error: ${response.data.error}`, {});
-      } else {
-        setData(response.data);
-      }
-    });
-  }, []);
+  // useEffect(() => {
+  //   axios.get(`${process.env.REACT_APP_URL_API}/products/newproduct`).then((response) => {
+  //     if (response.data.error) {
+  //       toast.error(`Data fetch failed - error: ${response.data.error}`, {});
+  //     } else {
+  //       setData(response.data);
+  //     }
+  //   });
+  // }, []);
 
   const handleQuantity = async (productId) => {
     await axios
@@ -61,6 +64,7 @@ function TrendingProduct() {
   };
 
   const customeSlider = useRef();
+
 
   const previous = () => {
     customeSlider.current.slickNext();
@@ -120,76 +124,89 @@ function TrendingProduct() {
     ],
   };
 
-  return (
-    <>
-      <div className={cl("wrapper")}>
-        <div className={cl("section__title-wrapper", "d-sm-flex align-items-start")}>
-          <div className={cl("me-5")}>
-            <h3 className={cl("section__title")}>Trending Product</h3>
+  const { data, error, isError, isLoading } = useQuery(["newproduct"], newProduct);
+
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Have an errors: {error.message}</span>;
+  }
+
+    // console.info(data[0].id)
+    return (
+      <>
+        <div className={cl("wrapper")}>
+          <div className={cl("section__title-wrapper", "d-sm-flex align-items-start")}>
+            <div className={cl("me-5")}>
+              <h3 className={cl("section__title")}>Trending Product</h3>
+            </div>
           </div>
-        </div>
-        <div>
-          <Slider ref={customeSlider} {...settings}>
-            {data.map((item) => (
-              <div key={item.id} className={cl("product__tab-content px-3")}>
-                <div className={cl("tab-content")}>
-                  <div className={cl("mb-3")}>
-                    <div className={cl("product__item")}>
-                      <div className={cl("product__thumb", "overflow-hidden")}>
-                        <Image src={item.ProductItems[0].Images[0].url} />
-                        <div className={cl("product__action", "transition-3")}>
-                          <ul>
-                            <li>
-                              <Button to={`/product/${item.ProductItems[0].id}`}>
-                                <VisibilityIcon />
-                              </Button>
-                            </li>
-                            <li>
-                              <Button to={"/"}>
-                                <FavoriteBorderIcon />
-                              </Button>
-                            </li>
-                            <li>
-                              <Button to={`/product/${item.ProductItems[0].id}`}>
-                                <AddShoppingCartIcon />
-                              </Button>
-                            </li>
-                          </ul>
+          <div>
+            <Slider ref={customeSlider} {...settings}>
+              {data.map((item) => (
+                <div key={item.id} className={cl("product__tab-content px-3")}>
+                  <div className={cl("tab-content")}>
+                    <div className={cl("mb-3")}>
+                      <div className={cl("product__item")}>
+                        <div className={cl("product__thumb", "overflow-hidden")}>
+                          <Image src={item.ProductDetails[0]?.Images[0]?.url} />
+                          <div className={cl("product__action", "transition-3")}>
+                            <ul>
+                              <li>
+                                <Button to={`/product/${item.ProductDetails[0]?.id}`}>
+                                  <VisibilityIcon />
+                                </Button>
+                              </li>
+                              <li>
+                                <Button to={"/"}>
+                                  <FavoriteBorderIcon />
+                                </Button>
+                              </li>
+                              <li>
+                                <Button to={`/product/${item.ProductDetails[0]?.id}`}>
+                                  <AddShoppingCartIcon />
+                                </Button>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="pt-3 text-center">
-                      <Link className={cl("product__tag")} href="#">
-                        {item.Category.name}
-                      </Link>
-                      <h3 className={cl("product__title")}>
-                        <a href="product-details.html">{item.name}</a>
-                      </h3>
-                      <div className={cl("product__price")}>
-                        <span>${item.ProductItems[0].price}</span>
+                      <div className="pt-3 text-center">
+                        <Link className={cl("product__tag")} href="#">
+                          {item.Category.name}
+                        </Link>
+                        <h3 className={cl("product__title")}>
+                          <a href="product-details.html">{item.name}</a>
+                        </h3>
+                        <div className={cl("product__price")}>
+                          <span>${item.ProductDetails[0]?.price}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </Slider>
+              ))}
+            </Slider>
+          </div>
+          <div className={cl("slider__next")}>
+            <Button
+              rightIcon={<FontAwesomeIcon icon={faChevronLeft} />}
+              className={cl("slider__btn")}
+              onClick={next}
+            ></Button>
+            <Button
+              rightIcon={<FontAwesomeIcon icon={faChevronRight} />}
+              className={cl("slider__btn")}
+              onClick={previous}
+            ></Button>
+          </div>
         </div>
-        <div className={cl("slider__next")}>
-          <Button
-            rightIcon={<FontAwesomeIcon icon={faChevronLeft} />}
-            className={cl("slider__btn")}
-            onClick={next}
-          ></Button>
-          <Button
-            rightIcon={<FontAwesomeIcon icon={faChevronRight} />}
-            className={cl("slider__btn")}
-            onClick={previous}
-          ></Button>
-        </div>
-      </div>
-    </>
-  );
+      </>
+    );
+
+ 
 }
 
 export default TrendingProduct;

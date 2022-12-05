@@ -1,28 +1,23 @@
-import Carts from "../models/Carts.js";
-import CartItems from "../models/CartItems.js";
-import ProductItems from "../models/ProductItems.js";
+// import Carts from "../models/Carts.js";
+import CartDetails from "../models/CartDetails.js";
+import ProductDetails from "../models/ProductDetails.js";
 import Products from "../models/Products.js";
 import Images from "../models/Images.js";
 
 const getCartDetail = async (req, res, next) => {
   const user = req.user;
-  const cart = await Carts.findOne({
+  const cart = await CartDetails.findAll({
     where: { userId: user.id },
     required: false,
     include: [
       {
-        model: CartItems,
+        model: ProductDetails,
         include: [
           {
-            model: ProductItems,
-            include: [
-              {
-                model: Products,
-              },
-              {
-                model: Images,
-              },
-            ],
+            model: Products,
+          },
+          {
+            model: Images,
           },
         ],
       },
@@ -31,53 +26,45 @@ const getCartDetail = async (req, res, next) => {
   return res.status(200).json(cart);
 };
 
-const postAddProductItemToCart = async (req, res, next) => {
+const postAddProductToCart = async (req, res, next) => {
   const user = req.user;
-  const productItemId = req.body.productItemId;
+  const productId = req.body.productId;
   const quantity = req.body.productQuantity;
 
-  const userCart = await Carts.findOne({
-    where: { userId: user.id },
-  });
-
-  const newItem = await CartItems.create({ quantity: quantity, cartId: userCart.id, productItemId: productItemId });
+  const newItem = await CartDetails.create({ quantity: quantity, userId: user.id, productDetailId: productId });
 
   return res.status(200).json();
 };
 
 const deleteProductItemId = async (req, res, next) => {
   const user = req.user;
-  const productitemid = req.params.productitemid;
+  const productitemid = req.params.productdetailid;
 
   const userCart = await Carts.findOne({
     where: { userId: user.id },
   });
 
-  await CartItems.destroy({ where: { cartId: userCart.id, productItemId: productitemid } });
+  await CartDetails.destroy({ where: { cartId: userCart.id, productItemId: productitemid } });
   return res.status(201).json();
 };
 
 const patchProductItemId = async (req, res, next) => {
   const user = req.user;
-  const productitemid = req.params.productitemid;
+  const productdetailid = req.params.productitemid;
   const quantity = req.body.quantity;
 
-  const userCart = await Carts.findOne({
-    where: { userId: user.id },
-  });
+  const productDetail = await ProductDetails.findByPk(productdetailid);
 
-  const productItem = await ProductItems.findByPk(productitemid);
-
-  if (quantity > productItem.stock) {
+  if (quantity > productDetail.stock) {
     return res.status(200).json({ error: "The limited stock has been reached!" });
   }
 
   if (quantity <= 0) {
-    await CartItems.destroy({ where: { cartId: userCart.id, productItemId: productitemid } });
+    await CartDetails.destroy({ where: { userId: user.id, productDetailId: productdetailid } });
     return res.status(201).json();
   }
 
-  await CartItems.update({ quantity: quantity }, { where: { cartId: userCart.id, productItemId: productitemid } });
+  await CartDetails.update({ quantity: quantity }, { where: { userId: user.id, productDetailId: productdetailid } });
   return res.status(201).json();
 };
 
@@ -144,7 +131,7 @@ const pagination = async (req, res, next) => {
 
 export default {
   getCartDetail,
-  postAddProductItemToCart,
+  postAddProductToCart,
   deleteProductItemId,
   patchProductItemId,
 

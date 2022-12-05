@@ -76,8 +76,8 @@ function CreateItem() {
           toast.error(`Add new product failed! - error: ${response.data.error}`, {});
         } else {
           console.log(response.data.hinh);
-          setHinh(response.data.hinh)
-          // toast.success("Add new product successfully!", {});
+          // setHinh(response.data.hinh)
+          toast.success("Add new product successfully!", {});
           navigate("/admin");
         }
       });

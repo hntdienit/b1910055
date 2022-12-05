@@ -2,28 +2,23 @@ import sequelize from "../config/db.js";
 import { Op } from "sequelize";
 
 import Orders from "../models/Orders.js";
-import OrderItems from "../models/OrderItems.js";
-import Carts from "../models/Carts.js";
-import CartItems from "../models/CartItems.js";
-import ProductItems from "../models/ProductItems.js";
+import OrderDetails from "../models/OrderDetails.js";
+// import Carts from "../models/Carts.js";
+import CartDetails from "../models/CartDetails.js";
+import ProductDetails from "../models/ProductDetails.js";
 import Products from "../models/Products.js";
 
 const getCheckout = async (req, res, next) => {
   const user = req.user;
-  const cart = await Carts.findOne({
+  const cart = await CartDetails.findAll({
     where: { userId: user.id },
     required: false,
     include: [
       {
-        model: CartItems,
+        model: ProductDetails,
         include: [
           {
-            model: ProductItems,
-            include: [
-              {
-                model: Products,
-              },
-            ],
+            model: Products,
           },
         ],
       },
@@ -46,25 +41,25 @@ const postCheckout = async (req, res, next) => {
     userId: 3,
   });
 
-  const userCart = await Carts.findOne({
-    where: { userId: user.id },
-    required: false,
-  });
+  // const userCart = await Carts.findOne({
+  //   where: { userId: user.id },
+  //   required: false,
+  // });
 
-  const userCartItem = await CartItems.findAll({
+  const userCartItem = await CartDetails.findAll({
     where: { cartId: userCart.id },
     required: false,
-    include: [{ model: ProductItems }],
+    include: [{ model: ProductDetails }],
   });
 
   userCartItem.map(async (item) => {
-    await OrderItems.create({
+    await OrderDetails.create({
       quantity: item.quantity,
       price: item.ProductItem.price,
       orderId: userOrder.id,
       productItemId: item.productItemId,
     });
-    await CartItems.destroy({ where: { id: item.id } });
+    await CartDetails.destroy({ where: { id: item.id } });
   });
 
   return res.status(200).json(userCartItem);
@@ -118,7 +113,7 @@ const postAddProductItemToCart = async (req, res, next) => {
   //   where: { userId: user.id },
   // });
 
-  // const newItem = await CartItems.create({ quantity: quantity, cartId: userCart.id, productItemId: productItemId });
+  // const newItem = await CartDetails.create({ quantity: quantity, cartId: userCart.id, productItemId: productItemId });
 
   return res.status(200).json();
 };
@@ -131,7 +126,7 @@ const deleteProductItemId = async (req, res, next) => {
   //   where: { userId: user.id },
   // });
 
-  // await CartItems.destroy({ where: { cartId: userCart.id, productItemId: productitemid } });
+  // await CartDetails.destroy({ where: { cartId: userCart.id, productItemId: productitemid } });
   return res.status(201).json();
 };
 
@@ -144,18 +139,18 @@ const patchProductItemId = async (req, res, next) => {
   //   where: { userId: user.id },
   // });
 
-  // const productItem = await ProductItems.findByPk(productitemid);
+  // const productItem = await ProductDetails.findByPk(productitemid);
 
   // if (quantity > productItem.stock) {
   //   return res.status(200).json({ error: "The limited stock has been reached!" });
   // }
 
   // if (quantity <= 0) {
-  //   await CartItems.destroy({ where: { cartId: userCart.id, productItemId: productitemid } });
+  //   await CartDetails.destroy({ where: { cartId: userCart.id, productItemId: productitemid } });
   //   return res.status(201).json();
   // }
 
-  // await CartItems.update({ quantity: quantity }, { where: { cartId: userCart.id, productItemId: productitemid } });
+  // await CartDetails.update({ quantity: quantity }, { where: { cartId: userCart.id, productItemId: productitemid } });
   return res.status(201).json();
 };
 

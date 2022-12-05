@@ -1,5 +1,5 @@
 import Promotions from "../models/Promotions.js";
-import ProductItemPromotions from "../models/ProductItemPromotions.js";
+import ProductItemPromotions from "../models/ProductDetailPromotions.js";
 // import { Op } from "sequelize";
 
 // const getAll = async (req, res, next) => {

@@ -25,7 +25,7 @@ function App() {
     role: "",
   });
 
-  const [cartItems, setCartItems] = useState(0)
+  const [CartDetails, setCartDetails] = useState(0)
 
   useEffect(() => {
     axios
@@ -52,7 +52,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <div className="App">
         <AuthContext.Provider value={{ auth, setAuth }}>
-        <CartContext.Provider value={{ cartItems, setCartItems }}>
+        <CartContext.Provider value={{ CartDetails, setCartDetails }}>
           <Router>
             <div className="App">
               <Routes>

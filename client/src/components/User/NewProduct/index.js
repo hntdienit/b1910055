@@ -2,6 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import Slider from "react-slick";
 import axios from "axios";
+import { useQuery } from "react-query";
 import { toast } from "react-toastify";
 import className from "classnames/bind";
 import VisibilityIcon from "@mui/icons-material/Visibility";
@@ -10,6 +11,8 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
+import {newProduct} from "../../../services/product"
+
 import styles from "./NewProduct.module.scss";
 import Button from "../../Public/Button";
 import Image from "../../Public/Image";
@@ -17,19 +20,30 @@ import Image from "../../Public/Image";
 const cl = className.bind(styles);
 
 function NewProduct() {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    axios.get(`${process.env.REACT_APP_URL_API}/products/newproduct`).then((response) => {
-      if (response.data.error) {
-        toast.error(`Data fetch failed - error: ${response.data.error}`, {});
-      } else {
-        setData(response.data);
-      }
-    });
-  }, []);
-
   const customeSlider = useRef();
+
+  // const [data, setData] = useState([]);
+
+  const { data, error, isError, isLoading } = useQuery(["newproduct"], newProduct);
+
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (isError) {
+    return <span>Have an errors: {error.message}</span>;
+  }
+
+  // useEffect(() => {
+  //   axios.get(`${process.env.REACT_APP_URL_API}/products/newproduct`).then((response) => {
+  //     if (response.data.error) {
+  //       toast.error(`Data fetch failed - error: ${response.data.error}`, {});
+  //     } else {
+  //       setData(response.data);
+  //     }
+  //   });
+  // }, []);
+
 
   const previous = () => {
     customeSlider.current.slickNext();
@@ -98,7 +112,7 @@ function NewProduct() {
             <div className={cl("me-5")}>
               <h3 className={cl("section__title")}>Products</h3>
             </div>
-            <div className={cl("product__tab")}>
+            {/* <div className={cl("product__tab")}>
               <ul className={cl("nav", "nav-tabs")}>
                 <li className={cl("")}>
                   <button className={cl("nav-link", "active")} type="button">
@@ -116,7 +130,7 @@ function NewProduct() {
                   </button>
                 </li>
               </ul>
-            </div>
+            </div> */}
           </div>
           <div className={cl("row")}>
             <div className={cl("col-xxl-12")}>
@@ -127,7 +141,7 @@ function NewProduct() {
                       <div className={cl("mb-3")}>
                         <div className={cl("product__item")}>
                           <div className={cl("product__thumb", "overflow-hidden")}>
-                            <Image src={item.ProductItems[0].Images[0]?.url} />
+                            <Image src={item.ProductDetails[0]?.Images[0]?.url} />
                             <div className={cl("product__action", "transition-3")}>
                               <ul>
                                 <li>
@@ -157,7 +171,7 @@ function NewProduct() {
                             <a href="product-details.html">{item.name}</a>
                           </h3>
                           <div className={cl("product__price")}>
-                            <span>${item.ProductItems[0].price}</span>
+                            <span>${item.ProductDetails[0]?.price}</span>
                           </div>
                         </div>
                       </div>

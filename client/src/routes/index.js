@@ -24,6 +24,7 @@ import Login from "../pages/Auth/Login";
 /* Pages Admin */
 import AdminHome from "../pages/Admin/Home";
 import { CreaterCategory, ListCategory, EditCategory } from "../pages/Admin/Category";
+import { CreaterWarehouse, ListWarehouse, EditWarehouse } from "../pages/Admin/Warehouse";
 import { CreateShippingMethod, ListShippingMethod, EditShippingMethod } from "../pages/Admin/ShippingMethod";
 import { CreateProduct, ListProduct, EditProduct } from "../pages/Admin/Product";
 import { CreatePromotion, ListPromotion, EditPromotion } from "../pages/Admin/Promotion";
@@ -43,6 +44,10 @@ const routes = [
   { path: "/admin/category", component: CreaterCategory, layout: AdminLayout, role: "admin" },
   { path: "/admin/listcategory", component: ListCategory, layout: AdminLayout, role: "admin" },
   { path: "/admin/editcategory/:EditId", component: EditCategory, layout: AdminLayout, role: "admin" },
+
+  { path: "/admin/warehouse", component: CreaterWarehouse, layout: AdminLayout, role: "admin" },
+  { path: "/admin/listwarehouse", component: ListWarehouse, layout: AdminLayout, role: "admin" },
+  { path: "/admin/editwarehouse/:EditId", component: EditWarehouse, layout: AdminLayout, role: "admin" },
 
   { path: "/admin/shippingmethod", component: CreateShippingMethod, layout: AdminLayout, role: "admin" },
   { path: "/admin/listshippingmethod", component: ListShippingMethod, layout: AdminLayout, role: "admin" },

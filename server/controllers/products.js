@@ -1,10 +1,10 @@
 import { Op } from "sequelize";
-// import VariationOptions from "../models/VariationOptions.js";
-// import Variations from "../models/Variations.js";
 import Categories from "../models/Categories.js";
 import Products from "../models/Products.js";
-import ProductItems from "../models/ProductItems.js";
+import ProductDetails from "../models/ProductDetails.js";
 import Images from "../models/Images.js";
+import Warehouses from "../models/Warehouses.js";
+import WarehouseDetails from "../models/WarehouseDetails.js";
 import fs from "fs";
 
 const getNewProduct = async (req, res, next) => {
@@ -12,14 +12,10 @@ const getNewProduct = async (req, res, next) => {
     include: [
       { model: Categories },
       {
-        model: ProductItems,
+        model: ProductDetails,
         include: [
           {
             model: Images,
-            // where: {
-            //   productItemId: 24
-            // order: ["title", "DESC"],
-            // },
             required: false,
           },
         ],
@@ -33,7 +29,7 @@ const getNewProduct = async (req, res, next) => {
 };
 
 const getAllProductItem = async (req, res, next) => {
-  const list = await ProductItems.findAll({
+  const list = await ProductDetails.findAll({
     include: [
       {
         model: Products,
@@ -55,10 +51,13 @@ const getProductDetail = async (req, res, next) => {
     include: [
       { model: Categories },
       {
-        model: ProductItems,
+        model: ProductDetails,
         include: [
           {
             model: Images,
+          },
+          {
+            model: WarehouseDetails,
           },
         ],
       },
@@ -99,16 +98,25 @@ const postCreateProduct = async (req, res, next) => {
   const image = req.files;
 
   const newProduct = await Products.create({ name: name, description: description, categoryId: categoryId });
-  const newProductItem = await ProductItems.create({
+  const newProductDetail = await ProductDetails.create({
     productId: newProduct.id,
     color: color,
     size: size,
-    stock: stock,
     price: price,
   });
+
+  const warehouse = await Warehouses.findOne();
+
+  const warehousedetail = await WarehouseDetails.create({
+    // warehouseId:  warehouse.id,
+    warehouseId: 2,
+    productDetailId: newProductDetail.id,
+    stock: stock,
+  });
+
   for (let i = 0; i < image.length; i++) {
-    const newProductItemImage = await Images.create({
-      productItemId: newProductItem.id,
+    const newProductDetailImage = await Images.create({
+      productDetailId: newProductDetail.id,
       url: `${req.protocol}://${req.get("host")}/image/product/${req.files[i].filename}`,
     });
     // delete file
@@ -116,35 +124,7 @@ const postCreateProduct = async (req, res, next) => {
     // fs.unlinkSync(filepath);
   }
 
-  return res.status(201).json({ hinh: image[0] }); /* 123 */
-};
-
-const postCreateItem = async (req, res, next) => {
-  try {
-    console.log(req.files[0].filename);
-
-    // if (req.file == undefined) {
-    //   return res.send(`You must select a file.`);
-    // }
-
-    // Image.create({
-    //   type: req.file.mimetype,
-    //   name: req.file.originalname,
-    //   data: fs.readFileSync(
-    //     __basedir + "./public/" + req.file.filename
-    //   ),
-    // }).then((image) => {
-    //   fs.writeFileSync(
-    //     __basedir + "/resources/static/assets/tmp/" + image.name,
-    //     image.data
-    //   );
-
-    //   return res.send(`File has been uploaded.`);
-    // });
-  } catch (error) {
-    console.log(error);
-    return res.send(`Error when trying upload images: ${error}`);
-  }
+  return res.status(201).json();
 };
 
 // const patchItemId = async (req, res, next) => {
@@ -216,7 +196,6 @@ export default {
   getProductDetail,
   // getItemId,
   postCreateProduct,
-  postCreateItem,
   // patchItemId,
   // deleteItemId,
   // pagination,
